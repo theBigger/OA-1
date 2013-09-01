@@ -1,0 +1,125 @@
+package com.fjx.oa.action;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.fjx.common.framework.base.action.BaseAction;
+import com.fjx.oa.models.Organization;
+import com.fjx.oa.service.IOrganizationService;
+import com.fjx.oa.vo.EasyuiTreeNode;
+
+
+
+public class OrgAction extends BaseAction {
+
+	
+	@Autowired
+	private IOrganizationService organizationService;
+	
+	/*******页面参数***************/
+	private int pid;
+	private int id;
+	private Organization org;
+	
+	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4333403511458402875L;
+	
+	
+	public String view (){
+		logger.debug("com.fjx.oa.action.view()");
+		return "view";
+	}
+	
+	/**
+	 * 树形表格
+	 * @return
+	 * @throws Exception 
+	 * @throws Exception
+	 */
+	public String treeGrid  () throws Exception {
+		List<Organization> list = null;
+		list = organizationService.treeGrid(pid);
+		write(serialize(list));
+		return null;
+	}
+	/**
+	 * 机构树
+	 * @return
+	 * @throws Exception
+	 */
+	public String tree() throws Exception {
+		List<EasyuiTreeNode> list = null;
+		try {
+			list = organizationService.tree(pid);
+		} catch (Exception e) {
+			throw new RuntimeException("查询机构树出现异常",e);
+		}
+		write(serialize(list));
+		return null;
+	}
+	
+	/**
+	 * 保存或者修改
+	 * @return	saveOrUpdate
+	 */
+	public String save(){
+		String res = null;
+		try{
+			organizationService.saveOrUpdate(org, pid);
+			res = "success";
+		}catch (Exception e) {
+			res = "fail";
+			throw new RuntimeException("保存机构失败",e);
+		}
+		write(res);
+		return null;
+	}
+	
+	public String delete(){
+		String flag = "fail";
+		try {
+			organizationService.delete(id);
+			flag = "success";
+		} catch (Exception e) {
+			throw new RuntimeException("删除机构失败",e);
+		}
+		write(flag);
+		return null;
+	}
+	
+	
+	
+	public int getPid() {
+		return pid;
+	}
+
+	public void setPid(int pid) {
+		this.pid = pid;
+	}
+
+	public void setOrganizationService(IOrganizationService organizationService) {
+		this.organizationService = organizationService;
+	}
+
+	public Organization getOrg() {
+		return org;
+	}
+
+	public void setOrg(Organization org) {
+		this.org = org;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+}

@@ -1,0 +1,45 @@
+package com.fjx.oa.models;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+/**
+ * 角色表
+ * 
+ * @author feng
+ * 
+ */
+@Entity
+@Table(name = "oa_role")
+public class Role {
+
+	/**
+	 * @hibernate.id generator-class="native"
+	 */
+	private int id;
+
+	/**
+	 * @hibernate.property
+	 */
+	private String name;
+
+	@Id
+	@GeneratedValue
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+}

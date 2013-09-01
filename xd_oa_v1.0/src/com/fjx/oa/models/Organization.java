@@ -1,0 +1,142 @@
+package com.fjx.oa.models;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+/**
+ * 
+ * @author feng
+ *
+ */
+@Entity
+@Table(name="oa_org")
+public class Organization {
+	
+	private int id;
+	
+	/**
+	 * @hibernate.property
+	 */
+	private String name;
+	
+	/**
+	 * @hibernate.property unique="true"
+	 */
+	private String sn;
+	
+	/**
+	 * @hibernate.property
+	 */
+	private String description;
+	/**
+	 * @hibernate.property
+	 */
+	private Date in_time = new Date();
+	/**
+	 * @hibernate.many-to-one column="pid"
+	 */
+	private Organization parent;
+	
+	/**
+	 * @hibernate.set lazy="extra" inverse="true"
+	 * @hibernate.key column="pid"
+	 * @hibernate.one-to-many class="com.bjsxt.oa.model.Organization"
+	 */
+	private List<Organization> children;
+	
+	
+	private int parent_id ;
+	private String parent_name ;
+	private String state = "open";
+	
+	@Id
+	@GeneratedValue
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	//唯一约束
+	@Column(unique=true)
+	public String getSn() {
+		return sn;
+	}
+	public void setSn(String sn) {
+		this.sn = sn;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date getIn_time() {
+		return in_time;
+	}
+	public void setIn_time(Date in_time) {
+		this.in_time = in_time;
+	}
+	@ManyToOne(fetch=FetchType.EAGER)
+	public Organization getParent() {
+		return parent;
+	}
+	public void setParent(Organization parent) {
+		this.parent = parent;
+	}
+	
+	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY)
+	@OrderBy("id")
+	public List<Organization> getChildren() {
+		return children;
+	}
+	public void setChildren(List<Organization> children) {
+		this.children = children;
+	}
+	
+	//不需要映射数据库字段
+	@Transient
+	public int getParent_id() {
+		return parent_id;
+	}
+	public void setParent_id(int parent_id) {
+		this.parent_id = parent_id;
+	}
+	@Transient
+	public String getParent_name() {
+		return parent_name;
+	}
+	public void setParent_name(String parent_name) {
+		this.parent_name = parent_name;
+	}
+	@Transient
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	
+}

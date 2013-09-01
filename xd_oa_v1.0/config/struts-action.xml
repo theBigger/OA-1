@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	
+	<package name="oa" namespace="/oa" extends="main">
+		<action name="view_*" class="com.fjx.oa.view.MainAction" method="{1}">
+			<result name="main">/oa/main.jsp</result>
+			<result name="home">/oa/layout/home.jsp</result>
+			<result name="north">/oa/layout/north.jsp</result>
+			<result name="center">/oa/layout/center.jsp</result>
+			<result name="west">/oa/layout/west.jsp</result>
+			<result name="east">/oa/layout/east.jsp</result>
+			<result name="south">/oa/layout/south.jsp</result>
+		</action>
+	</package>
+	
+	<package name="org" namespace="/oa/org" extends="main">
+		<action name="org_*" class="com.fjx.oa.action.OrgAction" method="{1}">
+			<result name="view" >/oa/org/index.jsp</result>
+		</action>
+	</package>
+	<package name="sys" namespace="/oa/sys" extends="main">
+		<action name="sys_*" class="com.fjx.oa.sys.action.SysAction" method="{1}">
+			<result name="info" >/oa/sys/sysinfo.jsp</result>
+		</action>
+	</package>
+</struts>
