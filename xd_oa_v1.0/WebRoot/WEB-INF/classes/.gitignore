@@ -1,13 +1,2 @@
-/MessageResources.properties
 /com
-/ehcache.xml
-/ehcache_hibernate.xml
-/jdbc.properties
-/log4j.properties
 /org
-/spring-applicationContext.xml
-/spring-dataSource.xml
-/spring-hibernate.xml
-/spring-transaction.xml
-/struts-action.xml
-/struts.xml
