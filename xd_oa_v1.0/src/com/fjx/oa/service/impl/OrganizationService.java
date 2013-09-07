@@ -23,9 +23,17 @@ public class OrganizationService extends BaseDao<Organization> implements IOrgan
 	
 	@Override
 	public void saveOrUpdate(Organization organization, Serializable pid)throws Exception {
-		Organization parent = findOne(pid);
-		organization.setParent(parent);
-		saveOrUpdate(organization);
+		try {
+			Organization parent = null;
+			if(pid != null && !pid.equals("") && pid != "0"){
+				parent = findOne(pid);
+			}
+			organization.setParent(parent);
+			saveOrUpdate(organization);
+		} catch (Exception e) {
+			logger.error("保存或更新机构表异常", e);
+			throw new RuntimeException("保存或更新机构表异常",e);
+		}
 	}
 	
 	@Override
@@ -34,20 +42,26 @@ public class OrganizationService extends BaseDao<Organization> implements IOrgan
 		if(null == pid || pid.equals(0)){
 			hql = "from Organization o where o.parent is null";
 		}
-		List<Organization> list = find(hql);
-		if(null != list && list.size()>0){
-			for(int i = 0; i < list.size(); i++){
-				Organization o = list.get(i);
-				if(null != o.getParent()){
-					list.get(i).setParent_id(o.getParent().getId());
-					list.get(i).setParent_name(o.getParent().getName());
-				}
-				if(null != o.getChildren()&& o.getChildren().size()>0){
-					list.get(i).setState("closed");
-					List<Organization> children = treeGrid(o.getId());
-					list.get(i).setChildren(children);
+		List<Organization> list = null;
+		try {
+			list = find(hql);
+			if (null != list && list.size() > 0) {
+				for (int i = 0; i < list.size(); i++) {
+					Organization o = list.get(i);
+					if (null != o.getParent()) {
+						list.get(i).setParent_id(o.getParent().getId());
+						list.get(i).setParent_name(o.getParent().getName());
+					}
+					if (null != o.getChildren() && o.getChildren().size() > 0) {
+						list.get(i).setState("closed");
+						List<Organization> children = treeGrid(o.getId());
+						list.get(i).setChildren(children);
+					}
 				}
 			}
+		} catch (Exception e) {
+			logger.error("查询树形机构异常", e);
+			throw new RuntimeException("查询树形机构异常",e);
 		}
 		return list;
 	}

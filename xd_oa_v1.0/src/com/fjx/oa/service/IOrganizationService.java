@@ -19,5 +19,5 @@ public interface IOrganizationService extends IBaseDao<Organization> {
 	public List<Map<String, Object>> jdbcTreeGrid(Serializable pid)throws Exception;
 
 	public List<EasyuiTreeNode> tree(Serializable pid)throws Exception;
-	
+
 }

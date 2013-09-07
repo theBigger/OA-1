@@ -37,7 +37,7 @@ public class BaseAction extends ActionSupport {
 		try {
 			res = JSONUtil.serialize(object);
 		} catch (JSONException e) {
-			logger.error("序列化对象异常");
+			logger.error("序列化对象异常",e);
 			throw new SystemException("序列化对象异常",e);
 		}
 		return res;

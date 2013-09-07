@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Table(name="oa_person")
 public class Person {
 	
-	private int id;
+	private Long id;
 	
 	/**
 	 * @hibernate.property
@@ -57,11 +57,11 @@ public class Person {
 	
 	@Id
 	@GeneratedValue
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

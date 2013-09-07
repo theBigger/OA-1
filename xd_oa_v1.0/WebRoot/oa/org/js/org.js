@@ -229,7 +229,6 @@ var editRow;
 			},
 			onAfterEdit : function(row, changes) {
 				if (row.parent_id != row.id) {
-					
 					var data = {
 						"org.id":row.id,
 						"org.name" : row.name,
@@ -246,12 +245,12 @@ var editRow;
 						success : function(r) {
 							if (r = 'success') {
 								$.messager.show({
-									msg : r.msg,
+									msg : '保存菜单成功!',
 									title : '提示'
 								});
-								treegrid.treegrid('reload');
-								parent.tree.tree('reload');
 								editRow = undefined;
+								treegrid.treegrid('reload');
+								//parent.tree.tree('reload');
 							} else {
 								$.messager.show({
 									msg : '保存菜单失败!',

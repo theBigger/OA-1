@@ -1,5 +1,6 @@
 package com.fjx.oa.action;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,8 @@ public class OrgAction extends BaseAction {
 	private IOrganizationService organizationService;
 	
 	/*******页面参数***************/
-	private int pid;
-	private int id;
+	private Long pid;
+	private Long id;
 	private Organization org;
 	
 	
@@ -57,6 +58,7 @@ public class OrgAction extends BaseAction {
 		try {
 			list = organizationService.tree(pid);
 		} catch (Exception e) {
+			logger.error("查询机构树出现异常", e);
 			throw new RuntimeException("查询机构树出现异常",e);
 		}
 		write(serialize(list));
@@ -67,13 +69,14 @@ public class OrgAction extends BaseAction {
 	 * 保存或者修改
 	 * @return	saveOrUpdate
 	 */
-	public String save(){
+	public String save() throws Exception{
 		String res = null;
 		try{
 			organizationService.saveOrUpdate(org, pid);
 			res = "success";
 		}catch (Exception e) {
 			res = "fail";
+			logger.error("保存机构失败", e);
 			throw new RuntimeException("保存机构失败",e);
 		}
 		write(res);
@@ -94,13 +97,6 @@ public class OrgAction extends BaseAction {
 	
 	
 	
-	public int getPid() {
-		return pid;
-	}
-
-	public void setPid(int pid) {
-		this.pid = pid;
-	}
 
 	public void setOrganizationService(IOrganizationService organizationService) {
 		this.organizationService = organizationService;
@@ -114,12 +110,20 @@ public class OrgAction extends BaseAction {
 		this.org = org;
 	}
 
-	public int getId() {
+	public Long getPid() {
+		return pid;
+	}
+
+	public void setPid(Long pid) {
+		this.pid = pid;
+	}
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 }

@@ -81,6 +81,9 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 
 	@Override
 	public T findOne(Serializable pk)throws Exception {
+		if(null == pk || pk.equals("")){
+			return null;
+		}
 		return (T) getHibernateTemplate().load(getEntityClass(), pk);
 	}
 	

@@ -3,7 +3,6 @@ package com.fjx.oa.models;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,7 +25,7 @@ import javax.persistence.Transient;
 @Table(name="oa_org")
 public class Organization {
 	
-	private int id;
+	private Long id;
 	
 	/**
 	 * @hibernate.property
@@ -59,16 +58,16 @@ public class Organization {
 	private List<Organization> children;
 	
 	
-	private int parent_id ;
+	private Long parent_id ;
 	private String parent_name ;
 	private String state = "open";
 	
 	@Id
 	@GeneratedValue
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -118,10 +117,10 @@ public class Organization {
 	
 	//不需要映射数据库字段
 	@Transient
-	public int getParent_id() {
+	public Long getParent_id() {
 		return parent_id;
 	}
-	public void setParent_id(int parent_id) {
+	public void setParent_id(Long parent_id) {
 		this.parent_id = parent_id;
 	}
 	@Transient

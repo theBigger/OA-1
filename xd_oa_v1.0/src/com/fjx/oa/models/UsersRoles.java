@@ -18,7 +18,7 @@ public class UsersRoles {
 	/**
 	 * @hibernate.id generator-class="native"
 	 */
-	private int id;
+	private Long id;
 	
 	/**
 	 * @hibernate.many-to-one
@@ -37,10 +37,10 @@ public class UsersRoles {
 	
 	@Id
 	@GeneratedValue
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

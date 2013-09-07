@@ -18,7 +18,7 @@
 		<global-results>
 			<result name="index">/index.jsp</result>
 			<result name="errors">/errors.jsp</result>
-			<result name="Exception">/exception/exception.jsp</result>
+			<result name="Exception">/common/exception/exception.jsp</result>
 		</global-results>
 		
 		<!-- 声明式异常处理 -->
