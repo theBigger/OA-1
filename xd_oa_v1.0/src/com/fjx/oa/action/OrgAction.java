@@ -1,6 +1,5 @@
 package com.fjx.oa.action;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ import com.fjx.oa.vo.EasyuiTreeNode;
 
 public class OrgAction extends BaseAction {
 
-	
+	//对象注入
 	@Autowired
 	private IOrganizationService organizationService;
 	
