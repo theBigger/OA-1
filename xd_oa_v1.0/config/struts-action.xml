@@ -16,9 +16,10 @@
 		</action>
 	</package>
 	
+	<!-- 机构管理 -->
 	<package name="org" namespace="/oa/org" extends="main">
 		<action name="org_*" class="com.fjx.oa.action.OrgAction" method="{1}">
-			<result name="view" >/oa/org/index.jsp</result>
+			<result name="view" >/oa/org/org.jsp</result>
 		</action>
 	</package>
 	<package name="sys" namespace="/oa/sys" extends="main">
@@ -26,4 +27,12 @@
 			<result name="info" >/oa/sys/sysinfo.jsp</result>
 		</action>
 	</package>
+	
+	<!-- 人员管理 -->
+	<package name="person" namespace="/oa/person" extends="main">
+		<action name="person_*" class="com.fjx.oa.action.PersonAction" method="{1}">
+			<result name="view" >/oa/person/person.jsp</result>
+		</action>
+	</package>
+	
 </struts>

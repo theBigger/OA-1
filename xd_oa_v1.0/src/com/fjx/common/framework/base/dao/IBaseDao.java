@@ -39,6 +39,15 @@ public interface IBaseDao<T> {
 	 * @return
 	 */
 	public T findOne (Serializable pk)throws Exception;
+	
+	/**
+	 * 查询所有记录，根据泛型查询该对象纪录列表
+	 * @param hql
+	 * @param parameters
+	 * @return
+	 */
+	public List<T> findAll()throws Exception;
+	
 	/**
 	 * 查询所有记录
 	 * @param hql
@@ -54,6 +63,14 @@ public interface IBaseDao<T> {
 	 * @return
 	 */
 	public T findOne(String hql, Object... parameters)throws Exception;
+	
+	/**
+	 * 分页查询，根据泛型查询该对象纪录列表
+	 * @param parameters
+	 * @return 分页对象
+	 */
+	public Pagination<T> find4page ()throws Exception;
+	
 	/**
 	 * 分页查询
 	 * @param hql

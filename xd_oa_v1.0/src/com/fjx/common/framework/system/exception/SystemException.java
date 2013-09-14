@@ -1,44 +1,53 @@
 package com.fjx.common.framework.system.exception;
 
 /**
- * @author Administrator
- *
+ * @author fengjx
+ * 自定义异常类
  */
 public class SystemException extends RuntimeException {
 	
 	
-	//错误代码
 	private String key;
-	
+	private Object[] values;
+
 	public SystemException() {
 		super();
 	}
 
-	public SystemException(String message, Throwable cause) {
-		super(message, cause);
+	public SystemException(String message, Throwable throwable) {
+		super(message, throwable);
 	}
 
 	public SystemException(String message) {
 		super(message);
 	}
 
-	public SystemException(Throwable cause) {
-		super(cause);
+	public SystemException(Throwable throwable) {
+		super(throwable);
 	}
-	
-	public SystemException(String code,String message){
+
+	public SystemException(String key, String message) {
 		super(message);
-		
-		this.key = code;
+		this.key = key;
 	}
-	
-	public SystemException(String code,String message, Throwable cause) {
-		super(message, cause);
-		this.key = code;
+
+	public SystemException(String key, Object value, String message) {
+		super(message);
+		this.key = key;
+		this.values = new Object[] { value };
+	}
+
+	public SystemException(String key, Object[] values, String message) {
+		super(message);
+		this.key = key;
+		this.values = values;
 	}
 
 	public String getKey() {
 		return key;
 	}
-	
+
+	public Object[] getValues() {
+		return values;
+	}
 }

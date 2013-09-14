@@ -104,7 +104,8 @@
 		        "attributes":{"src":"/oa/org/org_view.action"}
 		    },{
 		        "text":"人员管理",
-		        "checked":true
+		        "checked":true,
+		         "attributes":{"src":"/oa/person/person_view.action"}
 		    }
 	    ]
 	},{

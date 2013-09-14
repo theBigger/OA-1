@@ -107,15 +107,26 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		return t;
 	}
 	
+	public List<T> findAll()throws Exception{
+		String hql = "from "+getEntityClass().getName();
+		return find(hql);
+	}
+	
 	@Override
 	public List<T> find(String hql, Object... parameters)throws Exception {
 		return getHibernateTemplate().find(hql, parameters);
 	}
 	
 	@Override
+	public Pagination<T> find4page () throws Exception{
+		String hql = "from "+getEntityClass().getName();
+		return find4page(hql);
+	}
+	
+	@Override
 	public Pagination<T> find4page(final String hql, final Object... parameters)throws Exception {
 		int total = getCount(hql, true, parameters);
-		logger.debug("total:.................... "+total);
+		logger.debug("query count is: "+total);
 		List datas = getHibernateTemplate().executeFind(
 				new HibernateCallback() {
 					@Override
@@ -186,7 +197,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	public Pagination<List<Map<String, Object>>> find4ListPage(final String sql,
 			final Object... parameters) throws Exception{
 		int total = getCount(sql, false, parameters);
-		logger.debug("total:.................... "+total);
+		logger.debug("query count is: "+total);
 		List datas = getHibernateTemplate().executeFind(
 				new HibernateCallback() {
 					@Override

@@ -42,7 +42,7 @@ public class SystemFilter implements Filter {
 		//val = ".*oa|.*\\.jsp";
 		if (uri.matches(reg)) {
 			if(!uri.equals("/index.jsp")){
-				logger.warn("禁止访问oa下的hsp文件");
+				logger.warn("禁止访问oa下的jsp文件");
 				response.sendRedirect(request.getContextPath()+"/index.jsp");
 				return;
 			}
@@ -71,7 +71,7 @@ public class SystemFilter implements Filter {
 		if (pageNowStr != null && !pageNowStr.equals("")){
 			pageNow = Integer.valueOf(pageNowStr);
 			//offset = (pageNow - 1)*getPageSize(request);
-			offset = pageNow;
+			offset = pageNow - 1;
 			
 		}
 		logger.debug("offset： "+offset);

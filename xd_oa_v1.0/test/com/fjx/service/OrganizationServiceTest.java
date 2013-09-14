@@ -1,6 +1,5 @@
 package com.fjx.service;
 
-import javax.xml.registry.infomodel.Organization;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,22 +7,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.fjx.oa.service.IOrganizationService;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/spring-applicationContext.xml")
 public class OrganizationServiceTest {
 	
 	@Autowired
-	private Organization organization;
+	private IOrganizationService organizationService ;
 	
 	@Test
-	public void Test1(){
-		System.out.println(organization);
+	public void testTreeGrid() throws Exception{
+		organizationService.treeGrid(0);
+		
+		
 	}
 
-	public void setOrganization(Organization organization) {
-		this.organization = organization;
-	}
-	
 	
 }
