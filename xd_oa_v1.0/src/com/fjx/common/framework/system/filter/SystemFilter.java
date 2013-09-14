@@ -108,6 +108,7 @@ public class SystemFilter implements Filter {
 	public void init(FilterConfig config) throws ServletException {
 		reg = config.getInitParameter("reg");
 		page_url = config.getInitParameter("page_url");
+		
 	}
 	
 }

@@ -32,16 +32,10 @@
 		<span>更换主题</span>
 		<div style="width: 100px;">
 			<div onclick="fjx.changeTheme('default');">default</div>
+			<div onclick="fjx.changeTheme('bootstrap');">bootstrap</div>
 			<div onclick="fjx.changeTheme('gray');">gray</div>
-			<div onclick="fjx.changeTheme('dark-hive');">dark-hive</div>
-			<div onclick="fjx.changeTheme('cupertino');">cupertino</div>
-			<div onclick="fjx.changeTheme('metro-blue');">metro-blue</div>
-			<div onclick="fjx.changeTheme('metro-gray');">metro-gray</div>
-			<div onclick="fjx.changeTheme('metro-green');">metro-green</div>
-			<div onclick="fjx.changeTheme('metro-orange');">metro-orange</div>
-			<div onclick="fjx.changeTheme('metro-red');">metro-red</div>
-			<div onclick="fjx.changeTheme('pepper-grinder');">pepper-grinder</div>
-			<div onclick="fjx.changeTheme('sunny');">sunny</div>
+			<div onclick="fjx.changeTheme('metro');">metro</div>
+			<div onclick="fjx.changeTheme('black');">black</div>
 		</div>
 	</div>
 </div>

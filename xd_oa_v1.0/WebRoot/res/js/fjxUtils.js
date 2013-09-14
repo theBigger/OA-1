@@ -6,9 +6,12 @@
 
 var fjx = $.extend({}, fjx);/* 全局对象 */
 
-$.parser.auto = false;
+/*定义是否自动解析easyui组件。*/
+//$.parser.auto = false;
 $(function() {
-	
+	if ($.cookie('easyuiThemeName')) {
+		fjx.changeTheme($.cookie('easyuiThemeName'));
+	}
 	$.parser.auto = true;
 });
 

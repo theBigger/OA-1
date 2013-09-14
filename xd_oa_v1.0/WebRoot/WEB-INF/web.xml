@@ -51,6 +51,8 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
+	
+	<!-- 配置过滤器，接收分页参数，禁止直接访问jsp -->
 	<filter>
 		<filter-name>sys</filter-name>
 		<filter-class>
@@ -58,10 +60,12 @@
 		</filter-class>
 		<init-param>
 			<param-name>reg</param-name>
+			<!-- 禁止直接访问oa目录下的jsp文件  -->
 			<param-value>.*oa|.*\.jsp</param-value>
 		</init-param>
 		<init-param>
 			<param-name>page_url</param-name>
+			<!-- 分页请求正则 -->
 			<param-value>.*_page.*</param-value>
 		</init-param>
 	</filter>

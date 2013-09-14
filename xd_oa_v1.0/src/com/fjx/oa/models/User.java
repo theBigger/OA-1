@@ -3,9 +3,11 @@ package com.fjx.oa.models;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -84,7 +86,7 @@ public class User {
 		this.expireTime = expireTime;
 	}
 	
-	@ManyToOne
+	@OneToOne(mappedBy="user",fetch=FetchType.LAZY)
 	public Person getPerson() {
 		return person;
 	}

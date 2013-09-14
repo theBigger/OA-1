@@ -2,7 +2,7 @@
 <%
 	String contextPath = request.getContextPath();
 %>
-<link id="easyuiTheme" href="<%=contextPath%>/res/framework/js/jquery-easyui/themes/metro-orange/easyui.css" rel="stylesheet" type="text/css">
+<link id="easyuiTheme" href="<%=contextPath%>/res/framework/js/jquery-easyui/themes/default/easyui.css" rel="stylesheet" type="text/css">
 <link href="<%=contextPath%>/res/framework/js/jquery-easyui/themes/icon.css" rel="stylesheet" type="text/css">
 <link href="<%=contextPath%>/res/css/base.css" rel="stylesheet" type="text/css" media="screen">
 

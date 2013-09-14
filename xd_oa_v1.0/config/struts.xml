@@ -11,7 +11,7 @@
 	<!-- 设置允许上传文件大小 （默认大小是2M） -->
 	<constant name="struts.multipart.maxSize" value="20480000" />
 	
-	<package name="main" namespace="" extends="struts-default">
+	<package name="main" namespace="" extends="json-default">
 		<!-- 定义一个默认的action -->
 		<default-action-ref name="index"></default-action-ref>
 		<!-- 全局结果集 -->

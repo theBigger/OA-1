@@ -32,6 +32,7 @@
 	<package name="person" namespace="/oa/person" extends="main">
 		<action name="person_*" class="com.fjx.oa.action.PersonAction" method="{1}">
 			<result name="view" >/oa/person/person.jsp</result>
+			<!-- <result name="persons_page" type="json" >easyPersons</result> -->
 		</action>
 	</package>
 	

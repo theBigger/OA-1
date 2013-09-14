@@ -22,6 +22,3 @@ fjx.changeTheme = function(themeName) {/* 更换主题 */
 		expires : 7
 	});
 };
-if ($.cookie('easyuiThemeName')) {
-	fjx.changeTheme($.cookie('easyuiThemeName'));
-}

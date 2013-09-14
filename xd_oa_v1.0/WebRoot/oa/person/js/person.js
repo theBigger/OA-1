@@ -15,7 +15,7 @@
 		});
 
 		$('[name=roleId]').combotree({
-			url : 'roleController.do?tree',
+			url : '../org/org_tree.action',
 			animate : false,
 			lines : !fjx.isLessThanIe8(),
 			checkbox : true,
@@ -110,7 +110,7 @@
 			iconCls : 'icon-save',
 			pagination : true,
 			pageSize : 10,
-			pageList : [ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 ],
+			pageList : [ 10, 20, 30, 40],
 			fit : true,
 			fitColumns : true,
 			nowrap : false,
@@ -128,29 +128,38 @@
 				sortable : true
 			} ] ],
 			columns : [ [ {
-				field : 'password',
-				title : '密码',
+				field : 'sex',
+				title : '性别',
 				width : 100,
 				formatter : function(value, rowData, rowIndex) {
-					return '******';
+					var sex = '女';
+					if(value == '1'){
+						sex = '男'
+					}
+					return sex;
 				}
 			}, {
-				field : 'createdatetime',
-				title : '创建时间',
+				field : 'duty',
+				title : '职务',
 				width : 150,
 				sortable : true
 			}, {
-				field : 'modifydatetime',
-				title : '最后修改时间',
+				field : 'phone',
+				title : '电话',
 				width : 150,
 				sortable : true
 			}, {
-				field : 'roleText',
-				title : '角色',
+				field : 'address',
+				title : '地址',
+				width : 150,
+				sortable : true
+			}, {
+				field : 'org_name',
+				title : '机构',
 				width : 200
 			}, {
-				field : 'roleId',
-				title : '角色',
+				field : 'org_id',
+				title : '机构',
 				width : 200,
 				hidden : true
 			} ] ],

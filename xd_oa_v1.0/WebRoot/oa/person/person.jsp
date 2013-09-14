@@ -35,7 +35,11 @@
 				</table>
 			</fieldset>
 			<div>
-				<a class="easyui-linkbutton" iconCls="icon-add" onclick="append();" plain="true" href="javascript:void(0);">增加</a> <a class="easyui-linkbutton" iconCls="icon-remove" onclick="remove();" plain="true" href="javascript:void(0);">删除</a> <a class="easyui-linkbutton" iconCls="icon-edit" onclick="edit();" plain="true" href="javascript:void(0);">编辑</a> <a class="easyui-linkbutton" iconCls="icon-edit" onclick="editRole();" plain="true" href="javascript:void(0);">批量更改角色</a> <a class="easyui-linkbutton" iconCls="icon-undo" onclick="datagrid.datagrid('unselectAll');" plain="true" href="javascript:void(0);">取消选中</a>
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="append();" plain="true" href="javascript:void(0);">增加</a> 
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-remove'" onclick="remove();" plain="true" href="javascript:void(0);">删除</a> 
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="edit();" plain="true" href="javascript:void(0);">编辑</a> 
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="editRole();" plain="true" href="javascript:void(0);">批量更改角色</a> 
+				<a class="easyui-linkbutton" data-options="iconCls:'icon-undo'" onclick="datagrid.datagrid('unselectAll');" plain="true" href="javascript:void(0);">取消选中</a>
 			</div>
 		</div>
 		<table id="datagrid"></table>
@@ -84,7 +88,8 @@
 			</table>
 		</form>
 	</div>
-
+	
+	<!-- 右键菜单 -->
 	<div id="menu" class="easyui-menu" style="width:120px;display: none;">
 		<div onclick="append();" iconCls="icon-add">增加</div>
 		<div onclick="remove();" iconCls="icon-remove">删除</div>

@@ -16,7 +16,8 @@ public class EasyUIPagination<T> {
 	private List<T> rows;
 	
 	public EasyUIPagination(Pagination<T> pagination){
-		
+		this.rows = pagination.getDatas();
+		this.total = pagination.getTotal();
 	}
 	
 	public int getTotal() {
