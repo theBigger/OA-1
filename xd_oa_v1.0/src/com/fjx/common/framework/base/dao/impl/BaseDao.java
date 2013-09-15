@@ -14,10 +14,11 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
 
@@ -45,7 +46,9 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
-
+	
+	
+	//注入sessionFactory
 	@Resource
 	public void setSuperSessionFactory(SessionFactory sessionFactory) {
 		super.setSessionFactory(sessionFactory);
@@ -153,15 +156,8 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	@Override
 	public int getCount(String hql, boolean isHql, Object... parameters)throws Exception {
 		final String countSQL = getCountHQL(hql);
-		
 		int total ;
-		Query q = null;
-		if(isHql){
-			q = getSession().createQuery(countSQL);
-		}else{
-			q = getSession().createSQLQuery(countSQL);
-		}
-		
+		Query q = createMyQuery(countSQL,isHql);
 		if (parameters != null && parameters.length > 0) {
 			for (int i = 0; i < parameters.length; i++) {
 				q.setParameter(i, parameters[i]);
@@ -184,40 +180,61 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	}
 
 	@Override
-	public Map<String, Object> findOne4Map(String sql, Object... parameters) throws Exception{
-		return jdbcTemplate.queryForMap(sql, parameters);
+	public Map<String, Object> findOne4Map(String ql,boolean isHql, Object... parameters) throws Exception{
+		Query q = createMyQuery(ql,isHql);
+		if (parameters != null && parameters.length > 0) {
+			for (int i = 0; i < parameters.length; i++) {
+				q.setParameter(i, parameters[i]);
+			}
+		}
+		
+		return (Map<String, Object>) q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP).uniqueResult(); 
+		//return jdbcTemplate.queryForMap(ql, parameters);
 	}
 
 	@Override
-	public List<Map<String, Object>> find4ListMap(String sql, Object... parameters) {
-		return jdbcTemplate.queryForList(sql, parameters);
+	public List<Map<String, Object>> find4ListMap(String ql, boolean isHql, Object... parameters) {
+		Query q = createMyQuery(ql,isHql);
+		if (parameters != null && parameters.length > 0) {
+			for (int i = 0; i < parameters.length; i++) {
+				q.setParameter(i, parameters[i]);
+			}
+		}
+		
+		return q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP).list();
+		//return jdbcTemplate.queryForList(sql, parameters);
 	}
 
 	@Override
-	public Pagination<List<Map<String, Object>>> find4ListPage(final String sql,
+	public Pagination<List<Map<String, Object>>> find4ListPage(final String ql,boolean isHql,
 			final Object... parameters) throws Exception{
-		int total = getCount(sql, false, parameters);
+		int total = getCount(ql, isHql, parameters);
 		logger.debug("query count is: "+total);
-		List datas = getHibernateTemplate().executeFind(
-				new HibernateCallback() {
-					@Override
-					public Object doInHibernate(Session session)
-							throws HibernateException, SQLException {
-						Query q = session.createQuery(sql);
-						
-						if (parameters != null && parameters.length > 0) {
-							for (int i = 0; i < parameters.length; i++) {
-								logger.info(sql+"的分页参数："+parameters[i]);
-								q.setParameter(i, parameters[i]);
-							}
-						}
-						q.setFirstResult(PaginationContext.getOffset());	//filter拦截到的分页参数
-						q.setMaxResults(PaginationContext.getPagesize());	//filter拦截到的分页参数
-						return q.list();
-					}
-				});
+		
+		Query q = createMyQuery(ql,isHql);
+		if (parameters != null && parameters.length > 0) {
+			for (int i = 0; i < parameters.length; i++) {
+				logger.info(ql+"的分页参数："+parameters[i]);
+				q.setParameter(i, parameters[i]);
+			}
+		}
+		q.setFirstResult(PaginationContext.getOffset());	//filter拦截到的分页参数
+		q.setMaxResults(PaginationContext.getPagesize());	//filter拦截到的分页参数
+		q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
+		List datas = q.list();
+		
 		Pagination<List<Map<String, Object>>> pagination = new Pagination<List<Map<String, Object>>>(datas, total);
 		return pagination;
 	}
-
+	
+	
+	private Query createMyQuery(String ql, boolean isHql){
+		Query q = null;
+		if(isHql){
+			q = getSession().createQuery(ql);
+		}else{
+			q = getSession().createSQLQuery(ql);
+		}
+		return q;
+	}
 }

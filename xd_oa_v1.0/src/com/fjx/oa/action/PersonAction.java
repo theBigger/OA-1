@@ -1,5 +1,7 @@
 package com.fjx.oa.action;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fjx.common.framework.base.action.BaseAction;
@@ -22,7 +24,7 @@ public class PersonAction extends BaseAction {
 	
 	/******页面参数********/
 	private Pagination<Person> persons;
-	private EasyUIPagination<Person> easyPersons;
+	private EasyUIPagination<List> easyPersons;
 	
 	public String view(){
 		return "view";
@@ -35,8 +37,7 @@ public class PersonAction extends BaseAction {
 	 * @throws Exception
 	 */
 	public String query_page() throws Exception{
-		persons = personService.find4page();
-		easyPersons = new EasyUIPagination<Person>(persons);
+		easyPersons = personService.queryPersons("", null, null);
 		write(serialize(easyPersons));
 		return "persons_page";
 	}
@@ -54,12 +55,12 @@ public class PersonAction extends BaseAction {
 	}
 
 
-	public EasyUIPagination<Person> getEasyPersons() {
+	public EasyUIPagination<List> getEasyPersons() {
 		return easyPersons;
 	}
 
 
-	public void setEasyPersons(EasyUIPagination<Person> easyPersons) {
+	public void setEasyPersons(EasyUIPagination<List> easyPersons) {
 		this.easyPersons = easyPersons;
 	}
 	

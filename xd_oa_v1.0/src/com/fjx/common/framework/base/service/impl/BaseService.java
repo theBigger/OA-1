@@ -68,18 +68,18 @@ public class BaseService<T> implements IBaseService<T> {
 	
 	@Override
 	public Map<String, Object> findOne4Map(String sql, Object... parameters)throws Exception {
-		return baseDao.findOne4Map(sql, parameters);
+		return baseDao.findOne4Map(sql,false, parameters);
 	}
 
 	@Override
 	public List<Map<String, Object>> find4ListMap(String sql, Object... parameters) throws Exception{
-		return baseDao.find4ListMap(sql, parameters);
+		return baseDao.find4ListMap(sql,false, parameters);
 	}
 
 	@Override
 	public Pagination<List<Map<String, Object>>> find4ListPage(String hql,
 			Object... parameters) throws Exception{
-		return baseDao.find4ListPage(hql, parameters);
+		return baseDao.find4ListPage(hql,false, parameters);
 	}
 	
 	@Resource(name="baseDao")

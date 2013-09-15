@@ -4,10 +4,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fjx.common.framework.base.dao.impl.BaseDao;
-import com.fjx.common.framework.base.service.IBaseServiceA;
+import com.fjx.common.framework.base.service.IBaseAbstractService;
 
 
 @Service
 @Transactional
-public class BaseServiceA<T> extends BaseDao<T> implements IBaseServiceA<T> {
+public class BaseAbstractService<T> extends BaseDao<T> implements IBaseAbstractService<T> {
 }

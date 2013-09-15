@@ -9,7 +9,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fjx.common.framework.base.dao.impl.BaseDao;
+import com.fjx.common.framework.base.service.impl.BaseAbstractService;
 import com.fjx.oa.models.Organization;
 import com.fjx.oa.service.IOrganizationService;
 import com.fjx.oa.vo.EasyuiTreeNode;
@@ -18,7 +18,7 @@ import com.fjx.oa.vo.EasyuiTreeNode;
 
 @Service("orgServices")
 @Transactional
-public class OrganizationService extends BaseDao<Organization> implements IOrganizationService {
+public class OrganizationService extends BaseAbstractService<Organization> implements IOrganizationService {
 	
 	
 	@Override
@@ -72,7 +72,7 @@ public class OrganizationService extends BaseDao<Organization> implements IOrgan
 		if(null == pid || pid.equals(0)){
 			sql = "select * from oa_org o where o.parent_id is null";
 		}
-		List<Map<String, Object>> orgs = find4ListMap(sql);
+		List<Map<String, Object>> orgs = find4ListMap(sql,false);
 		if(null != orgs && orgs.size()>0){
 			for(int i = 0; i < orgs.size(); i++){
 				List<Map<String, Object>> children = jdbcTreeGrid(orgs.get(i).get("id").toString());

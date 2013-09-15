@@ -78,34 +78,41 @@ public interface IBaseDao<T> {
 	 * @return 分页对象
 	 */
 	public Pagination<T> find4page (String hql, Object... parameters)throws Exception;
+	
 	/**
 	 * 获取总记录数
-	 * @param hql
-	 * @param parameters
+	 * @param ql hql / sql
 	 * @param isHql  是否是hql true:hql; false:sql
+	 * @param parameters
 	 * @return
 	 */
-	public int getCount(String hql, boolean isHql, Object... parameters)throws Exception;
+	public int getCount(String ql, boolean isHql, Object... parameters)throws Exception;
+	
 	/**
 	 * 将查询单条记录
-	 * @param hql
+	 * @param ql hql / sql
+	 * @param isHql  是否是hql true:hql; false:sql
 	 * @param parameters
 	 * @return	以map返回数据
 	 */
-	public Map<String, Object> findOne4Map(String sql, Object... parameters)throws Exception;
+	public Map<String, Object> findOne4Map(String ql, boolean isHql, Object... parameters)throws Exception;
+	
 	/**
 	 * 查询多条记录
-	 * @param hql
+	 * @param ql hql / sql
+	 * @param isHql  是否是hql true:hql; false:sql
 	 * @param parameters
 	 * @return	以list返回
 	 */
-	public List<Map<String, Object>> find4ListMap(String sql, Object... parameters)throws Exception;
+	public List<Map<String, Object>> find4ListMap(String ql, boolean isHql, Object... parameters)throws Exception;
+	
 	/**
 	 * 分页查询
-	 * @param hql
+	 * @param ql hql / sql
+	 * @param isHql  是否是hql true:hql; false:sql
 	 * @param parameters
 	 * @return	返回list分页数据
 	 */
-	public Pagination<List<Map<String, Object>>> find4ListPage (String sql, Object... parameters)throws Exception;
+	public Pagination<List<Map<String, Object>>> find4ListPage (String sql, boolean isHql, Object... parameters)throws Exception;
 	
 }

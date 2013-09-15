@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 @Entity
@@ -49,11 +50,16 @@ public class Person {
 	 */
 	private Organization org;
 	
+	private Long org_id;		//不需要映射
+	private String org_name;	//不需要映射
+	
+	
 	/**
 	 * @hibernate.one-to-one property-ref="person"
 	 */
 	private User user;
 	
+	private Long user_id;		//不需要映射
 	
 	@Id
 	@GeneratedValue
@@ -129,6 +135,36 @@ public class Person {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	
+	
+	//不需要映射的属性
+	@Transient
+	public Long getOrg_id() {
+		return org_id;
+	}
+
+	public void setOrg_id(Long org_id) {
+		this.org_id = org_id;
+	}
+	
+	@Transient
+	public String getOrg_name() {
+		return org_name;
+	}
+
+	public void setOrg_name(String org_name) {
+		this.org_name = org_name;
+	}
+	
+	@Transient
+	public Long getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(Long user_id) {
+		this.user_id = user_id;
 	}
 	
 }
