@@ -32,7 +32,7 @@ public class OrganizationService extends BaseAbstractService<Organization> imple
 			saveOrUpdate(organization);
 		} catch (Exception e) {
 			logger.error("保存或更新机构表异常", e);
-			throw new RuntimeException("保存或更新机构表异常",e);
+			throw e;
 		}
 	}
 	
@@ -45,20 +45,20 @@ public class OrganizationService extends BaseAbstractService<Organization> imple
 		List<Organization> list = null;
 		try {
 			list = find(hql);
-			if (null != list && list.size() > 0) {
-				for (int i = 0; i < list.size(); i++) {
-					Organization o = list.get(i);
-					if (null != o.getParent()) {
-						list.get(i).setParent_id(o.getParent().getId());
-						list.get(i).setParent_name(o.getParent().getName());
-					}
-					if (null != o.getChildren() && o.getChildren().size() > 0) {
-						list.get(i).setState("closed");
-						List<Organization> children = treeGrid(o.getId());
-						list.get(i).setChildren(children);
-					}
-				}
-			}
+//			if (null != list && list.size() > 0) {
+//				for (int i = 0; i < list.size(); i++) {
+//					Organization o = list.get(i);
+//					if (null != o.getParent()) {
+//						list.get(i).setParent_id(o.getParent().getId());
+//						list.get(i).setParent_name(o.getParent().getName());
+//					}
+//					if (null != o.getChildren() && o.getChildren().size() > 0) {
+//						list.get(i).setState("closed");
+//						List<Organization> children = treeGrid(o.getId());
+//						list.get(i).setChildren(children);
+//					}
+//				}
+//			}
 		} catch (Exception e) {
 			logger.error("查询树形机构异常", e);
 			throw new RuntimeException("查询树形机构异常",e);
@@ -67,20 +67,46 @@ public class OrganizationService extends BaseAbstractService<Organization> imple
 	}
 	
 	@Override
-	public List<Map<String, Object>> jdbcTreeGrid(Serializable pid)throws Exception {
-		String sql = "select * from oa_org o where o.parent_id = '"+pid+"'";
+	public List<Map<String, Object>> treeGrid4ListMap(Serializable pid)throws Exception {
+		String hql = "select " +
+				" new map(o.id as id,o.name as name,o.sn as sn,o.description as description,o.in_time as in_time,o.parent.id as parent_id,o.parent.name as parent_name)" +
+				" from Organization o where o.parent.id = '"+pid+"'";
 		if(null == pid || pid.equals(0)){
-			sql = "select * from oa_org o where o.parent_id is null";
+			hql = "select " +
+				" new map(o.id as id,o.name as name,o.sn as sn,o.description as description,o.in_time as in_time,'' as parent_id,'' as parent_name) " +
+				" from Organization o where o.parent.id is null";
 		}
-		List<Map<String, Object>> orgs = find4ListMap(sql,false);
-		if(null != orgs && orgs.size()>0){
-			for(int i = 0; i < orgs.size(); i++){
-				List<Map<String, Object>> children = jdbcTreeGrid(orgs.get(i).get("id").toString());
-				orgs.get(i).put("children", children);
+		hql += " order by o.in_time asc";	//排序
+		List<Map<String, Object>> orgs = find4ListMap(hql,true);
+		for(int i = 0; i < orgs.size(); i++){
+			if(isleef(orgs.get(i).get("id")+"")){
+				orgs.get(i).put("state", "open");
+			}else{
+				orgs.get(i).put("state", "closed");
 			}
 		}
+//		if(null != orgs && orgs.size()>0){
+//			for(int i = 0; i < orgs.size(); i++){
+//				List<Map<String, Object>> children = treeGrid4ListMap(orgs.get(i).get("id").toString());
+//				orgs.get(i).put("children", children);
+//			}
+//		}
 		return orgs;
 	}
+	
+	@Override
+	public boolean isleef(Serializable id) throws Exception{
+		boolean flag = true;
+		String hql = " from Organization o" +
+				" where 1=1 and o.parent.id = "+id;
+		int count = getCount(hql, true);
+		if(count > 0){
+			flag = false;
+		}
+		return flag;
+	}
+	
+	
 	
 	@Override
 	public List<EasyuiTreeNode> tree(Serializable pid) throws Exception{

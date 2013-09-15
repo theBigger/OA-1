@@ -200,8 +200,8 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 				q.setParameter(i, parameters[i]);
 			}
 		}
-		
-		return q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP).list();
+		//return q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP).list();
+		return q.list();
 		//return jdbcTemplate.queryForList(sql, parameters);
 	}
 

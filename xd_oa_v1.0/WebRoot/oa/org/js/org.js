@@ -1,67 +1,11 @@
 /**
  * 
- * @type 
+ * @fengjx
  */
 
-var editRow;
+	var editRow;
 	var treegrid;
-	var iconData = [ {
-		iconcls : '',
-		text : '默认图标'
-	}, {
-		iconcls : 'icon-add',
-		text : 'icon-add'
-	}, {
-		iconcls : 'icon-edit',
-		text : 'icon-edit'
-	}, {
-		iconcls : 'icon-remove',
-		text : 'icon-remove'
-	}, {
-		iconcls : 'icon-save',
-		text : 'icon-save'
-	}, {
-		iconcls : 'icon-cut',
-		text : 'icon-cut'
-	}, {
-		iconcls : 'icon-ok',
-		text : 'icon-ok'
-	}, {
-		iconcls : 'icon-no',
-		text : 'icon-no'
-	}, {
-		iconcls : 'icon-cancel',
-		text : 'icon-cancel'
-	}, {
-		iconcls : 'icon-reload',
-		text : 'icon-reload'
-	}, {
-		iconcls : 'icon-search',
-		text : 'icon-search'
-	}, {
-		iconcls : 'icon-print',
-		text : 'icon-print'
-	}, {
-		iconcls : 'icon-help',
-		text : 'icon-help'
-	}, {
-		iconcls : 'icon-undo',
-		text : 'icon-undo'
-	}, {
-		iconcls : 'icon-redo',
-		text : 'icon-redo'
-	}, {
-		iconcls : 'icon-back',
-		text : 'icon-back'
-	}, {
-		iconcls : 'icon-sum',
-		text : 'icon-sum'
-	}, {
-		iconcls : 'icon-tip',
-		text : 'icon-tip'
-	} ];
 	$(function() {
-		fjx.closeProgress();
 		treegrid = $('#treegrid').treegrid({
 			url : 'org_treeGrid.action',
 			toolbar : [ {
@@ -135,16 +79,11 @@ var editRow;
 					treegrid.treegrid('unselectAll');
 				}
 			}, '-' ],
-			title : '',
+			title : '组织架构',
 			iconCls : 'icon-save',
 			fit : true,
 			fitColumns : true,
-			nowrap : true,			//True 就会把数据显示在一行里。
-			animate : true,			//是否显示动画
-			border : false,			
-			cascadeCheck : true,	//是否级联检查
 			rownumbers : true,		//是否显示行号
-			dnd : true,				//是否支持拖拽
 			idField : 'id',
 			treeField : 'name',
 			frozenColumns : [ [ {
@@ -249,8 +188,7 @@ var editRow;
 									title : '提示'
 								});
 								editRow = undefined;
-								treegrid.treegrid('reload');
-								//parent.tree.tree('reload');
+								treegrid.treegrid('reload',row.parent_id);
 							} else {
 								$.messager.show({
 									msg : '保存菜单失败!',
@@ -284,6 +222,7 @@ var editRow;
 						}
 					});
 				}
+				fjx.closeProgress();
 			},
 			onExpand : function(row) {
 				treegrid.treegrid('unselectAll');
@@ -354,8 +293,7 @@ var editRow;
 						dataType : "text",
 						success : function(r) {
 							if (r = 'success') {
-								treegrid.treegrid('reload');
-								parent.tree.tree('reload');
+								treegrid.treegrid('reload',node.parent_id);
 								$.messager.show({
 									msg : '删除菜单成功!',
 									title : '提示'

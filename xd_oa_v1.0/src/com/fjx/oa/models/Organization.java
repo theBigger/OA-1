@@ -58,9 +58,9 @@ public class Organization {
 	private List<Organization> children;
 	
 	
-	private Long parent_id ;
-	private String parent_name ;
-	private String state = "open";
+//	private Long parent_id ;
+//	private String parent_name ;
+//	private String state = "open";
 	
 	@Id
 	@GeneratedValue
@@ -116,26 +116,26 @@ public class Organization {
 	}
 	
 	//不需要映射数据库字段
-	@Transient
-	public Long getParent_id() {
-		return parent_id;
-	}
-	public void setParent_id(Long parent_id) {
-		this.parent_id = parent_id;
-	}
-	@Transient
-	public String getParent_name() {
-		return parent_name;
-	}
-	public void setParent_name(String parent_name) {
-		this.parent_name = parent_name;
-	}
-	@Transient
-	public String getState() {
-		return state;
-	}
-	public void setState(String state) {
-		this.state = state;
-	}
+//	@Transient
+//	public Long getParent_id() {
+//		return parent_id;
+//	}
+//	public void setParent_id(Long parent_id) {
+//		this.parent_id = parent_id;
+//	}
+//	@Transient
+//	public String getParent_name() {
+//		return parent_name;
+//	}
+//	public void setParent_name(String parent_name) {
+//		this.parent_name = parent_name;
+//	}
+//	@Transient
+//	public String getState() {
+//		return state;
+//	}
+//	public void setState(String state) {
+//		this.state = state;
+//	}
 	
 }

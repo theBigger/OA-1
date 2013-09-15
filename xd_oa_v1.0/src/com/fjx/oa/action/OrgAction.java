@@ -1,6 +1,7 @@
 package com.fjx.oa.action;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,10 +42,16 @@ public class OrgAction extends BaseAction {
 	 * @throws Exception 
 	 * @throws Exception
 	 */
-	public String treeGrid  () throws Exception {
-		List<Organization> list = null;
-		list = organizationService.treeGrid(pid);
-		write(serialize(list));
+	public String treeGrid  ()  {
+		List<Map<String, Object>> list = null;
+		String res = "";
+		try {
+			list = organizationService.treeGrid4ListMap(id);
+			res = serialize(list);
+		} catch (Exception e) {
+			logger.error("获取机构列表数据发生错误", e);
+		}
+		write(res);
 		return null;
 	}
 	/**
