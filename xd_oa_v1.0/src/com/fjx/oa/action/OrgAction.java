@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fjx.common.framework.base.action.BaseAction;
+import com.fjx.common.framework.system.exception.SystemException;
 import com.fjx.oa.models.Organization;
 import com.fjx.oa.service.IOrganizationService;
 import com.fjx.oa.vo.EasyuiTreeNode;
@@ -42,16 +43,15 @@ public class OrgAction extends BaseAction {
 	 * @throws Exception 
 	 * @throws Exception
 	 */
-	public String treeGrid  ()  {
+	public String treeGrid  () throws Exception  {
 		List<Map<String, Object>> list = null;
-		String res = "";
 		try {
 			list = organizationService.treeGrid4ListMap(id);
-			res = serialize(list);
 		} catch (Exception e) {
 			logger.error("获取机构列表数据发生错误", e);
+			throw  new SystemException("获取机构列表数据发生错误",e);
 		}
-		write(res);
+		write(list);
 		return null;
 	}
 	/**
@@ -65,9 +65,9 @@ public class OrgAction extends BaseAction {
 			list = organizationService.tree(pid);
 		} catch (Exception e) {
 			logger.error("查询机构树出现异常", e);
-			throw new RuntimeException("查询机构树出现异常",e);
+			throw new SystemException("查询机构树出现异常",e);
 		}
-		write(serialize(list));
+		write(list);
 		return null;
 	}
 	
@@ -83,19 +83,20 @@ public class OrgAction extends BaseAction {
 		}catch (Exception e) {
 			res = "fail";
 			logger.error("保存机构失败", e);
-			throw new RuntimeException("保存机构失败",e);
+			throw new SystemException("保存机构失败",e);
 		}
 		write(res);
 		return null;
 	}
 	
-	public String delete(){
+	public String delete() throws Exception{
 		String flag = "fail";
 		try {
 			organizationService.delete(id);
 			flag = "success";
 		} catch (Exception e) {
-			throw new RuntimeException("删除机构失败",e);
+			logger.error("删除机构失败", e);
+			throw new SystemException("删除机构失败",e);
 		}
 		write(flag);
 		return null;

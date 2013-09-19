@@ -31,7 +31,12 @@ public class BaseAction extends ActionSupport {
 	protected HttpServletResponse response = (HttpServletResponse) context.get(ServletActionContext.HTTP_RESPONSE);
 	protected Map session = context.getSession();
 	
-	
+	/**
+	 * 将对象序列化为json
+	 * @param object
+	 * @return
+	 * @throws Exception
+	 */
 	protected String serialize(Object object) throws Exception{
 		String res = null; 
 		try {
@@ -43,16 +48,21 @@ public class BaseAction extends ActionSupport {
 		return res;
 	}
 	
-	protected void write(String res) throws RuntimeException{
+	/**
+	 * 输出json数据
+	 * @param res
+	 * @throws Exception
+	 */
+	protected void write(Object res) throws Exception{
 		Writer writer = null;
 		try {
 			response.setCharacterEncoding("utf-8");
 			writer = response.getWriter();
 			logger.debug("输出："+res);
-			writer.write(res);
+			writer.write(serialize(res));
 		} catch (IOException e) {
 			logger.error("输出JSON字符串异常",e);
-			throw new SystemException("输出JSON字符串异常",e);
+			throw e;
 		} finally {
 			if(writer != null){
 				try {

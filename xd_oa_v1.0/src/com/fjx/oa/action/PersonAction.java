@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fjx.common.framework.base.action.BaseAction;
+import com.fjx.common.framework.system.exception.SystemException;
 import com.fjx.common.framework.system.pagination.Pagination;
 import com.fjx.oa.models.Person;
 import com.fjx.oa.service.IPersonService;
@@ -24,7 +25,6 @@ public class PersonAction extends BaseAction {
 	
 	/******页面参数********/
 	private Pagination<Person> persons;
-	private EasyUIPagination<List> easyPersons;
 	
 	public String view(){
 		return "view";
@@ -37,9 +37,15 @@ public class PersonAction extends BaseAction {
 	 * @throws Exception
 	 */
 	public String query_page() throws Exception{
-		easyPersons = personService.queryPersons("", null, null);
-		write(serialize(easyPersons));
-		return "persons_page";
+		EasyUIPagination<List> easyPersons = null;
+		try {
+			easyPersons = personService.queryPersons("", null, null);
+		}  catch (Exception e) {
+			logger.error("获取人员分页数据异常", e);
+			throw new SystemException("获取人员分页数据异常",e);
+		}
+		write(easyPersons);
+		return null;
 	}
 
 
@@ -54,14 +60,4 @@ public class PersonAction extends BaseAction {
 		this.persons = persons;
 	}
 
-
-	public EasyUIPagination<List> getEasyPersons() {
-		return easyPersons;
-	}
-
-
-	public void setEasyPersons(EasyUIPagination<List> easyPersons) {
-		this.easyPersons = easyPersons;
-	}
-	
 }

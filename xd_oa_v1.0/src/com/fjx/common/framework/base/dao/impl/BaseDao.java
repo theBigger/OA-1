@@ -200,7 +200,9 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 				q.setParameter(i, parameters[i]);
 			}
 		}
-		//return q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP).list();
+		if(!isHql){
+			q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
+		}
 		return q.list();
 		//return jdbcTemplate.queryForList(sql, parameters);
 	}
@@ -220,7 +222,9 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		}
 		q.setFirstResult(PaginationContext.getOffset());	//filter拦截到的分页参数
 		q.setMaxResults(PaginationContext.getPagesize());	//filter拦截到的分页参数
-		q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
+		if(!isHql){
+			q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
+		}
 		List datas = q.list();
 		
 		Pagination<List<Map<String, Object>>> pagination = new Pagination<List<Map<String, Object>>>(datas, total);
