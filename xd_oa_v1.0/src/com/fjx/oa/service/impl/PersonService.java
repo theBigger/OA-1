@@ -8,7 +8,6 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fjx.common.framework.base.dao.impl.BaseDao;
 import com.fjx.common.framework.base.service.impl.BaseAbstractService;
 import com.fjx.common.framework.system.pagination.Pagination;
 import com.fjx.oa.models.Person;

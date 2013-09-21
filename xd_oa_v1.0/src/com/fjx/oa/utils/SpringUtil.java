@@ -10,14 +10,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class SpringUtil {
 
-	private static final ApplicationContext ac = new ClassPathXmlApplicationContext("spring-applicationContext.xml");
+	private static final ApplicationContext APPLICATION_CONTEXT = new ClassPathXmlApplicationContext("spring-applicationContext.xml");
 
 	public static ApplicationContext getApplicationContext() {
-		return ac;
+		return APPLICATION_CONTEXT;
 	}
 
 	public static Object getBean(String beanName) {
-		return ac.getBean(beanName);
+		return APPLICATION_CONTEXT.getBean(beanName);
 	}
 
 }

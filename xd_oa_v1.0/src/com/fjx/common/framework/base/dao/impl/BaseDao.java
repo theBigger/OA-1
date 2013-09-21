@@ -15,7 +15,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate3.HibernateCallback;
@@ -23,6 +22,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.fjx.common.framework.base.dao.IBaseDao;
+import com.fjx.common.framework.system.exception.SystemException;
 import com.fjx.common.framework.system.pagination.Pagination;
 import com.fjx.common.framework.system.pagination.PaginationContext;
 
@@ -63,27 +63,27 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	}
 	
 	@Override
-	public void save(T entity) throws Exception{
+	public void save(T entity) throws HibernateException, SQLException{
 		getHibernateTemplate().save(entity);
 	}
 	@Override
-	public void saveOrUpdate(T entity) throws Exception{
+	public void saveOrUpdate(T entity) throws HibernateException, SQLException{
 		getHibernateTemplate().saveOrUpdate(entity);
 	}
 
 	@Override
-	public void delete(Serializable pk) throws Exception{
+	public void delete(Serializable pk) throws HibernateException, SQLException{
 		T entity = (T) getHibernateTemplate().load(getEntityClass(), pk);
 		getHibernateTemplate().delete(entity);
 	}
 
 	@Override
-	public void update(T entity) throws Exception{
+	public void update(T entity) throws HibernateException, SQLException{
 		getHibernateTemplate().update(entity);
 	}
 
 	@Override
-	public T findOne(Serializable pk)throws Exception {
+	public T findOne(Serializable pk)throws HibernateException, SQLException {
 		if(null == pk || pk.equals("")){
 			return null;
 		}
@@ -91,7 +91,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	}
 	
 	@Override
-	public T findOne(final String hql, final Object... parameters)throws Exception {
+	public T findOne(final String hql, final Object... parameters)throws HibernateException, SQLException {
 		T t = (T) getHibernateTemplate().executeFind(
 				new HibernateCallback() {
 					@Override
@@ -110,24 +110,24 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		return t;
 	}
 	
-	public List<T> findAll()throws Exception{
+	public List<T> findAll()throws HibernateException, SQLException{
 		String hql = "from "+getEntityClass().getName();
 		return find(hql);
 	}
 	
 	@Override
-	public List<T> find(String hql, Object... parameters)throws Exception {
+	public List<T> find(String hql, Object... parameters)throws HibernateException, SQLException {
 		return getHibernateTemplate().find(hql, parameters);
 	}
 	
 	@Override
-	public Pagination<T> find4page () throws Exception{
+	public Pagination<T> find4page () throws HibernateException, SQLException{
 		String hql = "from "+getEntityClass().getName();
 		return find4page(hql);
 	}
 	
 	@Override
-	public Pagination<T> find4page(final String hql, final Object... parameters)throws Exception {
+	public Pagination<T> find4page(final String hql, final Object... parameters)throws HibernateException, SQLException {
 		int total = getCount(hql, true, parameters);
 		logger.debug("query count is: "+total);
 		List datas = getHibernateTemplate().executeFind(
@@ -154,7 +154,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	
 	
 	@Override
-	public int getCount(String hql, boolean isHql, Object... parameters)throws Exception {
+	public int getCount(String hql, boolean isHql, Object... parameters)throws HibernateException, SQLException {
 		final String countSQL = getCountHQL(hql);
 		int total ;
 		Query q = createMyQuery(countSQL,isHql);
@@ -171,7 +171,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	 * @param hql	hql/sql语句
 	 * @return
 	 */
-	private String getCountHQL(String hql) throws Exception{
+	private String getCountHQL(String hql) throws HibernateException, SQLException{
 		int index = hql.indexOf("from");
 		if (index != -1) {
 			return "select count(*) " + hql.substring(index);
@@ -180,7 +180,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	}
 
 	@Override
-	public Map<String, Object> findOne4Map(String ql,boolean isHql, Object... parameters) throws Exception{
+	public Map<String, Object> findOne4Map(String ql,boolean isHql, Object... parameters) throws HibernateException, SQLException{
 		Query q = createMyQuery(ql,isHql);
 		if (parameters != null && parameters.length > 0) {
 			for (int i = 0; i < parameters.length; i++) {
@@ -193,7 +193,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	}
 
 	@Override
-	public List<Map<String, Object>> find4ListMap(String ql, boolean isHql, Object... parameters) {
+	public List<Map<String, Object>> find4ListMap(String ql, boolean isHql, Object... parameters) throws HibernateException, SQLException {
 		Query q = createMyQuery(ql,isHql);
 		if (parameters != null && parameters.length > 0) {
 			for (int i = 0; i < parameters.length; i++) {
@@ -209,7 +209,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 
 	@Override
 	public Pagination<List<Map<String, Object>>> find4ListPage(final String ql,boolean isHql,
-			final Object... parameters) throws Exception{
+			final Object... parameters) throws HibernateException, SQLException{
 		int total = getCount(ql, isHql, parameters);
 		logger.debug("query count is: "+total);
 		
@@ -241,4 +241,38 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		}
 		return q;
 	}
+
+	@Override
+	public int bulkUpdate(String ql, Object... parameters) throws HibernateException, SQLException {
+		return getHibernateTemplate().bulkUpdate(ql, parameters);
+	}
+
+	@Override
+	public boolean bulkUpdate(List<String> qls, List<Object> paramList) throws HibernateException, SQLException {
+		boolean flag = true;
+		for(int i = 0; i < qls.size(); i++){
+			try {
+				getHibernateTemplate().bulkUpdate(qls.get(i),paramList.get(i));
+			} catch (Exception e) {
+				flag = false;
+				throw new SystemException("语句执行发生异常【 "+qls.get(i)+" 】",e);
+			}
+		}
+		return flag;
+	}
+
+	@Override
+	public boolean bulkUpdateInFetch(List<String> qls, List<Object> paramList)
+			throws HibernateException, SQLException {
+		boolean flag = true;
+		for(int i = 0; i < qls.size(); i++){
+			int tmp = getHibernateTemplate().bulkUpdate(qls.get(i),paramList.get(i));
+			//如果没有更新到数据
+			if(1 > tmp){
+				flag = false;
+			}
+		}
+		return flag;
+	}
+	
 }

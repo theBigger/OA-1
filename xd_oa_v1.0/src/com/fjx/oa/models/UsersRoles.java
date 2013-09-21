@@ -15,24 +15,12 @@ import javax.persistence.Table;
 @Table(name="oa_users_roles")
 public class UsersRoles {
 	
-	/**
-	 * @hibernate.id generator-class="native"
-	 */
 	private Long id;
 	
-	/**
-	 * @hibernate.many-to-one
-	 */
 	private Role role;
 	
-	/**
-	 * @hibernate.many-to-one
-	 */
 	private User user;
 	
-	/**
-	 * @hibernate.property
-	 */
 	private int orderNo;
 	
 	@Id

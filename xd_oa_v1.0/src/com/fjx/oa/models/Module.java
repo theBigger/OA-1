@@ -3,6 +3,12 @@ package com.fjx.oa.models;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 /**
@@ -32,7 +38,8 @@ public class Module {
 	private Set<Module> children;
 	
 	
-	
+	@Id
+	@GeneratedValue
 	public Long getId() {
 		return id;
 	}
@@ -81,6 +88,7 @@ public class Module {
 		this.order_no = order_no;
 	}
 
+	@ManyToOne
 	public Module getParent() {
 		return parent;
 	}
@@ -88,7 +96,9 @@ public class Module {
 	public void setParent(Module parent) {
 		this.parent = parent;
 	}
-
+	
+	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY)
+	@OrderBy("order_no")
 	public Set<Module> getChildren() {
 		return children;
 	}

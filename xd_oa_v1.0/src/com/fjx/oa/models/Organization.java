@@ -1,7 +1,6 @@
 package com.fjx.oa.models;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -90,7 +89,7 @@ public class Organization {
 	}
 	
 	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY)
-	@OrderBy("id")
+	@OrderBy("in_time")
 	public Set<Organization> getChildren() {
 		return children;
 	}
