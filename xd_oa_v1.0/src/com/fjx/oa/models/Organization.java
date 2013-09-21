@@ -2,6 +2,7 @@ package com.fjx.oa.models;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,35 +28,17 @@ public class Organization {
 	
 	private Long id;
 	
-	/**
-	 * @hibernate.property
-	 */
 	private String name;
 	
-	/**
-	 * @hibernate.property unique="true"
-	 */
 	private String sn;
 	
-	/**
-	 * @hibernate.property
-	 */
 	private String description;
-	/**
-	 * @hibernate.property
-	 */
+	
 	private Date in_time = new Date();
-	/**
-	 * @hibernate.many-to-one column="pid"
-	 */
+
 	private Organization parent;
 	
-	/**
-	 * @hibernate.set lazy="extra" inverse="true"
-	 * @hibernate.key column="pid"
-	 * @hibernate.one-to-many class="com.bjsxt.oa.model.Organization"
-	 */
-	private List<Organization> children;
+	private Set<Organization> children;
 	
 	
 //	private Long parent_id ;
@@ -108,10 +91,10 @@ public class Organization {
 	
 	@OneToMany(mappedBy="parent",fetch=FetchType.LAZY)
 	@OrderBy("id")
-	public List<Organization> getChildren() {
+	public Set<Organization> getChildren() {
 		return children;
 	}
-	public void setChildren(List<Organization> children) {
+	public void setChildren(Set<Organization> children) {
 		this.children = children;
 	}
 	

@@ -1,4 +1,4 @@
-package com.gootrip.util;
+package com.fjx.common.utils;
 
 /**
  * <p>Title: 时间和日期的工具类</p>
@@ -15,7 +15,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import com.fjx.common.utils.CTool;
 
 public class DateUtil {
 	//~ Static fields/initializers =============================================

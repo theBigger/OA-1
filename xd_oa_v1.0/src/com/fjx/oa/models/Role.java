@@ -15,14 +15,8 @@ import javax.persistence.Table;
 @Table(name = "oa_role")
 public class Role {
 
-	/**
-	 * @hibernate.id generator-class="native"
-	 */
 	private Long id;
 
-	/**
-	 * @hibernate.property
-	 */
 	private String name;
 
 	@Id

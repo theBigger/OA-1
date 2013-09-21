@@ -15,48 +15,24 @@ public class Person {
 	
 	private Long id;
 	
-	/**
-	 * @hibernate.property
-	 */
 	private String name;
 	
-	/**
-	 * @hibernate.property
-	 */
 	private String sex;
 	
-	/**
-	 * @hibernate.property
-	 */
 	private int age;
 	
-	/**
-	 * @hibernate.property
-	 */
 	private String address;
 	
-	/**
-	 * @hibernate.property
-	 */
 	private String duty;
 	
-	/**
-	 * @hibernate.property
-	 */
 	private String phone;
 	
-	/**
-	 * @hibernate.many-to-one
-	 */
 	private Organization org;
 	
 	private Long org_id;		//不需要映射
 	private String org_name;	//不需要映射
 	
 	
-	/**
-	 * @hibernate.one-to-one property-ref="person"
-	 */
 	private User user;
 	
 	private Long user_id;		//不需要映射

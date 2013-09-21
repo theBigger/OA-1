@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -19,38 +18,16 @@ import javax.persistence.Table;
 @Table(name="oa_user")
 public class User {
 	
-	/**
-	 * @hibernate.id
-	 * 		generator-class="native"
-	 */
 	private Long id;
 	
-	/**
-	 * @hibernate.property 	
-	 * 		unique="true"
-	 * 		not-null="true"
-	 */
 	private String username;
 	
-	/**
-	 * @hibernate.property
-	 * 		not-null="true"
-	 */
 	private String password;
 	
-	/**
-	 * @hibernate.property
-	 */
 	private Date createTime;
 	
-	/**
-	 * @hibernate.property
-	 */
 	private Date expireTime;
 	
-	/**
-	 * @hibernate.many-to-one unique="true"
-	 */
 	private Person person;
 	
 	@Id
