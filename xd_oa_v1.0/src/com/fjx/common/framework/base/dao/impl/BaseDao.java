@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -83,13 +84,14 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	}
 
 	@Override
-	public T findOne(Serializable pk)throws HibernateException, SQLException {
+	public T findEntityByPk(Serializable pk)throws HibernateException, SQLException {
 		if(null == pk || pk.equals("")){
 			return null;
 		}
 		return (T) getHibernateTemplate().load(getEntityClass(), pk);
 	}
 	
+	/*
 	@Override
 	public T findOne(final String hql, final Object... parameters)throws HibernateException, SQLException {
 		T t = (T) getHibernateTemplate().executeFind(
@@ -100,7 +102,6 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 						Query q = session.createQuery(hql);
 						if (parameters != null && parameters.length > 0) {
 							for (int i = 0; i < parameters.length; i++) {
-								logger.info(hql+"的分页参数："+parameters[i]);
 								q.setParameter(i, parameters[i]);
 							}
 						}
@@ -109,16 +110,20 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 				});
 		return t;
 	}
+	*/
 	
-	public List<T> findAll()throws HibernateException, SQLException{
+	@Override
+	public List<T> findAllEntity()throws HibernateException, SQLException{
 		String hql = "from "+getEntityClass().getName();
-		return find(hql);
+		return getHibernateTemplate().find(hql);
 	}
 	
+	/*
 	@Override
 	public List<T> find(String hql, Object... parameters)throws HibernateException, SQLException {
 		return getHibernateTemplate().find(hql, parameters);
 	}
+	*/
 	
 	@Override
 	public Pagination<T> find4page () throws HibernateException, SQLException{
@@ -126,10 +131,11 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		return find4page(hql);
 	}
 	
-	@Override
+	/**/
+	//@Override
 	public Pagination<T> find4page(final String hql, final Object... parameters)throws HibernateException, SQLException {
 		int total = getCount(hql, true, parameters);
-		logger.debug("query count is: "+total);
+		logger.debug("查询的总记录数: "+total);
 		List datas = getHibernateTemplate().executeFind(
 				new HibernateCallback() {
 					@Override
@@ -178,37 +184,40 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		}
 		throw new RuntimeException("查询语句错误");
 	}
-
+	
 	@Override
-	public Map<String, Object> findOne4Map(String ql,boolean isHql, Object... parameters) throws HibernateException, SQLException{
+	public <X> X find4Unique(String ql,boolean isHql, Object... parameters) throws HibernateException, SQLException{
 		Query q = createMyQuery(ql,isHql);
 		if (parameters != null && parameters.length > 0) {
 			for (int i = 0; i < parameters.length; i++) {
 				q.setParameter(i, parameters[i]);
 			}
 		}
-		
-		return (Map<String, Object>) q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP).uniqueResult(); 
+		//如果是sql语句，则将结果转为map类型
+		if(!isHql){
+			q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
+		}
+		return (X) q.uniqueResult(); 
 		//return jdbcTemplate.queryForMap(ql, parameters);
 	}
 
 	@Override
-	public List<Map<String, Object>> find4ListMap(String ql, boolean isHql, Object... parameters) throws HibernateException, SQLException {
+	public <X> List<X> find4List(String ql, boolean isHql, Object... parameters) throws HibernateException, SQLException {
 		Query q = createMyQuery(ql,isHql);
 		if (parameters != null && parameters.length > 0) {
 			for (int i = 0; i < parameters.length; i++) {
 				q.setParameter(i, parameters[i]);
 			}
 		}
+		//如果是sql语句，则将结果转为map类型，即：返回List<Map>
 		if(!isHql){
 			q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
 		}
 		return q.list();
-		//return jdbcTemplate.queryForList(sql, parameters);
 	}
 
 	@Override
-	public Pagination<List<Map<String, Object>>> find4ListPage(final String ql,boolean isHql,
+	public <X> Pagination<List<X>> find4ListPage(final String ql,boolean isHql,
 			final Object... parameters) throws HibernateException, SQLException{
 		int total = getCount(ql, isHql, parameters);
 		logger.debug("query count is: "+total);
@@ -222,12 +231,13 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		}
 		q.setFirstResult(PaginationContext.getOffset());	//filter拦截到的分页参数
 		q.setMaxResults(PaginationContext.getPagesize());	//filter拦截到的分页参数
+		//如果是sql语句，则将结果转为map类型，即：返回Pagination<List<Map>>
 		if(!isHql){
 			q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
 		}
 		List datas = q.list();
 		
-		Pagination<List<Map<String, Object>>> pagination = new Pagination<List<Map<String, Object>>>(datas, total);
+		Pagination<List<X>> pagination = new Pagination<List<X>>(datas, total);
 		return pagination;
 	}
 	

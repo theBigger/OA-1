@@ -1,3 +1,4 @@
 /build
 /.externalToolBuilders
 /WebRoot/WEB-INF/classes
+/uml/*.bak

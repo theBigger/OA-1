@@ -41,7 +41,7 @@ public interface IBaseDao<T> {
 	 * @param pk
 	 * @return
 	 */
-	public T findOne (Serializable pk)throws HibernateException, SQLException;
+	public T findEntityByPk (Serializable pk)throws HibernateException, SQLException;
 	
 	/**
 	 * 查询所有记录，根据泛型查询该对象纪录列表
@@ -49,7 +49,7 @@ public interface IBaseDao<T> {
 	 * @param parameters
 	 * @return
 	 */
-	public List<T> findAll()throws HibernateException, SQLException;
+	public List<T> findAllEntity()throws HibernateException, SQLException;
 	
 	/**
 	 * 查询所有记录
@@ -57,7 +57,7 @@ public interface IBaseDao<T> {
 	 * @param parameters
 	 * @return
 	 */
-	public List<T> find (String hql, Object... parameters)throws HibernateException, SQLException;
+	//public List<T> find (String hql, Object... parameters)throws HibernateException, SQLException;
 	
 	/**
 	 * 根据hql查询单条记录
@@ -65,7 +65,7 @@ public interface IBaseDao<T> {
 	 * @param parameters
 	 * @return
 	 */
-	public T findOne(String hql, Object... parameters)throws HibernateException, SQLException;
+	//public T findOne(String hql, Object... parameters)throws HibernateException, SQLException;
 	
 	/**
 	 * 分页查询，根据泛型查询该对象纪录列表
@@ -80,7 +80,7 @@ public interface IBaseDao<T> {
 	 * @param parameters
 	 * @return 分页对象
 	 */
-	public Pagination<T> find4page (String hql, Object... parameters)throws HibernateException, SQLException;
+	//public Pagination<T> find4page (String hql, Object... parameters)throws HibernateException, SQLException;
 	
 	/**
 	 * 获取总记录数
@@ -96,27 +96,37 @@ public interface IBaseDao<T> {
 	 * @param ql hql / sql
 	 * @param isHql  是否是hql true:hql; false:sql
 	 * @param parameters
-	 * @return	以map返回数据
+	 * @return	使用泛型：可以返回map数据，也可以返回实体对象
+	 * 如果是sql语句，则将结果转为map类型
+	 * 如果是hql语句，则通过hql返回相应对象
 	 */
-	public Map<String, Object> findOne4Map(String ql, boolean isHql, Object... parameters)throws HibernateException, SQLException;
+	public <X> X find4Unique(String ql, boolean isHql, Object... parameters)throws HibernateException, SQLException;
 	
 	/**
+	 * 
 	 * 查询多条记录
 	 * @param ql hql / sql
 	 * @param isHql  是否是hql true:hql; false:sql
 	 * @param parameters
-	 * @return	以list返回
+	 * @return 使用泛型：可以返回map数据，也可以返回实体对象
+	 * 如果是sql语句，则将结果转为map类型，并放到List中
+	 * 如果是hql语句，则通过hql返回相应对象，并放到List中
+	 * @throws HibernateException
+	 * @throws SQLException
 	 */
-	public List<Map<String, Object>> find4ListMap(String ql, boolean isHql, Object... parameters)throws HibernateException, SQLException;
+	public <X> List<X> find4List(String ql, boolean isHql, Object... parameters)throws HibernateException, SQLException;
 	
 	/**
+	 * 
 	 * 分页查询
 	 * @param ql hql / sql
 	 * @param isHql  是否是hql true:hql; false:sql
 	 * @param parameters
 	 * @return	返回list分页数据
+	 * @throws HibernateException
+	 * @throws SQLException
 	 */
-	public Pagination<List<Map<String, Object>>> find4ListPage (String sql, boolean isHql, Object... parameters)throws HibernateException, SQLException;
+	public <X> Pagination<List<X>> find4ListPage (String sql, boolean isHql, Object... parameters)throws HibernateException, SQLException;
 	
 	/**
 	 * 执行更新操作（修改、删除）
