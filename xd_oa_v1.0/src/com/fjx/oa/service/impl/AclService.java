@@ -51,6 +51,7 @@ public class AclService extends BaseAbstractService<ACL> implements IAclService 
 
 	@Override
 	public void addOrUpdateUserExtends(Long userId, Long moduleId, boolean yes) throws HibernateException, SQLException {
+		//查找ACL对象
 		ACL acl = findACL(ACL.TYPE_USER,userId,moduleId);
 		//能够找到ACL对象，更新permission
 		if(acl != null){
@@ -87,21 +88,31 @@ public class AclService extends BaseAbstractService<ACL> implements IAclService 
 		String hql = "select new long(r.id role_id) from UsersRoles ur join ur.role r join ur.user u " +
 				"where u.id = ? order by ur.orderNo";
 		List<Long> roleIds = find4List(hql, true, userId);
-		
+		//遍历查询出来的角色，通过角色判断用户权限
+		for(Long roleId : roleIds){
+			//通过角色查询用户权限
+			acl = findACL(ACL.TYPE_ROLE, roleId, moduleId);
+			if(acl != null){
+				return acl.getPermission(permission) == ACL.ACL_YES ? true : false;
+			}
+		}
 		
 		return false;
 	}
 
 	@Override
 	public boolean hasPermissionByResourceSn(Long userId, String reourceSn,
-			int permission) {
-		// TODO Auto-generated method stub
-		return false;
+			int permission)throws HibernateException, SQLException  {
+		String hql = "select m.id from Module m where m.sn = ? ";
+		return hasPermission(
+				userId,
+				(Long) find4Unique(hql, true, reourceSn),
+				permission);
 	}
 
 	@Override
 	public List searchModules(Long userId) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

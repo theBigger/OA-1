@@ -23,9 +23,9 @@ public interface IAclService {
 	
 	/**
 	 * 删除授权
-	 * @param principalType
-	 * @param principalId
-	 * @param moduleId
+	 * @param principalType 主体类型（用户/角色）
+	 * @param principalId 主体标识
+	 * @param moduleId 资源标识
 	 */
 	public void delPermission(String principalType,Long principalId,Long moduleId)throws HibernateException, SQLException;
 	

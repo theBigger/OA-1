@@ -47,7 +47,7 @@ public interface IBaseDao<T> {
 	 * 查询所有记录，根据泛型查询该对象纪录列表
 	 * @param hql
 	 * @param parameters
-	 * @return
+	 * @return	
 	 */
 	public List<T> findAllEntity()throws HibernateException, SQLException;
 	
@@ -70,7 +70,7 @@ public interface IBaseDao<T> {
 	/**
 	 * 分页查询，根据泛型查询该对象纪录列表
 	 * @param parameters
-	 * @return 分页对象
+	 * @return 分页对象 
 	 */
 	public Pagination<T> find4page ()throws HibernateException, SQLException;
 	
@@ -98,7 +98,7 @@ public interface IBaseDao<T> {
 	 * @param parameters
 	 * @return	使用泛型：可以返回map数据，也可以返回实体对象
 	 * 如果是sql语句，则将结果转为map类型
-	 * 如果是hql语句，则通过hql返回相应对象
+	 * 如果是hql语句，可以在hql里控制返回值类型
 	 */
 	public <X> X find4Unique(String ql, boolean isHql, Object... parameters)throws HibernateException, SQLException;
 	
@@ -110,7 +110,7 @@ public interface IBaseDao<T> {
 	 * @param parameters
 	 * @return 使用泛型：可以返回map数据，也可以返回实体对象
 	 * 如果是sql语句，则将结果转为map类型，并放到List中
-	 * 如果是hql语句，则通过hql返回相应对象，并放到List中
+	 * 如果是hql语句，如果是hql语句，可以在hql里控制返回值类型，并放到List中
 	 * @throws HibernateException
 	 * @throws SQLException
 	 */
@@ -122,7 +122,7 @@ public interface IBaseDao<T> {
 	 * @param ql hql / sql
 	 * @param isHql  是否是hql true:hql; false:sql
 	 * @param parameters
-	 * @return	返回list分页数据
+	 * @return	返回list分页数据，使用hql可以在hql里控制返回值类型
 	 * @throws HibernateException
 	 * @throws SQLException
 	 */

@@ -215,7 +215,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		}
 		return q.list();
 	}
-
+	
 	@Override
 	public <X> Pagination<List<X>> find4ListPage(final String ql,boolean isHql,
 			final Object... parameters) throws HibernateException, SQLException{
