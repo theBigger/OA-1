@@ -2,8 +2,11 @@ package com.fjx.oa.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.HibernateException;
+
+import com.fjx.oa.models.Module;
 
 
 
@@ -60,9 +63,9 @@ public interface IAclService {
 	 * @param userId 用户标识
 	 * @return 列表元素是Module对象
 	 */
-	public List searchModules(Long userId)throws HibernateException, SQLException;
+	public List<Module> searchModules(Long userId)throws HibernateException, SQLException;
 	
-	public List searchAclRecord(String principalType,Long principalId)throws HibernateException, SQLException;
+	public List<Map> searchAclRecord(String principalType,Long principalId)throws HibernateException, SQLException;
 	
 	
 }
