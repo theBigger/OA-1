@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import com.fjx.common.framework.base.dao.IBaseDao;
+import com.fjx.common.framework.base.service.IBaseAbstractService;
 import com.fjx.oa.models.Organization;
 import com.fjx.oa.vo.EasyuiTreeNode;
 
-public interface IOrganizationService extends IBaseDao<Organization> {
+public interface IOrganizationService extends IBaseAbstractService<Organization> {
 	
 	public void add(Organization organization, Serializable pid)throws Exception;
 	
@@ -19,8 +19,6 @@ public interface IOrganizationService extends IBaseDao<Organization> {
 	 * @throws Exception
 	 */
 	public void saveOrUpdate(Organization organization, Serializable pid)throws Exception;
-	
-	public List<Organization> treeGrid(Serializable pid)throws Exception;
 	
 	/**
 	 * 查询子节点

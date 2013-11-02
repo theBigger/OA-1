@@ -82,7 +82,12 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	public void update(T entity) throws HibernateException, SQLException{
 		getHibernateTemplate().update(entity);
 	}
-
+	
+	@Override
+	public <X> X loadEntity(Class<X> entityClass, Serializable id)throws HibernateException, SQLException{
+		return (X)getHibernateTemplate().load(entityClass,id);
+	}
+	
 	@Override
 	public T findEntityByPk(Serializable pk)throws HibernateException, SQLException {
 		if(null == pk || pk.equals("")){

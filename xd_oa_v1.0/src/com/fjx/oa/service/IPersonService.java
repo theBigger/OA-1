@@ -3,7 +3,7 @@ package com.fjx.oa.service;
 import java.util.Date;
 import java.util.List;
 
-import com.fjx.common.framework.base.dao.IBaseDao;
+import com.fjx.common.framework.base.service.IBaseAbstractService;
 import com.fjx.oa.models.Person;
 import com.fjx.oa.vo.EasyUIPagination;
 
@@ -14,7 +14,7 @@ import com.fjx.oa.vo.EasyUIPagination;
  * @date 2013年9月14日
  * 人员管理
  */
-public interface IPersonService extends IBaseDao<Person> {
+public interface IPersonService extends IBaseAbstractService<Person> {
 	
 	
 	EasyUIPagination<List> queryPersons(String name,Date createDate,Date expireTime)throws Exception;

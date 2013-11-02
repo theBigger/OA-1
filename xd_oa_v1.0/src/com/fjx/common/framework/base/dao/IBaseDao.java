@@ -36,6 +36,16 @@ public interface IBaseDao<T> {
 	 * @param entity
 	 */
 	public void update (T entity) throws HibernateException, SQLException;
+	
+	/**
+	 * 
+	 * @param entityClass
+	 * @param id
+	 * @return
+	 * @throws HibernateException
+	 * @throws SQLException
+	 */
+	public <X> X loadEntity(Class<X> entityClass, Serializable id)throws HibernateException, SQLException;
 	/**
 	 * 查询单个对象
 	 * @param pk

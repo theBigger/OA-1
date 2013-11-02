@@ -6,7 +6,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 
-
+/**
+ * 权限认证
+ * @author fengjx
+ *
+ */
 @Entity
 @Table(name="oa_acl")
 public class ACL {

@@ -3,9 +3,9 @@ package com.fjx.common.framework.system.pagination;
 public class PaginationContext {
 	
 	// 每页显示条数
-	private static ThreadLocal<Integer> pagesize;
+	private static ThreadLocal<Integer> pagesize = new ThreadLocal();;
 	// 当前页
-	private static ThreadLocal<Integer> offset;
+	private static ThreadLocal<Integer> offset = new ThreadLocal();;
 
 	public static int getPagesize() {
 		Integer _pagesize = pagesize.get();

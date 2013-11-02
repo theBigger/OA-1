@@ -10,19 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.fjx.oa.service.IModuleService;
 import com.fjx.oa.service.IOrganizationService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/spring-applicationContext.xml")
-public class OrganizationServiceTest {
+public class ModuleServiceTest {
 	
 	@Autowired
-	private IOrganizationService organizationService ;
+	private IModuleService moduleService ;
 	
 	@Test
 	public void testTreeGrid() throws Exception{
-		List<Map<String,Object>> orgs = organizationService.treeGrid4ListMap(0);
+		List<Map<String,Object>> orgs = moduleService.treeGrid4ListMap(1);
 		for(Map org : orgs){
 			System.out.println(org.get("name"));
 		}

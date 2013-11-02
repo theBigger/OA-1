@@ -114,13 +114,15 @@
 	    "children":[
 		    {
 		        "text":"模块管理",
-		        "checked":true
+		        "checked":true,
+		        "attributes":{"src":"/oa/module/module_view.action"}
 		    },{
 		        "text":"角色管理",
 		        "checked":true
 		    },{
 		        "text":"用户管理",
-		        "checked":true
+		        "checked":true,
+		        "attributes":{"src":"/oa/user/user_view.action"}
 		    }
 	    ]
 	},{

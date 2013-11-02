@@ -33,7 +33,7 @@ public class OrgAction extends BaseAction {
 	
 	
 	public String view (){
-		logger.debug("com.fjx.oa.action.view()");
+		logger.debug("com.fjx.oa.action.OrgAction.view()");
 		return "view";
 	}
 	

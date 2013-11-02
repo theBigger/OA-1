@@ -1,6 +1,7 @@
 package com.fjx.oa.models;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -95,7 +96,7 @@ public class Person {
 		this.phone = phone;
 	}
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	public Organization getOrg() {
 		return org;
 	}

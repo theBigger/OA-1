@@ -58,8 +58,9 @@ public class BaseAction extends ActionSupport {
 		try {
 			response.setCharacterEncoding("utf-8");
 			writer = response.getWriter();
-			logger.debug("输出："+res);
-			writer.write(serialize(res));
+			String serializeStr = serialize(res);
+			logger.debug("输出："+serializeStr);
+			writer.write(serializeStr);
 		} catch (IOException e) {
 			logger.error("输出JSON字符串异常",e);
 			throw e;

@@ -36,4 +36,19 @@
 		</action>
 	</package>
 	
+	
+	<!-- 用户管理 -->
+	<package name="user" namespace="/oa/user" extends="main">
+		<action name="user_*" class="com.fjx.oa.action.UserAction" method="{1}">
+			<result name="view" >/oa/user/user.jsp</result>
+		</action>
+	</package>
+	
+	
+	<!-- 模块管理 -->
+	<package name="module" namespace="/oa/module" extends="main">
+		<action name="module_*" class="com.fjx.oa.action.ModuleAction" method="{1}">
+			<result name="view" >/oa/module/module.jsp</result>
+		</action>
+	</package>
 </struts>

@@ -25,7 +25,7 @@ public class OrganizationService extends BaseAbstractService<Organization> imple
 	public void saveOrUpdate(Organization organization, Serializable pid)throws Exception {
 		try {
 			Organization parent = null;
-			if(pid != null && !pid.equals("") && pid != "0"){
+			if(null != pid && !pid.equals("") && pid != "0"){
 				parent = findEntityByPk(pid);
 			}
 			organization.setParent(parent);
@@ -34,36 +34,6 @@ public class OrganizationService extends BaseAbstractService<Organization> imple
 			logger.error("保存或更新机构表异常", e);
 			throw e;
 		}
-	}
-	
-	@Override
-	public List<Organization> treeGrid(Serializable pid) throws Exception{
-		String hql = "from Organization o where o.parent.id = '"+pid+"' ";
-		if(null == pid || pid.equals(0)){
-			hql = "from Organization o where o.parent is null";
-		}
-		List<Organization> list = null;
-		try {
-			list = find4List(hql, true);
-//			if (null != list && list.size() > 0) {
-//				for (int i = 0; i < list.size(); i++) {
-//					Organization o = list.get(i);
-//					if (null != o.getParent()) {
-//						list.get(i).setParent_id(o.getParent().getId());
-//						list.get(i).setParent_name(o.getParent().getName());
-//					}
-//					if (null != o.getChildren() && o.getChildren().size() > 0) {
-//						list.get(i).setState("closed");
-//						List<Organization> children = treeGrid(o.getId());
-//						list.get(i).setChildren(children);
-//					}
-//				}
-//			}
-		} catch (Exception e) {
-			logger.error("查询树形机构异常", e);
-			throw new RuntimeException("查询树形机构异常",e);
-		}
-		return list;
 	}
 	
 	@Override
@@ -85,12 +55,6 @@ public class OrganizationService extends BaseAbstractService<Organization> imple
 				orgs.get(i).put("state", "closed");
 			}
 		}
-//		if(null != orgs && orgs.size()>0){
-//			for(int i = 0; i < orgs.size(); i++){
-//				List<Map<String, Object>> children = treeGrid4ListMap(orgs.get(i).get("id").toString());
-//				orgs.get(i).put("children", children);
-//			}
-//		}
 		return orgs;
 	}
 	
