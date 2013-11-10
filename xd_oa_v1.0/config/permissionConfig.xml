@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	权限控制配置文件
+	根据oa_acl表中的aclState字段判断权限
+	如aclState字段值为：1,1,0,0
+ -->
+<permission>
+	<property num="1"	flag="CREATE" name="增加"/>
+	<property num="2"	flag="READ" name="查询"/>
+	<property num="3"	flag="UPDATE" name="修改"/>
+	<property num="4"	flag="DELETE" name="删除"/>
+</permission>

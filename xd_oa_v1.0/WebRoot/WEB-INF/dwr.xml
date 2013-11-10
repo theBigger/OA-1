@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 3.0//EN" "http://getahead.org/dwr/dwr30.dtd">
+<dwr>
+	<allow>
+		<!-- 
+			//这里create表示创建的对象方式以及生成的js文件的名字
+			//javascript:表示生成的js文件的名字; //creator:表示创建的方式; 
+			//<param>表示要创建具体的类 
+			//name="class"这是一个类; 
+			//value="[编写具体的类名，整合spring可使用spring別名]"; 
+			//因为整合spring.这里creator的属性设置为spring. 
+		-->
+		<create javascript="acl" creator="spring">
+			<!-- //param元素的name属性值可以是class,beanName等，此处用beanName, //value得值是定义在applicationContext.xml中某个bean的id值。 -->
+			<param name="beanName" value="aclService"></param>
+		</create>
+		
+		<!-- 
+			//convert:配置具体的javabean; 
+			//match:具体的java类名; 
+			//converter:表示使用的方式; 
+			//bean ==> 符合javabean规范的形式进行创建; 
+			//date ==> 专门用于转换util.Date和sql.Date -->
+		<!-- <convert match="com.tree.entity.Sort" converter="bean">
+			<param name="include" value="id,name"></param>
+		</convert> -->
+	</allow>
+</dwr>
