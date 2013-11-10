@@ -36,7 +36,7 @@ public class AclServiceTest {
 	@Test
 	public void testDelPermission(){
 		try {
-			aclService.delPermission("role", Long.parseLong("1"), Long.parseLong("2"));
+			aclService.delPermission("role", Long.parseLong("1"), Long.parseLong("1"));
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -45,5 +45,16 @@ public class AclServiceTest {
 		
 	}
 	
+	@Test
+	public void testSearchAclRecord(){
+		try {
+			aclService.searchAclRecord("role", (long) 1);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 }

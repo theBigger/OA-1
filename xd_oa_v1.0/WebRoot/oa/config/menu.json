@@ -118,7 +118,8 @@
 		        "attributes":{"src":"/oa/module/module_view.action"}
 		    },{
 		        "text":"角色管理",
-		        "checked":true
+		        "checked":true,
+		        "attributes":{"src":"/oa/role/role_view.action"}
 		    },{
 		        "text":"用户管理",
 		        "checked":true,

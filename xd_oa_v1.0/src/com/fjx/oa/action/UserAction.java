@@ -27,9 +27,8 @@ public class UserAction extends BaseAction {
 	@Autowired
 	private IUserService userService;
 	
-	
 	public String view(){
-		return "view";
+		return super.view();
 	}
 	
 	public String query_page() throws Exception{

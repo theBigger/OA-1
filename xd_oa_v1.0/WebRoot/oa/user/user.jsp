@@ -57,7 +57,7 @@
 					<td><input name="createdatetime" class="easyui-datetimebox" style="width: 156px;" /></td>
 				</tr>
 				<tr>
-					<th>最后修改时间</th>
+					<th>失效时间</th>
 					<td><input name="modifydatetime" class="easyui-datetimebox" style="width: 156px;" /></td>
 				</tr>
 				<tr>

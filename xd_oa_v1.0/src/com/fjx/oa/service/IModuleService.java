@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.hibernate.HibernateException;
 
+import com.fjx.oa.vo.EasyuiTreeNode;
+
 
 public interface IModuleService {
 	
@@ -18,6 +20,12 @@ public interface IModuleService {
 	 */
 	public List<Map<String, Object>> treeGrid4ListMap(Serializable pid)throws HibernateException,SQLException;
 	
-	
+	/**
+	 * 通过父级ID查询子节模块
+	 * @param pid
+	 * @return
+	 * @throws Exception
+	 */
+	public List<EasyuiTreeNode> tree(Serializable pid) throws Exception;
 	
 }

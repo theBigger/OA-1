@@ -1,5 +1,7 @@
 package com.fjx.oa.models;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -18,6 +20,8 @@ public class Role {
 	private Long id;
 
 	private String name;
+	
+	private Date createDate;
 
 	@Id
 	@GeneratedValue
@@ -36,4 +40,14 @@ public class Role {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+	
+	
 }

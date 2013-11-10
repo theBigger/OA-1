@@ -31,10 +31,8 @@ public class OrgAction extends BaseAction {
 	 */
 	private static final long serialVersionUID = 4333403511458402875L;
 	
-	
-	public String view (){
-		logger.debug("com.fjx.oa.action.OrgAction.view()");
-		return "view";
+	public String view(){
+		return super.view();
 	}
 	
 	/**

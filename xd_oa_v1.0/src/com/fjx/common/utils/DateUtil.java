@@ -19,7 +19,7 @@ import java.util.GregorianCalendar;
 public class DateUtil {
 	//~ Static fields/initializers =============================================
 
-	private static String datePattern = "MM/dd/yyyy";
+	private static String datePattern = "MM-dd-yyyy";
 
 	private static String timePattern = datePattern + " HH:MM a";
 

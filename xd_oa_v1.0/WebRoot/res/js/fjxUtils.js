@@ -35,8 +35,8 @@ $.fn.panel.defaults.onBeforeDestroy = function() {/* tab关闭时回收内存 */
 	}
 };
 
-$.fn.panel.defaults.loadingMessage = '数据加载中，请稍候....';
-$.fn.datagrid.defaults.loadMsg = '数据加载中，请稍候....';
+$.fn.panel.defaults.loadingMessage = '加载中，请稍候....';
+$.fn.datagrid.defaults.loadMsg = '加载中，请稍候....';
 
 var easyuiErrorFunction = function(XMLHttpRequest) {
 	/* $.messager.progress('close'); */
@@ -257,3 +257,20 @@ $.ajaxSetup({
 		$.messager.alert('错误', XMLHttpRequest.responseText.split('<script')[0]);
 	}
 });
+
+/**
+ * 权限配置信息（静态变量）
+ */
+var permissionConfig = function (){
+	this.permission = {
+		'CREATE' : 0,
+		'READ' : 1,
+		'UPDATE' : 2,
+		'DELETE' : 3
+	},
+	this.type = {
+		'TYPE_ROLE' : 'role',
+		'TYPE_USER' : 'user'
+	}
+}
+

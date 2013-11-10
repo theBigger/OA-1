@@ -23,7 +23,7 @@ import com.fjx.oa.service.IAclService;
  * @author fengjx
  *
  */
-@Service
+@Service(value="aclService")
 @Transactional
 public class AclService extends BaseAbstractService<ACL> implements IAclService {
 	
@@ -161,10 +161,12 @@ public class AclService extends BaseAbstractService<ACL> implements IAclService 
 
 	@Override
 	public List<Map> searchAclRecord(String principalType, Long principalId) throws HibernateException, SQLException {
+		List<Map> result = null;
 		//使用原生sql语句
-		String sql = "select moduleId,aclState&1,aclState&2,aclState&4,aclState&8,aclTriState " +
-				"from t_acl where principalType = '"+principalType+"' and principalId = "+principalId;
-		return find4List(sql, false);
+		String sql = "select moduleId,aclState&1 'cState',aclState&2 'rState',aclState&4 'uState',aclState&8 'dState',aclTriState 'extState'" +
+				"from oa_acl where principalType = '"+principalType+"' and principalId = "+principalId;
+		result = find4List(sql, false);
+		return result;
 	}
 	
 	

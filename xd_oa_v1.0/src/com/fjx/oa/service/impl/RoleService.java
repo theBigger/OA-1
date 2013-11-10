@@ -1,5 +1,10 @@
 package com.fjx.oa.service.impl;
 
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,5 +16,16 @@ import com.fjx.oa.service.IRoleService;
 @Service
 @Transactional
 public class RoleService extends BaseAbstractService<Role> implements IRoleService {
+
+	@Override
+	public void removeAll(Long[] pks)
+			throws DataAccessException {
+		Set<Role> roles = new HashSet<Role>();
+		for(Serializable pk : pks){
+			roles.add(findEntityByPk(pk));
+		}
+		deleteAll(roles);
+	}
+
 	
 }

@@ -11,18 +11,24 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.json.JSONException;
 import org.apache.struts2.json.JSONUtil;
+import org.hamcrest.core.IsInstanceOf;
 
 import com.fjx.common.framework.system.exception.SystemException;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class BaseAction extends ActionSupport {
+/**
+ * 
+ * @author fengjx
+ *
+ */
+public abstract class BaseAction extends ActionSupport {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3494515292315178007L;
-
+	
 	protected Logger logger = Logger.getLogger(this.getClass());
 	
 	private ActionContext context = ActionContext.getContext();
@@ -31,6 +37,16 @@ public class BaseAction extends ActionSupport {
 	protected HttpServletResponse response = (HttpServletResponse) context.get(ServletActionContext.HTTP_RESPONSE);
 	protected Map session = context.getSession();
 	
+	
+	/**
+	 * jsp视图跳转
+	 * @return
+	 */
+	protected String view(){
+		logger.debug(this.getClass()+".view()");
+		return "view";
+	}
+	
 	/**
 	 * 将对象序列化为json
 	 * @param object
@@ -38,6 +54,10 @@ public class BaseAction extends ActionSupport {
 	 * @throws Exception
 	 */
 	protected String serialize(Object object) throws Exception{
+		//如果是字符串，直接返回
+		if(object instanceof String ){
+			return (String)object;
+		}
 		String res = null; 
 		try {
 			res = JSONUtil.serialize(object);

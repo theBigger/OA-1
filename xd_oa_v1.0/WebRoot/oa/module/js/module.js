@@ -2,7 +2,7 @@
 *模块管理
 */
 
-var editRow;
+	var editRow;
 	var treegrid;
 	var iconData = [ {
 		iconcls : '',
@@ -202,9 +202,9 @@ var editRow;
 				editor : {
 					type : 'combotree',
 					options : {
-						url : 'menuController.do?tree',
+						url : 'oa/module/module_tree.action',
 						animate : false,
-						lines : !fjx.isLessThanIe8(),
+						lines : !fjx.isLessThanIe8(),		//Defines if to show tree lines.
 						onLoadSuccess : function(node, data) {
 							var t = $(this);
 							if (data) {

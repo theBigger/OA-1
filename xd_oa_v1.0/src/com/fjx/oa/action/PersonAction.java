@@ -27,9 +27,8 @@ public class PersonAction extends BaseAction {
 	private Pagination<Person> persons;
 	
 	public String view(){
-		return "view";
+		return super.view();
 	}
-	
 	
 	/**
 	 * 分页查询人员信息

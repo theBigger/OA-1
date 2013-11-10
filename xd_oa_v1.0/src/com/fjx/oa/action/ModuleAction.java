@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fjx.common.framework.base.action.BaseAction;
 import com.fjx.common.framework.system.exception.SystemException;
 import com.fjx.oa.service.IModuleService;
+import com.fjx.oa.vo.EasyuiTreeNode;
 
 /**
  * 模块管理
@@ -29,9 +30,9 @@ public class ModuleAction extends BaseAction {
 	private Long pid;
 	private Long id;
 	
+	
 	public String view(){
-		logger.debug("com.fjx.oa.action.ModulelAction.view()");
-		return "view";
+		return super.view();
 	}
 	
 	/**
@@ -51,7 +52,26 @@ public class ModuleAction extends BaseAction {
 		write(list);
 		return null;
 	}
-
+	
+	
+	/**
+	 * 模块树
+	 * @return
+	 * @throws Exception
+	 */
+	public String tree() throws Exception {
+		List<EasyuiTreeNode> list = null;
+		try {
+			list = moduleService.tree(pid);
+		} catch (Exception e) {
+			logger.error("查询机构树出现异常", e);
+			throw new SystemException("查询机构树出现异常",e);
+		}
+		write(list);
+		return null;
+	}
+	
+	
 	public IModuleService getModuleService() {
 		return moduleService;
 	}

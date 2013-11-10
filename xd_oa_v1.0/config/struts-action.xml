@@ -51,4 +51,11 @@
 			<result name="view" >/oa/module/module.jsp</result>
 		</action>
 	</package>
+	
+	<!-- 角色管理 -->
+	<package name="role" namespace="/oa/role" extends="main">
+		<action name="role_*" class="com.fjx.oa.action.RoleAction" method="{1}">
+			<result name="view" >/oa/role/role.jsp</result>
+		</action>
+	</package>
 </struts>

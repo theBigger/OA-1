@@ -2,10 +2,11 @@ package com.fjx.common.framework.base.dao;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.hibernate.HibernateException;
+import org.springframework.dao.DataAccessException;
 
 import com.fjx.common.framework.system.pagination.Pagination;
 
@@ -32,6 +33,13 @@ public interface IBaseDao<T> {
 	 */
 	public void delete (Serializable pk) throws HibernateException, SQLException;
 	/**
+	 * 
+	 * @param entities
+	 * @throws DataAccessException
+	 */
+	public void deleteAll(Collection<T> entities) throws DataAccessException;
+	
+	/**
 	 * 更新单条记录
 	 * @param entity
 	 */
@@ -45,13 +53,13 @@ public interface IBaseDao<T> {
 	 * @throws HibernateException
 	 * @throws SQLException
 	 */
-	public <X> X loadEntity(Class<X> entityClass, Serializable id)throws HibernateException, SQLException;
+	public <X> X loadEntity(Class<X> entityClass, Serializable id)throws DataAccessException;
 	/**
 	 * 查询单个对象
 	 * @param pk
 	 * @return
 	 */
-	public T findEntityByPk (Serializable pk)throws HibernateException, SQLException;
+	public T findEntityByPk (Serializable pk) throws DataAccessException;
 	
 	/**
 	 * 查询所有记录，根据泛型查询该对象纪录列表

@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-		 xmlns="http://java.sun.com/xml/ns/javaee" 
-		 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
-		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
-		 id="WebApp_ID" 
-		 version="2.5">
-	
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+
 	<welcome-file-list>
+		<welcome-file>index</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.htm</welcome-file>
 	</welcome-file-list>
-	
-	
+
+
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 		<!-- default: /WEB-INF/applicationContext.xml -->
@@ -22,6 +21,23 @@
 		<!-- <param-value>/WEB-INF/applicationContext-*.xml,classpath*:applicationContext-*.xml</param-value> -->
 		<param-value>classpath:spring-applicationContext.xml</param-value>
 	</context-param>
+
+
+	<!-- 配置DWR前端控制器 开始  -->
+	<servlet>
+		<display-name>DWR Servlet</display-name>
+		<servlet-name>dwr-invoker</servlet-name>
+		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>dwr-invoker</servlet-name>
+		<url-pattern>/dwr/*</url-pattern>
+	</servlet-mapping>
+	<!-- 配置DWR前端控制器 结束  -->
 	
 	<filter>
 		<filter-name>encodingFilter</filter-name>
@@ -35,12 +51,11 @@
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
 	<filter>
 		<filter-name>openSessionInView</filter-name>
 		<filter-class>
-			org.springframework.orm.hibernate3.support.OpenSessionInViewFilter
-		</filter-class>
+			org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
 		<init-param>
 			<param-name>sessionFactoryBeanName</param-name>
 			<param-value>sessionFactory</param-value>
@@ -50,17 +65,15 @@
 		<filter-name>openSessionInView</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
-	
+
+
 	<!-- 配置过滤器，接收分页参数，禁止直接访问jsp -->
 	<filter>
 		<filter-name>sys</filter-name>
-		<filter-class>
-			com.fjx.common.framework.system.filter.SystemFilter
-		</filter-class>
+		<filter-class>com.fjx.common.framework.system.filter.SystemFilter</filter-class>
 		<init-param>
 			<param-name>reg</param-name>
-			<!-- 禁止直接访问oa目录下的jsp文件  -->
+			<!-- 禁止直接访问oa目录下的jsp文件 -->
 			<param-value>.*oa|.*\.jsp</param-value>
 		</init-param>
 		<init-param>
@@ -69,41 +82,38 @@
 			<param-value>.*_page.*</param-value>
 		</init-param>
 	</filter>
-	<filter-mapping> 
-		<filter-name>sys</filter-name> 
-		<url-pattern>*.jsp</url-pattern> 
+	<filter-mapping>
+		<filter-name>sys</filter-name>
+		<url-pattern>*.jsp</url-pattern>
 	</filter-mapping>
-	<filter-mapping> 
-		<filter-name>sys</filter-name> 
-		<url-pattern>*.html</url-pattern> 
+	<filter-mapping>
+		<filter-name>sys</filter-name>
+		<url-pattern>*.html</url-pattern>
 	</filter-mapping>
-	<filter-mapping> 
-		<filter-name>sys</filter-name> 
-		<url-pattern>*.action</url-pattern> 
+	<filter-mapping>
+		<filter-name>sys</filter-name>
+		<url-pattern>*.action</url-pattern>
 	</filter-mapping>
-	
+
 	<filter>
 		<filter-name>struts2</filter-name>
 		<filter-class>
-			org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter
-		</filter-class>
+			org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
 	</filter>
 
 	<filter-mapping>
 		<filter-name>struts2</filter-name>
 		<url-pattern>*.action</url-pattern>
 	</filter-mapping>
-	
-	<filter> 
-		<filter-name>struts-cleanup</filter-name> 
-		<filter-class>
-            org.apache.struts2.dispatcher.ActionContextCleanUp
-		</filter-class> 
-	</filter> 
-	
-	<filter-mapping> 
-		<filter-name>struts-cleanup</filter-name> 
-		<url-pattern>/*</url-pattern> 
+
+	<filter>
+		<filter-name>struts-cleanup</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ActionContextCleanUp</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>struts-cleanup</filter-name>
+		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
 </web-app>

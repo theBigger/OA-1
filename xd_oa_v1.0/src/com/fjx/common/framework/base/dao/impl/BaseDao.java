@@ -4,19 +4,19 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -77,19 +77,24 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		T entity = (T) getHibernateTemplate().load(getEntityClass(), pk);
 		getHibernateTemplate().delete(entity);
 	}
-
+	
+	@Override
+	public void deleteAll(Collection<T> entities) throws DataAccessException{
+		getHibernateTemplate().deleteAll(entities);
+	}
+	
 	@Override
 	public void update(T entity) throws HibernateException, SQLException{
 		getHibernateTemplate().update(entity);
 	}
 	
 	@Override
-	public <X> X loadEntity(Class<X> entityClass, Serializable id)throws HibernateException, SQLException{
+	public <X> X loadEntity(Class<X> entityClass, Serializable id)throws DataAccessException{
 		return (X)getHibernateTemplate().load(entityClass,id);
 	}
 	
 	@Override
-	public T findEntityByPk(Serializable pk)throws HibernateException, SQLException {
+	public T findEntityByPk(Serializable pk) throws DataAccessException {
 		if(null == pk || pk.equals("")){
 			return null;
 		}
@@ -226,7 +231,6 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 			final Object... parameters) throws HibernateException, SQLException{
 		int total = getCount(ql, isHql, parameters);
 		logger.debug("query count is: "+total);
-		
 		Query q = createMyQuery(ql,isHql);
 		if (parameters != null && parameters.length > 0) {
 			for (int i = 0; i < parameters.length; i++) {

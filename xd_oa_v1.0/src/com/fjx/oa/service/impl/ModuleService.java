@@ -2,6 +2,8 @@ package com.fjx.oa.service.impl;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fjx.common.framework.base.service.impl.BaseAbstractService;
 import com.fjx.oa.models.Module;
+import com.fjx.oa.models.Organization;
 import com.fjx.oa.service.IModuleService;
+import com.fjx.oa.vo.EasyuiTreeNode;
 
 
 
@@ -58,5 +62,45 @@ public class ModuleService extends BaseAbstractService<Module> implements IModul
 		return flag;
 	}
 	
+	@Override
+	public List<EasyuiTreeNode> tree(Serializable pid) throws Exception{
+		
+		String hql = "from Module m where m.parent.id = '"+pid+"' ";
+		if(null == pid || pid.equals(0)){
+			hql = "from Module m where m.parent is null";
+		}
+		hql += " order by m.order_no";
+		List<Module> list = find4List(hql, true);
+		List<EasyuiTreeNode> tree = new ArrayList<EasyuiTreeNode>();
+		for (Module org : list) {
+			tree.add(tree(org, true));
+		}
+		return tree;
+		
+	}
 	
+	/**
+	 * @param org
+	 * @param recursive
+	 * @return
+	 * @throws Exception
+	 */
+	private EasyuiTreeNode tree(Module module, boolean recursive)throws Exception {
+		EasyuiTreeNode node = new EasyuiTreeNode();
+		node.setId(module.getId()+"");
+		node.setText(module.getName());
+		if (module.getChildren() != null && module.getChildren().size() > 0) {
+			node.setState("closed");
+			if (recursive) {// 递归查询子节点
+				List<Module> moduleList = new ArrayList<Module>(module.getChildren());
+				List<EasyuiTreeNode> children = new ArrayList<EasyuiTreeNode>();
+				for (Module m : moduleList) {
+					EasyuiTreeNode t = tree(m, true);
+					children.add(t);
+				}
+				node.setChildren(children);
+			}
+		}
+		return node;
+	}
 }

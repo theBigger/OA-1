@@ -67,6 +67,14 @@ public interface IAclService extends IBaseAbstractService<ACL> {
 	 */
 	public List<Module> searchModules(Long userId)throws HibernateException, SQLException;
 	
+	/**
+	 * 
+	 * @param principalType	主体类型
+	 * @param principalId	主体标识
+	 * @return 
+	 * @throws HibernateException
+	 * @throws SQLException
+	 */
 	public List<Map> searchAclRecord(String principalType,Long principalId)throws HibernateException, SQLException;
 	
 	
