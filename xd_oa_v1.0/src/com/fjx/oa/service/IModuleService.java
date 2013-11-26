@@ -18,7 +18,7 @@ public interface IModuleService {
 	 * @return 
 	 * @throws Exception
 	 */
-	public List<Map<String, Object>> treeGrid4ListMap(Serializable pid)throws HibernateException,SQLException;
+	public List<Map<String, Object>> treeGrid4ListMap(Serializable pid)throws Exception;
 	
 	/**
 	 * 通过父级ID查询子节模块

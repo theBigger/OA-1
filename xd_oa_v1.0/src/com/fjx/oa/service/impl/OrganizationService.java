@@ -26,7 +26,7 @@ public class OrganizationService extends BaseAbstractService<Organization> imple
 		try {
 			Organization parent = null;
 			if(null != pid && !pid.equals("") && pid != "0"){
-				parent = findEntityByPk(pid);
+				parent = get(pid);
 			}
 			organization.setParent(parent);
 			saveOrUpdate(organization);
@@ -47,7 +47,7 @@ public class OrganizationService extends BaseAbstractService<Organization> imple
 				" from Organization o where o.parent.id is null";
 		}
 		hql += " order by o.in_time asc";	//排序
-		List<Map<String, Object>> orgs = find4List(hql,true);
+		List<Map<String, Object>> orgs = findListByHql(hql);
 		for(int i = 0; i < orgs.size(); i++){
 			if(isleef(orgs.get(i).get("id")+"")){
 				orgs.get(i).put("state", "open");
@@ -79,7 +79,7 @@ public class OrganizationService extends BaseAbstractService<Organization> imple
 		if(null == pid || pid.equals(0)){
 			hql = "from Organization o where o.parent is null";
 		}
-		List<Organization> list = find4List(hql, true);
+		List<Organization> list = findListByHql(hql);
 		List<EasyuiTreeNode> tree = new ArrayList<EasyuiTreeNode>();
 		for (Organization org : list) {
 			tree.add(tree(org, true));
@@ -113,7 +113,7 @@ public class OrganizationService extends BaseAbstractService<Organization> imple
 
 	@Override
 	public void add(Organization organization, Serializable pid)throws Exception {
-		Organization parent = findEntityByPk(pid);
+		Organization parent = get(pid);
 		organization.setParent(parent);
 		save(organization);
 	}

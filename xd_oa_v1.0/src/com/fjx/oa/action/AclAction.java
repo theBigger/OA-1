@@ -31,7 +31,7 @@ public class AclAction extends BaseAction {
 	public String view() {
 		return super.view();
 	}
-
+	
 	public String moduleTree() throws Exception {
 		List<EasyuiTreeNode> list = null;
 		moduleService.tree(pid);

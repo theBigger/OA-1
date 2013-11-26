@@ -6,6 +6,7 @@ import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -37,17 +38,6 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	
 	protected Logger logger = Logger.getLogger(this.getClass());
 	
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
-	
-	public JdbcTemplate getJdbcTemplate() {
-		return jdbcTemplate;
-	}
-
-	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
-	
 	
 	//注入sessionFactory
 	@Resource
@@ -64,113 +54,162 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	}
 	
 	@Override
-	public void save(T entity) throws HibernateException, SQLException{
-		getHibernateTemplate().save(entity);
+	public Serializable save(T entity) throws Exception{
+		Serializable serializable = null;
+		try {
+			serializable = getHibernateTemplate().save(entity);
+		} catch (Exception e) {
+			serializable = null;
+			logger.error("数据保存失败", e);
+			throw new SystemException("数据保存失败",e);
+		}
+		return serializable;
 	}
+	
 	@Override
-	public void saveOrUpdate(T entity) throws HibernateException, SQLException{
-		getHibernateTemplate().saveOrUpdate(entity);
+	public <X> Serializable add(X entity) throws Exception {
+		Serializable serializable = null;
+		try {
+			serializable = getHibernateTemplate().save(entity);
+		} catch (Exception e) {
+			serializable = null;
+			logger.error("数据保存失败", e);
+			throw new SystemException("数据保存失败",e);
+		}
+		return serializable;
+	}
+	
+	@Override
+	public boolean saveOrUpdate(T entity) throws Exception{
+		boolean flag = false;
+		try {
+			 getHibernateTemplate().saveOrUpdate(entity);
+			 flag = true;
+		} catch (Exception e) {
+			flag = false;
+			logger.error("保存或更新数据失败", e);
+			throw new SystemException("保存或更新数据失败",e);
+		}
+		return flag;
 	}
 
 	@Override
-	public void delete(Serializable pk) throws HibernateException, SQLException{
-		T entity = (T) getHibernateTemplate().load(getEntityClass(), pk);
-		getHibernateTemplate().delete(entity);
+	public boolean delete(Serializable pk) throws Exception{
+		
+		boolean flag = false;
+		try {
+			T entity = (T) getHibernateTemplate().load(getEntityClass(), pk);
+			getHibernateTemplate().delete(entity);
+			flag = true;
+		} catch (Exception e) {
+			flag = false;
+			logger.error("删除数据失败", e);
+			throw new SystemException("删除数据失败",e);
+		}
+		return flag;
 	}
 	
 	@Override
-	public void deleteAll(Collection<T> entities) throws DataAccessException{
-		getHibernateTemplate().deleteAll(entities);
+	public boolean deleteAll(Collection<T> entities) throws Exception{
+		boolean flag = false;
+		try {
+			getHibernateTemplate().deleteAll(entities);
+			flag = true;
+		} catch (Exception e) {
+			flag = false;
+			logger.error("删除数据失败", e);
+			throw new SystemException("删除数据失败",e);
+		}
+		return flag;
 	}
 	
 	@Override
-	public void update(T entity) throws HibernateException, SQLException{
-		getHibernateTemplate().update(entity);
+	public boolean update(T entity) throws Exception{
+		boolean flag = false;
+		try {
+			getHibernateTemplate().update(entity);
+			flag = true;
+		} catch (Exception e) {
+			flag = false;
+			logger.error("更新数据失败", e);
+			throw new SystemException("更新数据失败",e);
+		}
+		return flag;
 	}
 	
 	@Override
-	public <X> X loadEntity(Class<X> entityClass, Serializable id)throws DataAccessException{
+	public <X> X get(Class<X> entityClass, Serializable id)throws Exception{
 		return (X)getHibernateTemplate().load(entityClass,id);
 	}
 	
 	@Override
-	public T findEntityByPk(Serializable pk) throws DataAccessException {
+	public T get(Serializable pk) throws Exception {
 		if(null == pk || pk.equals("")){
 			return null;
 		}
 		return (T) getHibernateTemplate().load(getEntityClass(), pk);
 	}
 	
-	/*
 	@Override
-	public T findOne(final String hql, final Object... parameters)throws HibernateException, SQLException {
-		T t = (T) getHibernateTemplate().executeFind(
-				new HibernateCallback() {
-					@Override
-					public Object doInHibernate(Session session)
-							throws HibernateException, SQLException {
-						Query q = session.createQuery(hql);
-						if (parameters != null && parameters.length > 0) {
-							for (int i = 0; i < parameters.length; i++) {
-								q.setParameter(i, parameters[i]);
-							}
-						}
-						return q.uniqueResult();
-					}
-				});
-		return t;
+	public <X> X findOneByHql(final String hql, final Object... parameters)throws Exception {
+		return findOne(hql,true,parameters);	
 	}
-	*/
 	
 	@Override
-	public List<T> findAllEntity()throws HibernateException, SQLException{
+	public Map findOneBySql(final String sql, final Object... parameters)throws Exception {
+		return findOne(sql,false,parameters);	
+	}
+	
+	@Override
+	public List<T> findList()throws Exception{
 		String hql = "from "+getEntityClass().getName();
 		return getHibernateTemplate().find(hql);
 	}
 	
-	/*
 	@Override
-	public List<T> find(String hql, Object... parameters)throws HibernateException, SQLException {
+	public <X> List<X> findListByHql(String hql, Object... parameters)throws Exception {
 		return getHibernateTemplate().find(hql, parameters);
 	}
-	*/
 	
 	@Override
-	public Pagination<T> find4page () throws HibernateException, SQLException{
+	public List<Map> findListMapBySql(String sql, Object... parameters)
+			throws Exception {
+		Query q = createMyQuery(sql, false);
+		q = setQueryParameters(q, parameters);
+		q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
+		return q.list();
+	}
+	
+	@Override
+	public Pagination<T> page () throws Exception{
 		String hql = "from "+getEntityClass().getName();
-		return find4page(hql);
+		return pageByHql(hql);
 	}
-	
-	/**/
-	//@Override
-	public Pagination<T> find4page(final String hql, final Object... parameters)throws HibernateException, SQLException {
-		int total = getCount(hql, true, parameters);
-		logger.debug("查询的总记录数: "+total);
-		List datas = getHibernateTemplate().executeFind(
-				new HibernateCallback() {
-					@Override
-					public Object doInHibernate(Session session)
-							throws HibernateException, SQLException {
-						Query q = session.createQuery(hql);
-						
-						if (parameters != null && parameters.length > 0) {
-							for (int i = 0; i < parameters.length; i++) {
-								logger.info(hql+"的分页参数："+parameters[i]);
-								q.setParameter(i, parameters[i]);
-							}
-						}
-						q.setFirstResult(PaginationContext.getOffset());	//filter拦截到的分页参数
-						q.setMaxResults(PaginationContext.getPagesize());	//filter拦截到的分页参数
-						return q.list();
-					}
-				});
-		Pagination<T> pagination = new Pagination<T>(datas, total);
-		return pagination;
-	}
-	
 	
 	@Override
-	public int getCount(String hql, boolean isHql, Object... parameters)throws HibernateException, SQLException {
+	public <X> Pagination<X> pageByHql(final String hql, final Object... parameters)throws Exception {
+		return findPage(hql,true,parameters);
+	}
+	
+	@Override
+	public Pagination<Map> pageListMapBySql(final String sql, final Object... parameters)throws Exception {
+		return findPage(sql,false,parameters);
+	}
+	
+	@Override
+	public <X> X findUniqueByHql(String hql, Object... parameters)
+			throws Exception {
+		return findUnique(hql,true,parameters);
+	}
+
+	@Override
+	public <X> X findUniqueBySql(String sql, Object... parameters)
+			throws Exception {
+		return findUnique(sql,false,parameters);
+	}
+	
+	@Override
+	public int getCount(String hql, boolean isHql, Object... parameters)throws Exception {
 		final String countSQL = getCountHQL(hql);
 		int total ;
 		Query q = createMyQuery(countSQL,isHql);
@@ -182,85 +221,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		total = ((Long) q.uniqueResult()).intValue();
 		return total;
 	}
-	/**
-	 * 将hql语句转换为查询记录总数的hql
-	 * @param hql	hql/sql语句
-	 * @return
-	 */
-	private String getCountHQL(String hql) throws HibernateException, SQLException{
-		int index = hql.indexOf("from");
-		if (index != -1) {
-			return "select count(*) " + hql.substring(index);
-		}
-		throw new RuntimeException("查询语句错误");
-	}
 	
-	@Override
-	public <X> X find4Unique(String ql,boolean isHql, Object... parameters) throws HibernateException, SQLException{
-		Query q = createMyQuery(ql,isHql);
-		if (parameters != null && parameters.length > 0) {
-			for (int i = 0; i < parameters.length; i++) {
-				q.setParameter(i, parameters[i]);
-			}
-		}
-		//如果是sql语句，则将结果转为map类型
-		if(!isHql){
-			q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
-		}
-		return (X) q.uniqueResult(); 
-		//return jdbcTemplate.queryForMap(ql, parameters);
-	}
-
-	@Override
-	public <X> List<X> find4List(String ql, boolean isHql, Object... parameters) throws HibernateException, SQLException {
-		Query q = createMyQuery(ql,isHql);
-		if (parameters != null && parameters.length > 0) {
-			for (int i = 0; i < parameters.length; i++) {
-				q.setParameter(i, parameters[i]);
-			}
-		}
-		//如果是sql语句，则将结果转为map类型，即：返回List<Map>
-		if(!isHql){
-			q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
-		}
-		return q.list();
-	}
-	
-	@Override
-	public <X> Pagination<List<X>> find4ListPage(final String ql,boolean isHql,
-			final Object... parameters) throws HibernateException, SQLException{
-		int total = getCount(ql, isHql, parameters);
-		logger.debug("query count is: "+total);
-		Query q = createMyQuery(ql,isHql);
-		if (parameters != null && parameters.length > 0) {
-			for (int i = 0; i < parameters.length; i++) {
-				logger.info(ql+"的分页参数："+parameters[i]);
-				q.setParameter(i, parameters[i]);
-			}
-		}
-		q.setFirstResult(PaginationContext.getOffset());	//filter拦截到的分页参数
-		q.setMaxResults(PaginationContext.getPagesize());	//filter拦截到的分页参数
-		//如果是sql语句，则将结果转为map类型，即：返回Pagination<List<Map>>
-		if(!isHql){
-			q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
-		}
-		List datas = q.list();
-		
-		Pagination<List<X>> pagination = new Pagination<List<X>>(datas, total);
-		return pagination;
-	}
-	
-	
-	private Query createMyQuery(String ql, boolean isHql){
-		Query q = null;
-		if(isHql){
-			q = getSession().createQuery(ql);
-		}else{
-			q = getSession().createSQLQuery(ql);
-		}
-		return q;
-	}
-
 	@Override
 	public int bulkUpdate(String ql, Object... parameters) throws HibernateException, SQLException {
 		return getHibernateTemplate().bulkUpdate(ql, parameters);
@@ -294,4 +255,110 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		return flag;
 	}
 	
+	/**
+	 * 创建Query
+	 * @param ql
+	 * @param isHql
+	 * @return
+	 */
+	private Query createMyQuery(String ql, boolean isHql){
+		Query q = null;
+		if(isHql){
+			q = getSession().createQuery(ql);
+		}else{
+			q = getSession().createSQLQuery(ql);
+		}
+		return q;
+	}
+	/**
+	 * Query 赋值
+	 * @param q
+	 * @param parameters
+	 * @return
+	 */
+	private Query setQueryParameters(Query q, Object... parameters){
+		if (parameters != null && parameters.length > 0) {
+			for (int i = 0; i < parameters.length; i++) {
+				q.setParameter(i, parameters[i]);
+			}
+		}
+		return q;
+	}
+	/**
+	 * 将hql语句转换为查询记录总数的hql
+	 * @param hql	hql/sql语句
+	 * @return
+	 */
+	private String getCountHQL(String hql) throws Exception{
+		int index = hql.indexOf("from");
+		if (index != -1) {
+			return "select count(*) " + hql.substring(index);
+		}
+		throw new SystemException("查询语句错误");
+	}
+	/**
+	 * 查询唯一的一个字段
+	 * @param ql
+	 * @param isHql
+	 * @param parameters
+	 * @return
+	 * @throws HibernateException
+	 * @throws SQLException
+	 */
+	private <X> X findUnique(String ql,boolean isHql, Object... parameters) throws HibernateException, SQLException{
+		Query q = createMyQuery(ql,isHql);
+		q = setQueryParameters(q, parameters);
+		return (X) q.uniqueResult(); 
+	}
+	
+	/**
+	 * 
+	 * @param ql
+	 * @param isHql
+	 * @param parameters
+	 * @return
+	 * @throws Exception
+	 */
+	private <X> X findOne(final String ql, boolean isHql, final Object... parameters)throws Exception {
+		Query q = createMyQuery(ql, isHql);
+		q = setQueryParameters(q, parameters);
+		q.setMaxResults(1);
+		if(!isHql){
+			q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
+		}
+		return (X) q.list().get(0);
+	}
+	/**
+	 * 分页查询
+	 * @param hql
+	 * @param isHql
+	 * @param parameters
+	 * @return
+	 * @throws Exception
+	 */
+	private <X> Pagination<X> findPage(final String hql, boolean isHql, final Object... parameters)throws Exception {
+		int total = getCount(hql, isHql, parameters);
+		logger.debug("查询的总记录数: "+total);
+		List datas = getHibernateTemplate().executeFind(
+				new HibernateCallback() {
+					@Override
+					public Object doInHibernate(Session session)
+							throws HibernateException, SQLException {
+						Query q = session.createQuery(hql);
+						
+						if (parameters != null && parameters.length > 0) {
+							for (int i = 0; i < parameters.length; i++) {
+								logger.info(hql+"的分页参数："+parameters[i]);
+								q.setParameter(i, parameters[i]);
+							}
+						}
+						q.setFirstResult(PaginationContext.getOffset());	//filter拦截到的分页参数
+						q.setMaxResults(PaginationContext.getPagesize());	//filter拦截到的分页参数
+						return q.list();
+					}
+				});
+		Pagination<X> pagination = new Pagination<X>(datas, total);
+		return pagination;
+	}
+
 }

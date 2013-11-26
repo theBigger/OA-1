@@ -19,10 +19,10 @@ public class RoleService extends BaseAbstractService<Role> implements IRoleServi
 
 	@Override
 	public void removeAll(Long[] pks)
-			throws DataAccessException {
+			throws Exception {
 		Set<Role> roles = new HashSet<Role>();
 		for(Serializable pk : pks){
-			roles.add(findEntityByPk(pk));
+			roles.add(get(Role.class,pk));
 		}
 		deleteAll(roles);
 	}

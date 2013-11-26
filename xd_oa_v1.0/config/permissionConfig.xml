@@ -4,9 +4,26 @@
 	根据oa_acl表中的aclState字段判断权限
 	如aclState字段值为：1,1,0,0
  -->
-<permission>
-	<property num="1"	flag="CREATE" name="增加"/>
-	<property num="2"	flag="READ" name="查询"/>
-	<property num="3"	flag="UPDATE" name="修改"/>
-	<property num="4"	flag="DELETE" name="删除"/>
-</permission>
+<authentication>
+	
+	<module sn="org" name="机构管理">
+		<action permission="0" name="CREATE" url="/oa/org/org_save.action"></action>
+		<action permission="1" name="READ" url="/oa/org/org_view.action"></action>
+		<action permission="1" name="READ" url="/oa/org/org_tree.action"></action>
+		<action permission="1" name="READ" url="/oa/org/org_treeGrid.action"></action>
+		<action permission="2" name="UPDATE" url=""></action>
+		<action permission="3" name="DELETE" url="/oa/org/org_delete.action"></action>
+	</module>
+	<module sn="person" name="人员管理">
+		<action permission="0" name="CREATE" url=""></action>
+		<action permission="1" name="READ" url="/oa/org/org_view.action"></action>
+		<action permission="2" name="UPDATE" url=""></action>
+		<action permission="3" name="DELETE" url=""></action>
+	</module>
+	<module sn="module" name="模块管理">
+		<action permission="0" name="CREATE" url=""></action>
+		<action permission="1" name="READ" url=""></action>
+		<action permission="2" name="UPDATE" url=""></action>
+		<action permission="3" name="DELETE" url=""></action>
+	</module>
+</authentication>

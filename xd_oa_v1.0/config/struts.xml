@@ -12,13 +12,31 @@
 	<constant name="struts.multipart.maxSize" value="20480000" />
 	
 	<package name="main" namespace="" extends="json-default">
+	
+		<interceptors>
+			<!-- 定义拦截器 -->
+			<interceptor name="authentication" class="com.fjx.oa.interceptor.AuthenticationInterceptor"/>
+			<interceptor-stack name="authenticationStack">
+				<interceptor-ref name="authentication" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<!-- 默认拦截器 -->
+		<default-interceptor-ref name="authenticationStack">
+		</default-interceptor-ref>
+		 
 		<!-- 定义一个默认的action -->
 		<default-action-ref name="index"></default-action-ref>
 		<!-- 全局结果集 -->
 		<global-results>
 			<result name="index">/index.jsp</result>
+			<result name="out" type="chain">
+				<param name="namespace">/common</param>
+				<param name="actionName">msg_result</param>
+				<param name="msg">${msg}</param>
+			</result>
 			<result name="errors">/errors.jsp</result>
-			<result name="Exception">/common/exception/exception.jsp</result>
+			<result name="Exception">/common/exception.jsp</result>
 		</global-results>
 		
 		<!-- 声明式异常处理 -->

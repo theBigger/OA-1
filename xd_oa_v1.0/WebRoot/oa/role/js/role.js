@@ -111,7 +111,7 @@ $(function(){
 				}
 			}, {
 				field : 'x3',
-				title : '启用',
+				title : '全选 / 取消 ',
 				width : 50,
 				formatter : function(value,rowData, rowIndex) {
 					return '<input type="checkbox" id="'+rowData.id+'_USE" onclick="addOrUpdatePermission(this)" moduleId="'+rowData.id+'">';
@@ -158,6 +158,34 @@ function initAcl (role_id){
 		}
 	);
 }
+//授权
+function addOrUpdatePermission(field){
+	dwr.engine.setAsync(false);
+	
+	var jq_field = $(field);
+	//如果被选择上，则同时选择其"不继承"和"启用"checkbox
+	if(field.checked){
+		$("#"+jq_field.attr('moduleId')+"_USE").attr('checked',true);
+	}
+
+	acl.addOrUpdatePermission(
+		"role",
+		perm_params.role_id,
+		jq_field.attr('moduleId'),
+		jq_field.attr('permission'),
+		field.checked
+	);
+}
+
+//设置用户的继承特性
+function addOrUpdateExtends(field){
+	acl.addOrUpdateUserExtends(
+		perm_params.role_id,
+		field.moduleId,
+		!field.checked
+	);
+}
+
 
 /**
  * 点击角色名称后加载该角色的权限列表
@@ -211,40 +239,40 @@ function updatedRole() {
  * 删除角色
  */
 function removeRole() {
-		var rows = role_datagrid.datagrid('getSelections');
-		if (rows.length > 0) {
-			$.messager.confirm('请确认', '您要删除当前所选项目？', function(r) {
-				if (r) {
-					var params = '';
-					for ( var i = 0; i < rows.length; i++) {
-						params += 'ids='+rows[i].id+'&';
-					}
-					$.ajax({
-						url :  basePath + 'oa/role/role_deleteRole.action',
-						data : params,
-						cache : false,
-						dataType : "text",
-						success : function(res) {
-							if('success' == res){
-								$.messager.alert(
-									'提示',
-									'角色删除完成！',
-									'info'
-								);
-							}else{
-								$.messager.alert(
-									'提示',
-									'角色删除失败！',
-									'error'
-								);
-							}
-							$("#role-datagrid").datagrid('reload');
-						}
-					});
+	var rows = role_datagrid.datagrid('getSelections');
+	if (rows.length > 0) {
+		$.messager.confirm('请确认', '您要删除当前所选项目？', function(r) {
+			if (r) {
+				var params = '';
+				for ( var i = 0; i < rows.length; i++) {
+					params += 'ids='+rows[i].id+'&';
 				}
-			});
-		} else {
-			$.messager.alert('提示', '请选择要删除的记录！', 'warning');
-		}
+				$.ajax({
+					url :  basePath + 'oa/role/role_deleteRole.action',
+					data : params,
+					cache : false,
+					dataType : "text",
+					success : function(res) {
+						if('success' == res){
+							$.messager.alert(
+								'提示',
+								'角色删除完成！',
+								'info'
+							);
+						}else{
+							$.messager.alert(
+								'提示',
+								'角色删除失败！',
+								'error'
+							);
+						}
+						$("#role-datagrid").datagrid('reload');
+					}
+				});
+			}
+		});
+	} else {
+		$.messager.alert('提示', '请选择要删除的记录！', 'warning');
 	}
+}
 

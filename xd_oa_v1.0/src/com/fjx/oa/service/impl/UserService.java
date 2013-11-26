@@ -27,33 +27,33 @@ import com.fjx.oa.vo.EasyUIPagination;
 public class UserService extends BaseAbstractService<User> implements IUserService {
 	
 	@Override
-	public void addUser(User user, Serializable personId) throws HibernateException, SQLException {
+	public void addUser(User user, Serializable personId) throws Exception {
 		if(null != personId && !personId.equals("") && personId != "0"){
 			throw new SystemException("建立用户帐号时，人员信息不允许为空");
 		}
-		user.setPerson(loadEntity(Person.class, personId));
+		user.setPerson(get(Person.class, personId));
 		user.setCreateTime(new Date());
 		save(user);
 	}
 
 	@Override
-	public void updateUser(User user, Serializable personId) throws HibernateException, SQLException {
+	public void updateUser(User user, Serializable personId) throws Exception {
 		if(null != personId && !personId.equals("") && personId != "0"){
 			throw new SystemException("建立用户帐号时，人员信息不允许为空");
 		}
-		user.setPerson(loadEntity(Person.class, personId));
+		user.setPerson(get(Person.class, personId));
 		update(user);
 	}
 
 	@Override
-	public void addOrUpdateUserRole(Serializable userId, Serializable roleId, int orderNo) throws HibernateException, SQLException {
+	public void addOrUpdateUserRole(Serializable userId, Serializable roleId, int orderNo) throws Exception {
 		//首先根据userId和roleId，判断这两者之间是否已建立关联
 		UsersRoles ur = findUsersRoles(userId, roleId);
 		
 		if(ur == null){
 			ur = new UsersRoles();
-			ur.setRole(loadEntity(Role.class, roleId));
-			ur.setUser(loadEntity(User.class, userId));
+			ur.setRole(get(Role.class, roleId));
+			ur.setUser(get(User.class, userId));
 			ur.setOrderNo(orderNo);
 			getHibernateTemplate().save(ur);
 		}
@@ -63,22 +63,22 @@ public class UserService extends BaseAbstractService<User> implements IUserServi
 	}
 
 	@Override
-	public void delUserRole(Serializable userId, Serializable roleId) throws HibernateException, SQLException {
+	public void delUserRole(Serializable userId, Serializable roleId) throws Exception {
 		getHibernateTemplate().delete(findUsersRoles(userId, roleId));
 	}
 
 	@Override
-	public List<UsersRoles> searchUserRoles(Long userId) throws HibernateException, SQLException {
+	public List<UsersRoles> searchUserRoles(Long userId) throws Exception {
 		String hql = " from UsersRoles ur " +
 				"where ur.user.id = ? order by ur.orderNo";
-		return find4List(hql, true, userId);
+		return findListByHql(hql, userId);
 	}
 
 	@Override
-	public User login(String username, String password) throws HibernateException, SQLException {
+	public User login(String username, String password) throws Exception {
 		String queryUserHql = "select u from com.bjsxt.oa.model.User u where u.username = ?";
 		
-		User user = find4Unique(queryUserHql, true, username);
+		User user = findUniqueByHql(queryUserHql, username);
 		
 		if(user == null){
 			throw new SystemException("没有这个用户");
@@ -105,10 +105,10 @@ public class UserService extends BaseAbstractService<User> implements IUserServi
 	}
 
 	@Override
-	public List<User> searchUsersByRole(String roleName) throws HibernateException, SQLException {
+	public List<User> searchUsersByRole(String roleName) throws Exception {
 		String hql = "select u from UsersRoles ur " +
 				"join ur.user u join ur.role r where r.name = ? ";
-		return find4List(hql, true, roleName);
+		return findListByHql(hql, roleName);
 	}
 	
 	/**
@@ -119,22 +119,21 @@ public class UserService extends BaseAbstractService<User> implements IUserServi
 	 * @throws SQLException 
 	 * @throws HibernateException 
 	 */
-	private UsersRoles findUsersRoles(Serializable userId,Serializable roleId) throws HibernateException, SQLException{
+	private UsersRoles findUsersRoles(Serializable userId,Serializable roleId) throws Exception{
 		String hql = "select ur from UsersRoles ur where " +
 				"ur.role.id = ? and ur.user.id = ?";
-		return find4Unique(hql, true, roleId,userId);
+		return findUniqueByHql(hql, roleId,userId);
 	}
 
 	@Override
-	public EasyUIPagination<List<Map>> queryPageUsers() throws HibernateException,
-			SQLException {
+	public EasyUIPagination<List<Map>> queryPageUsers() throws Exception {
 		EasyUIPagination<List<Map>> page = null;
 		
 		String hql = "select " +
 				" new map(u.id as id,u.username as username,u.person.sex as sex,u.person.duty as duty,u.person.org.id as org_id,u.person.org.name as org_name,u.createTime as createTime, u.expireTime as expireTime) " +
 				" from User u " +
 				" where 1=1";
-		Pagination<List<Map<String, Object>>> users = find4ListPage(hql,true);
+		Pagination<Map<String, Object>> users = pageByHql(hql);
 		page = new EasyUIPagination(users);
 		return page;
 	}

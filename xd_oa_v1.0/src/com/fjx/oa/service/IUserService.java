@@ -15,8 +15,8 @@ import com.fjx.oa.vo.EasyUIPagination;
 
 public interface IUserService extends IBaseAbstractService<User> {
 	
-	public void addUser(User user,Serializable personId)throws HibernateException, SQLException;
-	public void updateUser(User user,Serializable personId)throws HibernateException, SQLException;
+	public void addUser(User user,Serializable personId)throws Exception;
+	public void updateUser(User user,Serializable personId)throws Exception;
 
 	/**
 	 * 在用户与角色之间建立关联
@@ -24,21 +24,21 @@ public interface IUserService extends IBaseAbstractService<User> {
 	 * @param roleId
 	 * @param orderNo
 	 */
-	public void addOrUpdateUserRole(Serializable userId, Serializable roleId, int orderNo)throws HibernateException, SQLException;
+	public void addOrUpdateUserRole(Serializable userId, Serializable roleId, int orderNo)throws Exception;
 	
 	/**
 	 * 删除用户与角色之间的关联
 	 * @param userId
 	 * @param roleId
 	 */
-	public void delUserRole(Serializable userId,Serializable roleId)throws HibernateException, SQLException;
+	public void delUserRole(Serializable userId,Serializable roleId)throws Exception;
 	
 	/**
 	 * 搜索某个用户所拥有的角色列表
 	 * @param userId
 	 * @return 元素是UsersRoles对象
 	 */
-	public List<UsersRoles> searchUserRoles(Long userId)throws HibernateException, SQLException;
+	public List<UsersRoles> searchUserRoles(Long userId)throws Exception;
 	
 	/**
 	 * 用户登录
@@ -46,14 +46,14 @@ public interface IUserService extends IBaseAbstractService<User> {
 	 * @param password
 	 * @return
 	 */
-	public User login(String username,String password)throws HibernateException, SQLException;
+	public User login(String username,String password)throws Exception;
 	
 	/**
 	 * 搜索某个角色下的用户名列表
 	 * @param roleName 角色名
 	 * @return 用户名(username)列表
 	 */
-	public List<User> searchUsersByRole(String roleName)throws HibernateException, SQLException;
+	public List<User> searchUsersByRole(String roleName)throws Exception;
 	
 	/**
 	 * 分页查询
@@ -61,6 +61,6 @@ public interface IUserService extends IBaseAbstractService<User> {
 	 * @throws HibernateException
 	 * @throws SQLException
 	 */
-	public EasyUIPagination<List<Map>> queryPageUsers()throws HibernateException, SQLException; 
+	public EasyUIPagination<List<Map>> queryPageUsers()throws Exception; 
 	
 }

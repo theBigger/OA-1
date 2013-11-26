@@ -19,11 +19,11 @@
 					var href;
 					if (/^\//.test(node.attributes.src)) {/*以"/"符号开头的,说明是本项目地址*/
 						href = "<%=path%>"+node.attributes.src;
-						//$.messager.progress({
-						//	text : '请求数据中，请稍等....',
-						//	cancel: "取消",
-						//	interval : 100
-						//});
+						$.messager.progress({
+							text : '请求数据中，请稍等....',
+							cancel: "取消",
+							interval : 100
+						});
 					} else {
 						href = node.attributes.src;
 					}

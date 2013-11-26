@@ -30,8 +30,8 @@ public class PersonService extends BaseAbstractService<Person> implements IPerso
 			hql += " p.name like '%"+name+"%'"; 
 		}
 		Object[] parameters = {name,createDate,expireTime};
-		Pagination<List<Map<String, Object>>> list = find4ListPage(hql,true);
-		EasyUIPagination easyPagination = new EasyUIPagination<List<Map<String, Object>>>(list);
+		Pagination<Map<String, Object>> list = pageByHql(hql);
+		EasyUIPagination easyPagination = new EasyUIPagination<Map<String, Object>>(list);
 		return easyPagination;
 	}
 	

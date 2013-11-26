@@ -25,7 +25,7 @@ public class ModuleService extends BaseAbstractService<Module> implements IModul
 
 	@Override
 	public List<Map<String, Object>> treeGrid4ListMap(Serializable pid)
-			throws HibernateException, SQLException {
+			throws Exception {
 		String hql = "select " +
 				" new map(m.id as id,m.name as name,m.sn as sn,m.icon as icon,m.url as url,m.order_no as order_no,m.parent.id as parent_id,m.parent.name as parent_name)" +
 				" from Module m where m.parent.id = '"+pid+"'";
@@ -35,7 +35,7 @@ public class ModuleService extends BaseAbstractService<Module> implements IModul
 				" from Module m where m.parent.id is null";
 		}
 		hql += " order by m.order_no asc";	//排序
-		List<Map<String, Object>> modules = find4List(hql,true);
+		List<Map<String, Object>> modules = findListByHql(hql);
 		for(int i = 0; i < modules.size(); i++){
 			if(isleef(modules.get(i).get("id")+"")){
 				modules.get(i).put("state", "open");
@@ -51,7 +51,7 @@ public class ModuleService extends BaseAbstractService<Module> implements IModul
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean isleef(Serializable id) throws HibernateException, SQLException{
+	public boolean isleef(Serializable id) throws Exception{
 		boolean flag = true;
 		String hql = " from Module m" +
 				" where 1=1 and m.parent.id = "+id;
@@ -70,7 +70,7 @@ public class ModuleService extends BaseAbstractService<Module> implements IModul
 			hql = "from Module m where m.parent is null";
 		}
 		hql += " order by m.order_no";
-		List<Module> list = find4List(hql, true);
+		List<Module> list = findListByHql(hql, true);
 		List<EasyuiTreeNode> tree = new ArrayList<EasyuiTreeNode>();
 		for (Module org : list) {
 			tree.add(tree(org, true));

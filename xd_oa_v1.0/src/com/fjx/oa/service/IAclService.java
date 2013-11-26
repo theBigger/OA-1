@@ -24,7 +24,7 @@ public interface IAclService extends IBaseAbstractService<ACL> {
 	 */
 	public void addOrUpdatePermission(String principalType,
 			Long principalId,Long moduleId,
-			int permission,boolean yes) throws HibernateException, SQLException;
+			int permission,boolean yes) throws Exception;
 	
 	/**
 	 * 删除授权
@@ -32,7 +32,7 @@ public interface IAclService extends IBaseAbstractService<ACL> {
 	 * @param principalId 主体标识
 	 * @param moduleId 资源标识
 	 */
-	public void delPermission(String principalType,Long principalId,Long moduleId)throws HibernateException, SQLException;
+	public void delPermission(String principalType,Long principalId,Long moduleId)throws Exception;
 	
 	/**
 	 * 设置aclTriState的值
@@ -40,7 +40,7 @@ public interface IAclService extends IBaseAbstractService<ACL> {
 	 * @param moduleId 模块标识
 	 * @param yes 是否有效
 	 */
-	public void addOrUpdateUserExtends(Long userId,Long moduleId,boolean yes) throws HibernateException, SQLException;
+	public void addOrUpdateUserExtends(Long userId,Long moduleId,boolean yes) throws Exception;
 	
 	/**
 	 * 即时认证，判断某个用户是否拥有对某个模块的某个操作的权限
@@ -49,7 +49,7 @@ public interface IAclService extends IBaseAbstractService<ACL> {
 	 * @param permission 操作标识（C/R/U/D）
 	 * @return 允许或不允许
 	 */
-	public boolean hasPermission(Long userId,Long moduleId,int permission)throws HibernateException, SQLException;
+	public boolean hasPermission(Long userId,Long moduleId,int permission)throws Exception;
 	
 	/**
 	 * 判断用户对某模块的某操作的授权（允许或不允许）
@@ -58,14 +58,14 @@ public interface IAclService extends IBaseAbstractService<ACL> {
 	 * @param permission 权限（C/R/U/D）
 	 * @return 允许（true）或不允许（false）
 	 */
-	public boolean hasPermissionByResourceSn(Long userId,String reourceSn,int permission)throws HibernateException, SQLException;	
+	public boolean hasPermissionByResourceSn(Long userId,String reourceSn,int permission)throws Exception;
 	
 	/**
 	 * 查询用户拥有读取权限的模块列表
 	 * @param userId 用户标识
 	 * @return 列表元素是Module对象
 	 */
-	public List<Module> searchModules(Long userId)throws HibernateException, SQLException;
+	public List<Module> searchModules(Long userId)throws Exception;
 	
 	/**
 	 * 
@@ -75,7 +75,7 @@ public interface IAclService extends IBaseAbstractService<ACL> {
 	 * @throws HibernateException
 	 * @throws SQLException
 	 */
-	public List<Map> searchAclRecord(String principalType,Long principalId)throws HibernateException, SQLException;
+	public List<Map> searchAclRecord(String principalType,Long principalId)throws Exception;
 	
 	
 }

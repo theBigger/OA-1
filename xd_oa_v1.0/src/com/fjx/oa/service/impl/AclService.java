@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fjx.common.framework.base.service.impl.BaseAbstractService;
 import com.fjx.oa.models.ACL;
 import com.fjx.oa.models.Module;
+import com.fjx.oa.security.init.Permission;
 import com.fjx.oa.service.IAclService;
 
 
@@ -29,7 +30,7 @@ public class AclService extends BaseAbstractService<ACL> implements IAclService 
 	
 	@Override
 	public void addOrUpdatePermission(String principalType, Long principalId,
-			Long moduleId, int permission, boolean yes) throws HibernateException, SQLException {
+			Long moduleId, int permission, boolean yes) throws Exception {
 		ACL acl = findACL(principalType, principalId, moduleId);
 		
 		//能够找到ACL对象，更新permission
@@ -49,14 +50,14 @@ public class AclService extends BaseAbstractService<ACL> implements IAclService 
 
 	@Override
 	public void delPermission(String principalType, Long principalId,
-			Long moduleId) throws HibernateException, SQLException {
+			Long moduleId) throws Exception {
 		String hql = "delete ACL acl where acl.principalType = ? " +
 			"and acl.principalId=? and acl.moduleId = ?";
 		bulkUpdate(hql,principalType, principalId, moduleId);
 	}
 
 	@Override
-	public void addOrUpdateUserExtends(Long userId, Long moduleId, boolean yes) throws HibernateException, SQLException {
+	public void addOrUpdateUserExtends(Long userId, Long moduleId, boolean yes) throws Exception {
 		//查找ACL对象
 		ACL acl = findACL(ACL.TYPE_USER,userId,moduleId);
 		//能够找到ACL对象，更新permission
@@ -73,9 +74,9 @@ public class AclService extends BaseAbstractService<ACL> implements IAclService 
 		acl.setExtends(yes);
 		save(acl);
 	}
-
+	
 	@Override
-	public boolean hasPermission(Long userId, Long moduleId, int permission) throws HibernateException, SQLException {
+	public boolean hasPermission(Long userId, Long moduleId, int permission) throws Exception {
 		//根据用户标识和模块标识查找授权记录
 		ACL acl = findACL(ACL.TYPE_USER,userId,moduleId);
 		
@@ -91,9 +92,9 @@ public class AclService extends BaseAbstractService<ACL> implements IAclService 
 		//继续查找用户拥有的角色的授权
 		
 		//查找分配给用户的角色，按优先级从高到低排序
-		String hql = "select new long(r.id role_id) from UsersRoles ur join ur.role r join ur.user u " +
+		String hql = "select r.id  from UsersRoles ur join ur.role r join ur.user u " +
 				"where u.id = ? order by ur.orderNo";
-		List<Long> roleIds = find4List(hql, true, userId);
+		List<Long> roleIds = findListByHql(hql, userId);
 		//遍历查询出来的角色，通过角色判断用户权限
 		for(Long roleId : roleIds){
 			//通过角色查询用户权限
@@ -108,30 +109,29 @@ public class AclService extends BaseAbstractService<ACL> implements IAclService 
 
 	@Override
 	public boolean hasPermissionByResourceSn(Long userId, String reourceSn,
-			int permission)throws HibernateException, SQLException  {
+			int permission)throws Exception  {
 		String hql = "select m.id from Module m where m.sn = ? ";
 		return hasPermission(
 				userId,
-				(Long) find4Unique(hql, true, reourceSn),
+				(Long) findUniqueByHql(hql, reourceSn),
 				permission);
 	}
 	
 	@Override
-	public List<Module> searchModules(Long userId) throws HibernateException, SQLException {
+	public List<Module> searchModules(Long userId) throws Exception {
 		Map<String, ACL> temp = new HashMap<String, ACL>();
 		
 		//查找用户拥有的角色，并按优先级从低到高排序
-		String hql = "select new long(r.id role_id) from UsersRoles ur join ur.role r join ur.user u " +
+		String hql = "select new long(r.id 'role_id') from UsersRoles ur join ur.role r join ur.user u " +
 				"where u.id = ? order by ur.orderNo desc";
 		
 		//依次查找角色的授权（ACL对象）
-		List<Long> roles = find4List(hql, true, userId);
+		List<Long> roles = findListByHql(hql, userId);
 		for(Long roleId : roles){
 			List<ACL> acls = findRoleAcls(roleId);
 			for(ACL acl:acls){
 				temp.put(acl.getModuleId()+"", acl);
 			}
-			
 		}
 		
 		//针对用户查找有效的用户授权
@@ -156,16 +156,17 @@ public class AclService extends BaseAbstractService<ACL> implements IAclService 
 		
 		String queryModules = " from Module m where m.id in (:ids)";
 		
-		return find4List(queryModules, true, temp.keySet());
+		return findListByHql(queryModules, temp.keySet());
 	}
-
+	
+	
 	@Override
-	public List<Map> searchAclRecord(String principalType, Long principalId) throws HibernateException, SQLException {
+	public List<Map> searchAclRecord(String principalType, Long principalId) throws Exception {
 		List<Map> result = null;
 		//使用原生sql语句
 		String sql = "select moduleId,aclState&1 'cState',aclState&2 'rState',aclState&4 'uState',aclState&8 'dState',aclTriState 'extState'" +
 				"from oa_acl where principalType = '"+principalType+"' and principalId = "+principalId;
-		result = find4List(sql, false);
+		result = findListMapBySql(sql);
 		return result;
 	}
 	
@@ -180,11 +181,11 @@ public class AclService extends BaseAbstractService<ACL> implements IAclService 
 	 * @throws HibernateException 
 	 * @throws Exception 
 	 */
-	private ACL findACL(String principalType,Long principalId,Long moduleId) throws HibernateException, SQLException {
+	private ACL findACL(String principalType,Long principalId,Long moduleId) throws Exception {
 		ACL acl = null;
 		String hql = "from ACL acl where acl.principalType = ? " +
 			"and acl.principalId=? and acl.moduleId = ?";
-		acl = find4Unique(hql,true, principalType,principalId,moduleId);
+		acl = findOneByHql(hql, principalType,principalId,moduleId);
 		return acl;
 	}
 	
@@ -195,10 +196,10 @@ public class AclService extends BaseAbstractService<ACL> implements IAclService 
 	 * @throws SQLException 
 	 * @throws HibernateException 
 	 */
-	private List<ACL> findRoleAcls(Long roleId) throws HibernateException, SQLException{
+	private List<ACL> findRoleAcls(Long roleId) throws Exception{
 		String hql = "select acl from ACL acl where acl.principalType = ? " +
 				"and acl.principalId = ?";
-		List<ACL> result = find4List(hql, true, ACL.TYPE_ROLE,roleId);
+		List<ACL> result = findListByHql(hql, ACL.TYPE_ROLE,roleId);
 		return result;
 	}
 	
@@ -209,10 +210,10 @@ public class AclService extends BaseAbstractService<ACL> implements IAclService 
 	 * @throws SQLException 
 	 * @throws HibernateException 
 	 */
-	private List<ACL> findUserAcls(Long userId) throws HibernateException, SQLException{
+	private List<ACL> findUserAcls(Long userId) throws Exception{
 		String hql = "select acl from ACL acl where acl.principalType = ? " +
 				"and acl.principalId = ? and acl.aclTriState = ? ";
-		List<ACL> result = find4List(hql, true, ACL.TYPE_USER ,userId,ACL.ACL_TRI_STATE_UNEXTENDS);
+		List<ACL> result = findListByHql(hql, ACL.TYPE_USER ,userId,ACL.ACL_TRI_STATE_UNEXTENDS);
 		return result;
 	}
 }

@@ -4,6 +4,12 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 	
+	<package name="msg" namespace="/common" extends="json-default">
+		<action name="msg_result" class="com.fjx.oa.action.MsgAction" method="result">
+			<result name="success" type="json">msg</result>
+		</action>
+	</package>
+	
 	<package name="oa" namespace="/oa" extends="main">
 		<action name="view_*" class="com.fjx.oa.view.MainAction" method="{1}">
 			<result name="main">/oa/main.jsp</result>

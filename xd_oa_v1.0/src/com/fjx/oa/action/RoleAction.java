@@ -36,7 +36,7 @@ public class RoleAction extends BaseAction {
 	
 	public String roleList() throws Exception{
 		List<Role> list = null;
-		list = roleService.findAllEntity();
+		list = roleService.findList();
 		write(list);
 		return null;
 	}

@@ -10,7 +10,7 @@
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.htm</welcome-file>
 	</welcome-file-list>
-
+	
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -21,8 +21,18 @@
 		<!-- <param-value>/WEB-INF/applicationContext-*.xml,classpath*:applicationContext-*.xml</param-value> -->
 		<param-value>classpath:spring-applicationContext.xml</param-value>
 	</context-param>
-
-
+	
+	
+	
+	<!-- 初始化设置servlet 
+	<servlet>
+		<servlet-name>init</servlet-name>
+		<servlet-class>
+			com.fjx.oa.init.SpringServlet
+		</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>-->
+	<!-- 初始化设置servlet結束 -->
 	<!-- 配置DWR前端控制器 开始  -->
 	<servlet>
 		<display-name>DWR Servlet</display-name>

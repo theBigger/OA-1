@@ -158,8 +158,8 @@
 				}
 			} ] ],
 			columns : [ [ {
-				field : 'icon',
-				title : '菜单图标',
+				field : 'sn',
+				title : '模块标识',
 				width : 150,
 				editor : {
 					type : 'combobox',

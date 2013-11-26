@@ -8,6 +8,6 @@ import com.fjx.oa.models.Role;
 
 public interface IRoleService extends IBaseAbstractService<Role> {
 	
-	public void removeAll(Long[] pks ) throws DataAccessException;
+	public void removeAll(Long[] pks ) throws Exception;
 	
 }
