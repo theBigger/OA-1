@@ -39,6 +39,7 @@ $.fn.panel.defaults.loadingMessage = '加载中，请稍候....';
 $.fn.datagrid.defaults.loadMsg = '加载中，请稍候....';
 
 var easyuiErrorFunction = function(XMLHttpRequest) {
+	fjx.closeProgress();
 	/* $.messager.progress('close'); */
 	/* alert(XMLHttpRequest.responseText.split('<script')[0]); */
 	$.messager.alert('错误', XMLHttpRequest.responseText.split('<script')[0]);

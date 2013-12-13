@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fjx.common.framework.base.service.impl.BaseAbstractService;
 import com.fjx.oa.security.init.PermissionConfig;
-import com.fjx.oa.security.modules.ACL;
-import com.fjx.oa.security.modules.Module;
+import com.fjx.oa.security.models.ACL;
+import com.fjx.oa.security.models.Module;
 import com.fjx.oa.security.service.IAclService;
 
 

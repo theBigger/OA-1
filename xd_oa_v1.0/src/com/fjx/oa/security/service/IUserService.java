@@ -8,8 +8,8 @@ import java.util.Map;
 import org.hibernate.HibernateException;
 
 import com.fjx.common.framework.base.service.IBaseAbstractService;
-import com.fjx.oa.security.modules.User;
-import com.fjx.oa.security.modules.UsersRoles;
+import com.fjx.oa.security.models.User;
+import com.fjx.oa.security.models.UsersRoles;
 import com.fjx.oa.vo.EasyUIPagination;
 
 

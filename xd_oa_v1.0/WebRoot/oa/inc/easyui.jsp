@@ -18,5 +18,7 @@
 <script type="text/javascript">
 	//根路径径
 	var basePath = '<%=basePath%>';
-	
+	$(function(){
+		fjx.closeProgress();
+	});
 </script>

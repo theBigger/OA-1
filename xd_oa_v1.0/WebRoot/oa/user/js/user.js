@@ -123,9 +123,14 @@ var datagrid;
 				field : 'id',
 				width : 50,
 				checkbox : true
+			},{
+				field : 'name',
+				title : '姓名',
+				width : 100,
+				sortable : true
 			}, {
 				field : 'username',
-				title : '用户名称',
+				title : '登陆账号',
 				width : 100,
 				sortable : true
 			} ] ],
@@ -147,15 +152,14 @@ var datagrid;
 				width : 150,
 				sortable : true
 			}, {
-				field : 'roleText',
-				title : '角色',
-				width : 200
-			}, {
-				field : 'roleId',
-				title : '角色',
+				field : 'x1',
+				title : '状态',
 				width : 200,
-				hidden : true
-			} ] ],
+				formatter : function(value, rowData, rowIndex) {
+					var str = '<a href="#" class="easyui-linkbutton">分配账号</a>';
+					return str;
+				}
+			}] ],
 			onRowContextMenu : function(e, rowIndex, rowData) {
 				e.preventDefault();
 				$(this).datagrid('unselectAll');

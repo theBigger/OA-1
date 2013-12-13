@@ -6,8 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fjx.common.framework.base.action.BaseAction;
-import com.fjx.oa.models.User;
-import com.fjx.oa.service.IUserService;
+import com.fjx.oa.security.models.User;
+import com.fjx.oa.security.service.IUserService;
 import com.fjx.oa.vo.EasyUIPagination;
 
 
@@ -26,10 +26,6 @@ public class UserAction extends BaseAction {
 	
 	@Autowired
 	private IUserService userService;
-	
-	public String view(){
-		return super.view();
-	}
 	
 	public String query_page() throws Exception{
 		EasyUIPagination<List<Map>> page = null;

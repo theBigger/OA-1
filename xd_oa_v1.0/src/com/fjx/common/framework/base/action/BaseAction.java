@@ -42,7 +42,7 @@ public abstract class BaseAction extends ActionSupport {
 	 * jsp视图跳转
 	 * @return
 	 */
-	protected String view(){
+	public String view(){
 		logger.debug(this.getClass()+".view()");
 		return "view";
 	}

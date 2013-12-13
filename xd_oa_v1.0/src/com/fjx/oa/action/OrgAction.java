@@ -9,7 +9,7 @@ import com.fjx.common.framework.base.action.BaseAction;
 import com.fjx.common.framework.system.exception.SystemException;
 import com.fjx.oa.models.Organization;
 import com.fjx.oa.security.annotation.SystemPermission;
-import com.fjx.oa.security.init.Permission;
+import com.fjx.oa.security.init.PermissionConfig;
 import com.fjx.oa.service.IOrganizationService;
 import com.fjx.oa.vo.EasyuiTreeNode;
 
@@ -32,10 +32,6 @@ public class OrgAction extends BaseAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 4333403511458402875L;
-	
-	public String view(){
-		return super.view();
-	}
 	
 	/**
 	 * 树形表格

@@ -15,9 +15,9 @@ import com.fjx.common.framework.base.service.impl.BaseAbstractService;
 import com.fjx.common.framework.system.exception.SystemException;
 import com.fjx.common.framework.system.pagination.Pagination;
 import com.fjx.oa.models.Person;
-import com.fjx.oa.security.modules.Role;
-import com.fjx.oa.security.modules.User;
-import com.fjx.oa.security.modules.UsersRoles;
+import com.fjx.oa.security.models.Role;
+import com.fjx.oa.security.models.User;
+import com.fjx.oa.security.models.UsersRoles;
 import com.fjx.oa.security.service.IUserService;
 import com.fjx.oa.vo.EasyUIPagination;
 

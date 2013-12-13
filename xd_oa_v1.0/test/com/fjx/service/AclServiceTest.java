@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.fjx.oa.service.IAclService;
+import com.fjx.oa.security.service.IAclService;
+import com.fjx.oa.security.service.impl.AclService;
 import com.fjx.oa.service.IPersonService;
-import com.fjx.oa.service.impl.AclService;
 
 
 

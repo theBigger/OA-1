@@ -7,8 +7,8 @@ import java.util.Map;
 import org.hibernate.HibernateException;
 
 import com.fjx.common.framework.base.service.IBaseAbstractService;
-import com.fjx.oa.security.modules.ACL;
-import com.fjx.oa.security.modules.Module;
+import com.fjx.oa.security.models.ACL;
+import com.fjx.oa.security.models.Module;
 
 
 

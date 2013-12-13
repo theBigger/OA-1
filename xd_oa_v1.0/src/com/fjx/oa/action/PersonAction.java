@@ -26,10 +26,6 @@ public class PersonAction extends BaseAction {
 	/******页面参数********/
 	private Pagination<Person> persons;
 	
-	public String view(){
-		return super.view();
-	}
-	
 	/**
 	 * 分页查询人员信息
 	 * @return

@@ -9,6 +9,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fjx.oa.security.models.User;
+
 
 @Entity
 @Table(name="oa_person")

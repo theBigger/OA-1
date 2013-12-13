@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fjx.common.utils.Dom4jHelper;
-import com.fjx.oa.security.modules.AuthenUrl;
+import com.fjx.oa.security.models.AuthenUrl;
 
 public class PermissionConfig {
 

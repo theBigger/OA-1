@@ -110,6 +110,21 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	}
 	
 	@Override
+	public boolean delete(T entity) throws Exception{
+		
+		boolean flag = false;
+		try {
+			getHibernateTemplate().delete(entity);
+			flag = true;
+		} catch (Exception e) {
+			flag = false;
+			logger.error("删除数据失败", e);
+			throw new SystemException("删除数据失败",e);
+		}
+		return flag;
+	}
+	
+	@Override
 	public boolean deleteAll(Collection<T> entities) throws Exception{
 		boolean flag = false;
 		try {
@@ -326,7 +341,11 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		if(!isHql){
 			q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
 		}
-		return (X) q.list().get(0);
+		List list = q.list();
+		if(null != null && list.size()>0){
+			return (X)list;
+		}
+		return null;
 	}
 	/**
 	 * 分页查询

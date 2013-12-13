@@ -88,7 +88,7 @@ $(function(){
 			}, {
 				field : 'text',
 				title : '资源名称',
-				width : 250
+				width : 150
 			} ] ],
 			columns : [ [ {
 				field : 'x1',
@@ -96,25 +96,27 @@ $(function(){
 				width : 250,
 				formatter : function(value,rowData, rowIndex) {
 					var check_str = 
-					'<input type="checkbox" id="'+rowData.id+'_C" onclick="addOrUpdatePermission(this)" moduleId="'+rowData.id+'" permission="0">C'+
-					'<input type="checkbox" id="'+rowData.id+'_R" onclick="addOrUpdatePermission(this)" moduleId="'+rowData.id+'" permission="1">R'+
-					'<input type="checkbox" id="'+rowData.id+'_U" onclick="addOrUpdatePermission(this)" moduleId="'+rowData.id+'" permission="2">U'+
-					'<input type="checkbox" id="'+rowData.id+'_D" onclick="addOrUpdatePermission(this)" moduleId="'+rowData.id+'" permission="3">D';
+					'<input type="checkbox" id="'+rowData.id+'_R" onclick="addOrUpdatePermission(this)" moduleId="'+rowData.id+'" permission="1">查询 | '+
+					'<input type="checkbox" id="'+rowData.id+'_C" onclick="addOrUpdatePermission(this)" moduleId="'+rowData.id+'" permission="0">添加 | '+
+					'<input type="checkbox" id="'+rowData.id+'_U" onclick="addOrUpdatePermission(this)" moduleId="'+rowData.id+'" permission="2">修改 | '+
+					'<input type="checkbox" id="'+rowData.id+'_D" onclick="addOrUpdatePermission(this)" moduleId="'+rowData.id+'" permission="3">删除';
 					return check_str;
 				}
-			},  {
+			}, 
+			/*{
 				field : 'x2',
 				title : '继承',
 				width : 50,
 				formatter : function(value,rowData, rowIndex) {
-					return '<input type="checkbox" id="'+rowData.id+'_EXT" onclick="addOrUpdatePermission(this)" moduleId="'+rowData.id+'">';
+					return '<input type="checkbox" id="'+rowData.id+'_EXT" onclick="addOrUpdateExtends(this)" moduleId="'+rowData.id+'">';
 				}
-			}, {
+			},*/
+			{
 				field : 'x3',
-				title : '全选 / 取消 ',
-				width : 50,
+				title : '启用 ',
+				width : 100,
 				formatter : function(value,rowData, rowIndex) {
-					return '<input type="checkbox" id="'+rowData.id+'_USE" onclick="addOrUpdatePermission(this)" moduleId="'+rowData.id+'">';
+					return '<input type="checkbox" id="'+rowData.id+'_USE" onclick="usePermission(this)" moduleId="'+rowData.id+'">';
 				}
 			}]],
 		onBeforeLoad:function(){
@@ -135,7 +137,6 @@ function formatRole(val,row,rowIndex){
 }
 
 
-
 function initAcl (role_id){
 	acl.searchAclRecord(
 		"role",
@@ -153,7 +154,7 @@ function initAcl (role_id){
 				$("#"+moduleId+"_R").attr('checked', rState == 0 ? false : true);
 				$("#"+moduleId+"_U").attr('checked', uState == 0 ? false : true);
 				$("#"+moduleId+"_D").attr('checked', dState == 0 ? false : true);
-				$("#"+moduleId+"_EXT").attr('checked', extState == 0 ? false : true);
+				//$("#"+moduleId+"_EXT").attr('checked', extState == 0 ? false : true);
 			}
 		}
 	);
@@ -177,11 +178,40 @@ function addOrUpdatePermission(field){
 	);
 }
 
+//点击启用checkbox
+function usePermission(field){
+	//如果checkbox被选中，意味着需要更新ACL的状态
+	//更新C/R/U/D以及Extends状态
+	
+	//设置为同步方式，以便DWR依次发出下列请求
+	dwr.engine.setAsync(false);
+	var jq_field = $(field);
+	if(field.checked){
+		addOrUpdatePermission($("#"+jq_field.attr('moduleId')+"_C")[0]);
+		addOrUpdatePermission($("#"+jq_field.attr('moduleId')+"_R")[0]);
+		addOrUpdatePermission($("#"+jq_field.attr('moduleId')+"_U")[0]);
+		addOrUpdatePermission($("#"+jq_field.attr('moduleId')+"_D")[0]);
+	}else{
+		aclManager.delPermission(
+			"role",
+			perm_params.role_id,
+			jq_field.attr('moduleId')	
+		);
+		$(field.moduleId+"_C").checked = false;
+		$(field.moduleId+"_R").checked = false;
+		$(field.moduleId+"_U").checked = false;
+		$(field.moduleId+"_D").checked = false;
+	}
+}
+
+
+
 //设置用户的继承特性
 function addOrUpdateExtends(field){
+	var jq_field = $(field);
 	acl.addOrUpdateUserExtends(
 		perm_params.role_id,
-		field.moduleId,
+		jq_field.attr('moduleId'),
 		!field.checked
 	);
 }

@@ -34,6 +34,7 @@
         <property name="packagesToScan">
 			<list>
 				<value>com.fjx.oa.models</value>
+				<value>com.fjx.oa.security.models</value>
 			</list>
 		</property>
   	</bean>

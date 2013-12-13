@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fjx.common.framework.base.action.BaseAction;
 import com.fjx.common.framework.system.exception.SystemException;
-import com.fjx.oa.service.IModuleService;
+import com.fjx.oa.security.service.IModuleService;
 import com.fjx.oa.vo.EasyuiTreeNode;
 
 /**
@@ -30,10 +30,6 @@ public class ModuleAction extends BaseAction {
 	private Long pid;
 	private Long id;
 	
-	
-	public String view(){
-		return super.view();
-	}
 	
 	/**
 	 * 树形表格

@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fjx.common.framework.base.action.BaseAction;
-import com.fjx.oa.service.IAclService;
-import com.fjx.oa.service.IModuleService;
+import com.fjx.oa.security.service.IAclService;
+import com.fjx.oa.security.service.IModuleService;
 import com.fjx.oa.vo.EasyuiTreeNode;
 
 public class AclAction extends BaseAction {

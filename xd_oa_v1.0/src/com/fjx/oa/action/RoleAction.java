@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fjx.common.framework.base.action.BaseAction;
-import com.fjx.oa.models.Role;
-import com.fjx.oa.service.IRoleService;
+import com.fjx.oa.security.models.Role;
+import com.fjx.oa.security.service.IRoleService;
 
 /**
  * 角色管理
@@ -29,11 +29,7 @@ public class RoleAction extends BaseAction {
 	@Autowired
 	private IRoleService roleService;
 	
-	
-	public String view(){
-		return super.view();
-	}
-	
+
 	public String roleList() throws Exception{
 		List<Role> list = null;
 		list = roleService.findList();

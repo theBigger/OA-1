@@ -36,9 +36,15 @@ public interface IBaseDao<T> {
 	public boolean saveOrUpdate(T entity) throws Exception;
 	/**
 	 * 删除记录
-	 * @param pk
+	 * @param 
 	 */
 	public boolean delete (Serializable pk) throws Exception;
+	
+	/**
+	 * 删除记录
+	 * @param 
+	 */
+	public boolean delete (T entity) throws Exception;
 	/**
 	 * 
 	 * @param entities
