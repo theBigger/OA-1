@@ -185,7 +185,12 @@ public class AclService extends BaseAbstractService<ACL> implements IAclService 
 		ACL acl = null;
 		String hql = "from ACL acl where acl.principalType = ? " +
 			"and acl.principalId=? and acl.moduleId = ?";
-		acl = findOneByHql(hql, principalType,principalId,moduleId);
+		try {
+			acl = findOneByHql(hql, principalType,principalId,moduleId);
+		} catch (Exception e) {
+			logger.error("查询ACL实例出现异常",e);
+			throw new RuntimeException("查询ACL实例出现异常",e);
+		}
 		return acl;
 	}
 	

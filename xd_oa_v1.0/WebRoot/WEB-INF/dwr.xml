@@ -15,6 +15,10 @@
 			<param name="beanName" value="aclService"></param>
 		</create>
 		
+		<create javascript="dict" creator="spring">
+			<!-- //param元素的name属性值可以是class,beanName等，此处用beanName, //value得值是定义在applicationContext.xml中某个bean的id值。 -->
+			<param name="beanName" value="dictService"></param>
+		</create>
 		<!-- 
 			//convert:配置具体的javabean; 
 			//match:具体的java类名; 

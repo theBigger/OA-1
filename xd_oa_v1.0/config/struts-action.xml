@@ -36,16 +36,15 @@
 	
 	<!-- 人员管理 -->
 	<package name="person" namespace="/oa/person" extends="main">
-		<action name="person_*" class="com.fjx.oa.action.PersonAction" method="{1}">
+		<action name="person_*" class="com.fjx.oa.security.action.PersonAction" method="{1}">
 			<result name="view" >/oa/person/person.jsp</result>
-			<!-- <result name="persons_page" type="json" >easyPersons</result> -->
 		</action>
 	</package>
 	
 	
 	<!-- 用户管理 -->
 	<package name="user" namespace="/oa/user" extends="main">
-		<action name="user_*" class="com.fjx.oa.action.UserAction" method="{1}">
+		<action name="user_*" class="com.fjx.oa.security.action.UserAction" method="{1}">
 			<result name="view" >/oa/user/user.jsp</result>
 		</action>
 	</package>
@@ -53,14 +52,14 @@
 	
 	<!-- 模块管理 -->
 	<package name="module" namespace="/oa/module" extends="main">
-		<action name="module_*" class="com.fjx.oa.action.ModuleAction" method="{1}">
+		<action name="module_*" class="com.fjx.oa.security.action.ModuleAction" method="{1}">
 			<result name="view" >/oa/module/module.jsp</result>
 		</action>
 	</package>
 	
 	<!-- 角色管理 -->
 	<package name="role" namespace="/oa/role" extends="main">
-		<action name="role_*" class="com.fjx.oa.action.RoleAction" method="{1}">
+		<action name="role_*" class="com.fjx.oa.security.action.RoleAction" method="{1}">
 			<result name="view" >/oa/role/role.jsp</result>
 		</action>
 	</package>

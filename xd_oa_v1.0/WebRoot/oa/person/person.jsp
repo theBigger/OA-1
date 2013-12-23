@@ -5,10 +5,6 @@
 <jsp:include page="../inc/meta.jsp"></jsp:include>
 <jsp:include page="../inc/easyui.jsp"></jsp:include>
 <script src="oa/person/js/person.js" type="text/javascript" charset="UTF-8"></script>
-
-<script type="text/javascript" charset="UTF-8">
-	
-</script>
 </head>
 <body class="easyui-layout" fit="true">
 	<div region="center" border="false" style="overflow: hidden;">
@@ -17,18 +13,15 @@
 				<legend>筛选</legend>
 				<table class="tableForm">
 					<tr>
-						<th>用户名称</th>
-						<td colspan="2"><input name="name" style="width: 305px;" />
+						<td>所属机构:<input name="org" style="width: 150px;" />
+						</td>
+						<td>用户名称:<input name="name" style="width: 150px;" />
 						</td>
 					</tr>
 					<tr>
-						<th>创建时间</th>
-						<td colspan="2"><input name="createdatetimeStart" class="easyui-datetimebox" editable="false" style="width: 150px;" />-<input name="createdatetimeEnd" class="easyui-datetimebox" editable="false" style="width: 150px;" />
+						<td>创建时间:<input name="createdatetimeStart" class="easyui-datetimebox" editable="false" style="width: 150px;" /></td>
+						<td>------------<input name="createdatetimeEnd" class="easyui-datetimebox" editable="false" style="width: 150px;" />
 						</td>
-					</tr>
-					<tr>
-						<th>最后修改时间</th>
-						<td><input name="modifydatetimeStart" class="easyui-datetimebox" editable="false" style="width: 150px;" />-<input name="modifydatetimeEnd" class="easyui-datetimebox" editable="false" style="width: 150px;" /></td>
 						<td><a class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="searchFun();" href="javascript:void(0);">查找</a><a class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="clearFun();" href="javascript:void(0);">清空</a>
 						</td>
 					</tr>
@@ -48,29 +41,39 @@
 	<div id="userDialog" style="display: none;overflow: hidden;">
 		<form id="userForm" method="post">
 			<table class="tableForm">
+				<input name="id" type="hidden" value="" />
 				<tr>
-					<th>用户ID</th>
-					<td><input name="id" readonly="readonly" /></td>
+					<th>所属机构</th>
+					<td><input id="org" name="org" readonly="readonly" class="easyui-validatebox" required="true" /></td>
 				</tr>
 				<tr>
-					<th>登录名称</th>
+					<th>姓名</th>
 					<td><input name="name" class="easyui-validatebox" required="true" /></td>
 				</tr>
-				<tr title="如果不更改密码,请留空!">
-					<th>登录密码</th>
-					<td><input name="password" type="password" /></td>
+				<tr>
+					<th>性别</th>
+					<td>
+						<select name="sex" class="easyui-validatebox" required="true">
+							<option>男</option>
+							<option>女</option>
+						</select>
+					</td>
 				</tr>
 				<tr>
-					<th>创建时间</th>
-					<td><input name="createdatetime" class="easyui-datetimebox" style="width: 156px;" /></td>
+					<th>年龄</th>
+					<td><input name="age" class="easyui-validatebox" required="true" /></td>
 				</tr>
 				<tr>
-					<th>最后修改时间</th>
-					<td><input name="modifydatetime" class="easyui-datetimebox" style="width: 156px;" /></td>
+					<th>电话</th>
+					<td><input name="phone_no" class="easyui-validatebox" required="true" /></td>
 				</tr>
 				<tr>
-					<th>所属角色</th>
-					<td><select name="roleId" style="width: 156px;"></select></td>
+					<th>地址</th>
+					<td><input name="address" type="text" /></td>
+				</tr>
+				<tr>
+					<th>描述</th>
+					<td><input name="desc" type="text" style="width: 156px;" /></td>
 				</tr>
 			</table>
 		</form>

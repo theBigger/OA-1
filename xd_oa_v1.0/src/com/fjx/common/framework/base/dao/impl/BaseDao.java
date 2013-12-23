@@ -11,14 +11,12 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.apache.struts2.json.JSONUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
@@ -58,6 +56,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		Serializable serializable = null;
 		try {
 			serializable = getHibernateTemplate().save(entity);
+			logger.debug("save ok："+JSONUtil.serialize(entity));
 		} catch (Exception e) {
 			serializable = null;
 			logger.error("数据保存失败", e);
@@ -71,6 +70,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		Serializable serializable = null;
 		try {
 			serializable = getHibernateTemplate().save(entity);
+			logger.debug("add ok："+JSONUtil.serialize(entity));
 		} catch (Exception e) {
 			serializable = null;
 			logger.error("数据保存失败", e);
@@ -84,6 +84,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		boolean flag = false;
 		try {
 			 getHibernateTemplate().saveOrUpdate(entity);
+			 logger.debug("saveOrUpdate ok："+JSONUtil.serialize(entity));
 			 flag = true;
 		} catch (Exception e) {
 			flag = false;
@@ -100,6 +101,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		try {
 			T entity = (T) getHibernateTemplate().load(getEntityClass(), pk);
 			getHibernateTemplate().delete(entity);
+			logger.debug("delete ok: "+JSONUtil.serialize(entity));
 			flag = true;
 		} catch (Exception e) {
 			flag = false;
@@ -115,6 +117,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		boolean flag = false;
 		try {
 			getHibernateTemplate().delete(entity);
+			logger.debug("delete ok: "+JSONUtil.serialize(entity));
 			flag = true;
 		} catch (Exception e) {
 			flag = false;
@@ -129,6 +132,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		boolean flag = false;
 		try {
 			getHibernateTemplate().deleteAll(entities);
+			logger.debug("delete ok: "+JSONUtil.serialize(entities));
 			flag = true;
 		} catch (Exception e) {
 			flag = false;
@@ -143,6 +147,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		boolean flag = false;
 		try {
 			getHibernateTemplate().update(entity);
+			logger.debug("update ok: "+JSONUtil.serialize(entity));
 			flag = true;
 		} catch (Exception e) {
 			flag = false;
@@ -191,6 +196,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 			throws Exception {
 		Query q = createMyQuery(sql, false);
 		q = setQueryParameters(q, parameters);
+		//将结果集转为List<Map>
 		q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
 		return q.list();
 	}
@@ -293,9 +299,12 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	 */
 	private Query setQueryParameters(Query q, Object... parameters){
 		if (parameters != null && parameters.length > 0) {
+			String paramsStr = "";
 			for (int i = 0; i < parameters.length; i++) {
 				q.setParameter(i, parameters[i]);
+				paramsStr += " 【" + i + " : " + parameters[i] + "】";
 			}
+			logger.debug("设置ql参数：" + paramsStr);
 		}
 		return q;
 	}
@@ -342,8 +351,8 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 			q.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
 		}
 		List list = q.list();
-		if(null != null && list.size()>0){
-			return (X)list;
+		if(null != list && list.size()>0){
+			return (X)list.get(0);
 		}
 		return null;
 	}
@@ -366,10 +375,13 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 						Query q = session.createQuery(hql);
 						
 						if (parameters != null && parameters.length > 0) {
+							String paramsStr = "";
 							for (int i = 0; i < parameters.length; i++) {
 								logger.info(hql+"的分页参数："+parameters[i]);
 								q.setParameter(i, parameters[i]);
+								paramsStr += i + " : " + parameters[i];
 							}
+							logger.debug("设置ql参数：" + paramsStr);
 						}
 						q.setFirstResult(PaginationContext.getOffset());	//filter拦截到的分页参数
 						q.setMaxResults(PaginationContext.getPagesize());	//filter拦截到的分页参数

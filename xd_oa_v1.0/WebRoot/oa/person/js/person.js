@@ -15,7 +15,7 @@ $(function() {
 	});
 
 	$('[name=roleId]').combotree({
-		url : basePath + 'oa/org/org/org_tree.action',
+		url : basePath + 'oa/org/org_tree.action',
 		animate : false,
 		lines : !fjx.isLessThanIe8(),
 		checkbox : true,
@@ -66,7 +66,7 @@ $(function() {
 			handler : function() {
 				if (userForm.find('[name=id]').val() != '') {
 					userForm.form('submit', {
-						url : 'userController.do?edit',
+						url : basePath + 'oa/person/person_saveOrUpdate.action',
 						success : function(data) {
 							userDialog.dialog('close');
 							$.messager.show({
@@ -183,6 +183,9 @@ function append() {
 	});
 	userForm.find('[name=name]').removeAttr('readonly');
 	userForm.form('clear');
+	$('#org').combotree({   
+		url:basePath + 'oa/org/org_tree.action'
+	}); 
 }
 
 function edit() {

@@ -13,8 +13,7 @@
 	
 
 	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-		<!-- default: /WEB-INF/applicationContext.xml -->
+		<listener-class>com.fjx.oa.init.MyContextLoaderListener</listener-class>
 	</listener>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
