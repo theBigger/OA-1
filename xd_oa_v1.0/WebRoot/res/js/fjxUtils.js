@@ -7,7 +7,7 @@
 var fjx = $.extend({}, fjx);/* 全局对象 */
 
 /*定义是否自动解析easyui组件。*/
-//$.parser.auto = false;
+$.parser.auto = true;
 $(function() {
 	if ($.cookie('easyuiThemeName')) {
 		fjx.changeTheme($.cookie('easyuiThemeName'));

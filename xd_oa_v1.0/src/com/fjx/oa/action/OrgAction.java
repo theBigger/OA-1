@@ -1,18 +1,11 @@
 package com.fjx.oa.action;
 
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fjx.common.framework.base.action.BaseAction;
-import com.fjx.common.framework.system.exception.SystemException;
+import com.fjx.common.framework.base.action.MyExecuteCallback;
 import com.fjx.oa.models.Organization;
-import com.fjx.oa.security.annotation.SystemPermission;
-import com.fjx.oa.security.init.PermissionConfig;
 import com.fjx.oa.service.IOrganizationService;
-import com.fjx.oa.vo.EasyuiTreeNode;
-
 
 
 public class OrgAction extends BaseAction {
@@ -40,14 +33,20 @@ public class OrgAction extends BaseAction {
 	 * @throws Exception
 	 */
 	public String treeGrid  () throws Exception  {
-		List<Map<String, Object>> list = null;
-		try {
-			list = organizationService.treeGrid4ListMap(id);
-		} catch (Exception e) {
-			logger.error("获取机构列表数据发生错误", e);
-			throw  new SystemException("获取机构列表数据发生错误",e);
-		}
-		write(list);
+		execute4ResultJson(new MyExecuteCallback() {
+			@Override
+			public Object execute() throws Exception {
+				return organizationService.treeGrid4ListMap(id);
+			}
+		}, "获取机构列表数据出现异常");
+		
+//		try {
+//			jsonList = organizationService.treeGrid4ListMap(id);
+//		} catch (Exception e) {
+//			logger.error("", e);
+//			throw  new SystemException("获取机构列表数据发生错误",e);
+//		}
+//		write(jsonList);
 		return null;
 	}
 	/**
@@ -56,14 +55,20 @@ public class OrgAction extends BaseAction {
 	 * @throws Exception
 	 */
 	public String tree() throws Exception {
-		List<EasyuiTreeNode> list = null;
-		try {
-			list = organizationService.tree(pid);
-		} catch (Exception e) {
-			logger.error("查询机构树出现异常", e);
-			throw new SystemException("查询机构树出现异常",e);
-		}
-		write(list);
+		execute4ResultJson(new MyExecuteCallback() {
+			@Override
+			public Object execute() throws Exception {
+				return organizationService.tree(pid);
+			}
+		}, "查询机构树出现异常");
+//		List<EasyuiTreeNode> list = null;
+//		try {
+//			list = organizationService.tree(pid);
+//		} catch (Exception e) {
+//			logger.error("查询机构树出现异常", e);
+//			throw new SystemException("查询机构树出现异常",e);
+//		}
+//		write(list);
 		return null;
 	}
 	
@@ -72,33 +77,26 @@ public class OrgAction extends BaseAction {
 	 * @return	saveOrUpdate
 	 */
 	public String save() throws Exception{
-		String res = null;
-		try{
-			organizationService.saveOrUpdate(org, pid);
-			res = "success";
-		}catch (Exception e) {
-			res = "fail";
-			logger.error("保存机构失败", e);
-			throw new SystemException("保存机构失败",e);
-		}
-		write(res);
+		execute4State(new MyExecuteCallback() {
+			@Override
+			public Object execute() throws Exception {
+				organizationService.saveOrUpdate(org, pid);
+				return null;
+			}
+		}, "保存机构失败");
 		return null;
 	}
 	
 	public String delete() throws Exception{
-		String flag = "fail";
-		try {
-			organizationService.delete(id);
-			flag = "success";
-		} catch (Exception e) {
-			logger.error("删除机构失败", e);
-			throw new SystemException("删除机构失败",e);
-		}
-		write(flag);
+		execute4State(new MyExecuteCallback() {
+			@Override
+			public Object execute() throws Exception {
+				organizationService.saveOrUpdate(org, pid);
+				return null;
+			}
+		}, "删除机构失败");
 		return null;
 	}
-	
-	
 	
 
 	public void setOrganizationService(IOrganizationService organizationService) {

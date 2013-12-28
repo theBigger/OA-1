@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fjx.common.framework.base.action.BaseAction;
+import com.fjx.common.framework.base.action.MyExecuteCallback;
 import com.fjx.oa.security.service.IAclService;
 import com.fjx.oa.security.service.IModuleService;
 import com.fjx.oa.vo.EasyuiTreeNode;
@@ -20,22 +21,20 @@ public class AclAction extends BaseAction {
 	/*******页面参数***************/
 	private Long pid;
 	private String role_id;
-
+	
 	@Autowired
 	private IAclService aclService;
 	
 	@Autowired
 	private IModuleService moduleService;
 	
-	
-	public String view() {
-		return super.view();
-	}
-	
 	public String moduleTree() throws Exception {
-		List<EasyuiTreeNode> list = null;
-		moduleService.tree(pid);
-		write(list);
+		execute4ResultJson(new MyExecuteCallback() {
+			@Override
+			public Object execute() throws Exception {
+				return moduleService.tree(pid);
+			}
+		}, null);
 		return null;
 	}
 	

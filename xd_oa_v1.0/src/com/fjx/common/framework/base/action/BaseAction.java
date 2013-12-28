@@ -2,6 +2,8 @@ package com.fjx.common.framework.base.action;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,9 +13,10 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.json.JSONException;
 import org.apache.struts2.json.JSONUtil;
-import org.hamcrest.core.IsInstanceOf;
 
 import com.fjx.common.framework.system.exception.SystemException;
+import com.fjx.oa.vo.EasyUIPagination;
+import com.fjx.oa.vo.EasyuiTreeNode;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -36,6 +39,11 @@ public abstract class BaseAction extends ActionSupport {
 	protected HttpServletRequest request = (HttpServletRequest) context.get(ServletActionContext.HTTP_REQUEST);
 	protected HttpServletResponse response = (HttpServletResponse) context.get(ServletActionContext.HTTP_RESPONSE);
 	protected Map session = context.getSession();
+	
+	protected List<Map<String, Object>> jsonList;
+	protected Map<String, Object> jsonMap;
+	protected EasyUIPagination<Map<String, Object>> easyUIPagination;
+	protected List<EasyuiTreeNode> easyuiTreeNodes;
 	
 	
 	/**
@@ -97,4 +105,69 @@ public abstract class BaseAction extends ActionSupport {
 			}
 		}
 	}
+	
+	protected void execute4State(MyExecuteCallback callback, String erroeResult) throws Exception{
+		Map<String,String> res = new HashMap<String,String>();
+		try {
+			callback.execute();
+			res.put("state", "success");
+		} catch (Exception e) {
+			res.put("state", "fail");
+			if(null == erroeResult){
+				erroeResult = "请求异常：";
+			}
+			logger.error(erroeResult, e);
+			throw  new SystemException(erroeResult,e);
+		}
+		write(res);
+	}
+	
+	protected void execute4ResultJson(MyExecuteCallback callback, String erroeResult) throws Exception{
+		Object res = null;
+		try {
+			res = callback.execute();
+		} catch (Exception e) {
+			res = null;
+			if(null == erroeResult){
+				erroeResult = "请求异常：";
+			}
+			logger.error(erroeResult, e);
+			throw  new SystemException(erroeResult,e);
+		}
+		write(res);
+	}
+
+	public List<Map<String, Object>> getJsonList() {
+		return jsonList;
+	}
+
+	public void setJsonList(List<Map<String, Object>> jsonList) {
+		this.jsonList = jsonList;
+	}
+
+	public Map<String, Object> getJsonMap() {
+		return jsonMap;
+	}
+
+	public void setJsonMap(Map<String, Object> jsonMap) {
+		this.jsonMap = jsonMap;
+	}
+
+	public EasyUIPagination<Map<String, Object>> getEasyUIPagination() {
+		return easyUIPagination;
+	}
+
+	public void setEasyUIPagination(
+			EasyUIPagination<Map<String, Object>> easyUIPagination) {
+		this.easyUIPagination = easyUIPagination;
+	}
+
+	public List<EasyuiTreeNode> getEasyuiTreeNodes() {
+		return easyuiTreeNodes;
+	}
+
+	public void setEasyuiTreeNodes(List<EasyuiTreeNode> easyuiTreeNodes) {
+		this.easyuiTreeNodes = easyuiTreeNodes;
+	}
+	
 }

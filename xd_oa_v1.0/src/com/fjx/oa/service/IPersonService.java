@@ -1,7 +1,7 @@
 package com.fjx.oa.service;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 
 import com.fjx.common.framework.base.service.IBaseAbstractService;
 import com.fjx.oa.models.Person;
@@ -17,7 +17,7 @@ import com.fjx.oa.vo.EasyUIPagination;
 public interface IPersonService extends IBaseAbstractService<Person> {
 	
 	
-	EasyUIPagination<List> queryPersons(String name,Date createDate,Date expireTime)throws Exception;
+	EasyUIPagination<Map<String, Object>> queryPersons(String name,Date createDate,Date expireTime)throws Exception;
 	
 	
 }

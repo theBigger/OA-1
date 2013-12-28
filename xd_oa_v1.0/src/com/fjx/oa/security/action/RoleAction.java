@@ -1,10 +1,9 @@
 package com.fjx.oa.security.action;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fjx.common.framework.base.action.BaseAction;
+import com.fjx.common.framework.base.action.MyExecuteCallback;
 import com.fjx.oa.security.models.Role;
 import com.fjx.oa.security.service.IRoleService;
 
@@ -31,33 +30,34 @@ public class RoleAction extends BaseAction {
 	
 
 	public String roleList() throws Exception{
-		List<Role> list = null;
-		list = roleService.findList();
-		write(list);
+		execute4ResultJson(new MyExecuteCallback() {
+			@Override
+			public Object execute() throws Exception {
+				return roleService.findList();
+			}
+		}, null);
 		return null;
 	}
 	
 	public String addOrUpdateRole() throws Exception {
-		String res = "error";
-		try {
-			roleService.saveOrUpdate(role);
-			res = "success";
-		} catch (Exception e) {
-			logger.error("保存或修改角色异常", e);
-		}
-		write(res);
+		execute4State(new MyExecuteCallback() {
+			@Override
+			public Object execute() throws Exception {
+				roleService.saveOrUpdate(role);
+				return null;
+			}
+		}, null);
 		return null;
 	}
 	
 	public String deleteRole() throws Exception {
-		String res = "error";
-		try {
-			roleService.removeAll(ids);
-			res = "success";
-		} catch (Exception e) {
-			logger.error("删除角色异常", e);
-		}
-		write(res);
+		execute4State(new MyExecuteCallback() {
+			@Override
+			public Object execute() throws Exception {
+				roleService.removeAll(ids);
+				return null;
+			}
+		}, null);
 		return null;
 	}
 	

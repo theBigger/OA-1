@@ -1,14 +1,10 @@
 package com.fjx.oa.security.action;
 
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fjx.common.framework.base.action.BaseAction;
-import com.fjx.common.framework.system.exception.SystemException;
+import com.fjx.common.framework.base.action.MyExecuteCallback;
 import com.fjx.oa.security.service.IModuleService;
-import com.fjx.oa.vo.EasyuiTreeNode;
 
 /**
  * 模块管理
@@ -38,17 +34,14 @@ public class ModuleAction extends BaseAction {
 	 * @throws Exception
 	 */
 	public String treeGrid  () throws Exception  {
-		List<Map<String, Object>> list = null;
-		try {
-			list = moduleService.treeGrid4ListMap(id);
-		} catch (Exception e) {
-			logger.error("获取模块列表数据发生错误", e);
-			throw  new SystemException("获取模块列表数据发生错误",e);
-		}
-		write(list);
+		execute4ResultJson(new MyExecuteCallback() {
+			@Override
+			public Object execute() throws Exception {
+				return moduleService.treeGrid4ListMap(id);
+			}
+		}, "获取模块列表数据发生错误");
 		return null;
 	}
-	
 	
 	/**
 	 * 模块树
@@ -56,14 +49,12 @@ public class ModuleAction extends BaseAction {
 	 * @throws Exception
 	 */
 	public String tree() throws Exception {
-		List<EasyuiTreeNode> list = null;
-		try {
-			list = moduleService.tree(pid);
-		} catch (Exception e) {
-			logger.error("查询机构树出现异常", e);
-			throw new SystemException("查询机构树出现异常",e);
-		}
-		write(list);
+		execute4ResultJson(new MyExecuteCallback() {
+			@Override
+			public Object execute() throws Exception {
+				return moduleService.tree(pid);
+			}
+		}, "获取模块列表数据发生错误");
 		return null;
 	}
 	

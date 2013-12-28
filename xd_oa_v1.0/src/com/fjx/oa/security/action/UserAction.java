@@ -1,15 +1,10 @@
 package com.fjx.oa.security.action;
 
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fjx.common.framework.base.action.BaseAction;
-import com.fjx.oa.security.models.User;
+import com.fjx.common.framework.base.action.MyExecuteCallback;
 import com.fjx.oa.security.service.IUserService;
-import com.fjx.oa.vo.EasyUIPagination;
-
 
 /**
  * 用户管理
@@ -28,14 +23,14 @@ public class UserAction extends BaseAction {
 	private IUserService userService;
 	
 	public String query_page() throws Exception{
-		EasyUIPagination<List<Map>> page = null;
-		page = userService.queryPageUsers();
-		write(page);
+		execute4ResultJson(new MyExecuteCallback() {
+			@Override
+			public Object execute() throws Exception {
+				return userService.queryPageUsers();
+			}
+		}, null);
 		return null;
 	}
-	
-	
-	
 	
 
 	public IUserService getUserService() {

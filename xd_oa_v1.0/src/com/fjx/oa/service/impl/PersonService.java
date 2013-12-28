@@ -2,7 +2,6 @@ package com.fjx.oa.service.impl;
 
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -20,7 +19,7 @@ import com.fjx.oa.vo.EasyUIPagination;
 public class PersonService extends BaseAbstractService<Person> implements IPersonService {
 
 	@Override
-	public EasyUIPagination<List> queryPersons(String name, Date createDate,
+	public EasyUIPagination<Map<String, Object>> queryPersons(String name, Date createDate,
 			Date expireTime) throws Exception {
 		String hql = "select " +
 				" new map(p.id as id,p.name as name,p.sex as sex,p.age as age,p.address as address,p.duty as duty,p.phone as phone,p.org.id as org_id,p.org.name as org_name,p.user.id,p.user.createTime as createTime) " +
@@ -31,7 +30,7 @@ public class PersonService extends BaseAbstractService<Person> implements IPerso
 		}
 		Object[] parameters = {name,createDate,expireTime};
 		Pagination<Map<String, Object>> list = pageByHql(hql);
-		EasyUIPagination easyPagination = new EasyUIPagination<Map<String, Object>>(list);
+		EasyUIPagination<Map<String, Object>> easyPagination = new EasyUIPagination<Map<String, Object>>(list);
 		return easyPagination;
 	}
 	

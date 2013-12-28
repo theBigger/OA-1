@@ -17,7 +17,7 @@ public class AuthenUrl {
 	
 	private Long id;
 	
-	private String module_sn;
+	private String module_id;
 
 	private int permission;
 
@@ -36,13 +36,12 @@ public class AuthenUrl {
 		this.id = id;
 	}
 	
-
-	public String getModule_sn() {
-		return module_sn;
+	public String getModule_id() {
+		return module_id;
 	}
 
-	public void setModule_sn(String module_sn) {
-		this.module_sn = module_sn;
+	public void setModule_id(String module_id) {
+		this.module_id = module_id;
 	}
 
 	public int getPermission() {
