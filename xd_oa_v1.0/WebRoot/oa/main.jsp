@@ -17,7 +17,7 @@
 	
 </head>
 <body id="indexLayout" class="easyui-layout">
-	<div href="<%=path %>/oa/view_north.action" data-options="region:'north',border:false" style="height:110px;background:#FFF;"></div>
+	<div href="<%=path %>/oa/view_north.action" data-options="region:'north',border:false" style="height:63px;background:#FFF;"></div>
 	<div href="<%=path %>/oa/view_west.action" data-options="region:'west',split:true,title:'导航'" style="width:190px;overflow: hidden;"></div>
 	<div href="<%=path %>/oa/view_center.action" data-options="region:'center',title:'当前登录：${sessionScope._const_usersessionkey_.userid}'"></div>
 	<div href="<%=path %>/oa/view_east.action" data-options="region:'east',split:true,collapsed:true,title:'East'" style="width:100px;padding:10px;">east region</div>

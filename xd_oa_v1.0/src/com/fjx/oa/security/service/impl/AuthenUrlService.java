@@ -17,7 +17,7 @@ public class AuthenUrlService extends BaseAbstractService<AuthenUrl> implements 
 
 
 	@Override
-	public EasyUIPagination<Map<String, Object>> queryPage(String module_id) throws Exception {
+	public EasyUIPagination<Map<String, Object>> queryPage(Long module_id) throws Exception {
 		String hql = "from AuthenUrl a where 1=1 and a.is_valid = 1" +
 				" and a.module_id = ?";
 		Pagination<Map<String, Object>> page = pageByHql(hql,module_id);

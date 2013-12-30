@@ -22,7 +22,7 @@ public class AuthenUrlServiceTest {
 	@Test
 	public void testQueryPage() throws Exception {
 		try {
-			EasyUIPagination<Map<String, Object>> page = authenUrlService.queryPage("1");
+			EasyUIPagination<Map<String, Object>> page = authenUrlService.queryPage(new Long(1));
 			System.out.println(JSONUtil.serialize(page));
 		} catch (Exception e) {
 			e.printStackTrace();

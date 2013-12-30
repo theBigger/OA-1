@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fjx.common.framework.base.action.BaseAction;
 import com.fjx.common.framework.base.action.MyExecuteCallback;
+import com.fjx.oa.security.service.IAuthenUrlService;
 import com.fjx.oa.security.service.IModuleService;
 
 /**
@@ -26,7 +27,9 @@ public class ModuleAction extends BaseAction {
 	private Long pid;
 	private Long id;
 	
-	
+
+	@Autowired
+	private IAuthenUrlService authenUrlService;
 	/**
 	 * 树形表格
 	 * @return
@@ -58,6 +61,15 @@ public class ModuleAction extends BaseAction {
 		return null;
 	}
 	
+	public String query_authenUrl_page() throws Exception{
+		execute4ResultJson(new MyExecuteCallback() {
+			@Override
+			public Object execute() throws Exception {
+				return authenUrlService.queryPage(id);
+			}
+		}, null);
+		return null;
+	}
 	
 	public IModuleService getModuleService() {
 		return moduleService;

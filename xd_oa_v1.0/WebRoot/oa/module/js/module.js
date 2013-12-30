@@ -292,51 +292,12 @@ $(function() {
 		}
 	});
 	
-	configDialog = $('#configDialog').show().dialog({
+	configDialog = $('#configDialog').show().window({
 		modal : true,
-		buttons : [ {
-			text : '确定',
-			handler : function() {
-				if (permissionForm.find('[name=id]').val() != '') {
-					permissionForm.form('submit', {
-						url : '',
-						success : function(data) {
-							userDialog.dialog('close');
-							$.messager.show({
-								msg : '用户编辑成功！',
-								title : '提示'
-							});
-							datagrid.datagrid('reload');
-						}
-					});
-				} else {
-					permissionForm.form('submit', {
-						url : '',
-						success : function(data) {
-							try {
-								var d = $.parseJSON(data);
-								if (d) {
-									userDialog.dialog('close');
-									$.messager.show({
-										msg : '用户创建成功！',
-										title : '提示'
-									});
-									datagrid.datagrid('reload');
-								}
-							} catch (e) {
-								$.messager.show({
-									msg : '用户名称已存在！',
-									title : '提示'
-								});
-							}
-						}
-					});
-				}
-			}
-		} ]
-	}).dialog('close');
-	
-	
+		width : 570,
+		top : 0,
+	}).window('close');
+
 });
 
 function edit() {
@@ -446,8 +407,8 @@ function config() {
 		if (node && node.id) {
 			$('#module_id').val(node.id);
 			$('#module_name').val(node.name);
+			configDialog.window({title: '【'+node.name+'】权限配置'}).window('open');
 			load_acl_datagrid(node.id);
-			configDialog.dialog({title: '【'+node.name+'】权限配置'}).dialog('open');
 		}else{
 			$.messager.show({
 				msg : '请选择要设置权限的菜单！',
@@ -459,69 +420,15 @@ function config() {
 
 function load_acl_datagrid(module_id){
 	
-	acl_datagrid = $('#datagrid').datagrid({
-		url : basePath + 'oa/person/person_query_page.action',
-		toolbar : [ {
-			text : '增加',
-			iconCls : 'icon-add',
-			handler : function() {
-				append();
-			}
-		}, '-', {
-			text : '删除',
-			iconCls : 'icon-remove',
-			handler : function() {
-				remove();
-			}
-		}, '-', {
-			text : '编辑',
-			iconCls : 'icon-edit',
-			handler : function() {
-				edit();
-			}
-		}, '-', {
-			text : '保存',
-			iconCls : 'icon-save',
-			handler : function() {
-				if (editRow) {
-					acl_datagrid.datagrid('endEdit', editRow.id);
-				}
-			}
-		},'-', {
-			text : '权限配置',
-			iconCls : 'icon-edit',
-			handler : function() {
-				config();
-			}
-		}, '-', {
-			text : '取消编辑',
-			iconCls : 'icon-undo',
-			handler : function() {
-				if (editRow) {
-					acl_datagrid.datagrid('cancelEdit', editRow.id);
-					editRow = undefined;
-				}
-			}
-		}, '-', {
-			text : '取消选中',
-			iconCls : 'icon-undo',
-			handler : function() {
-				acl_datagrid.datagrid('unselectAll');
-			}
-		}, '-', {
-			text : '刷新',
-			iconCls : 'icon-reload',
-			handler : function() {
-				editRow = undefined;
-				acl_datagrid.datagrid('reload');
-			}
-		}, '-'],
+	acl_datagrid = $('#acl_datagrid').datagrid({
+		url : basePath + 'oa/module/module_query_authenUrl_page.action?id=1',
+		toolbar : "#acl_toolbar",
 		title : '',
+		width : 550,
 		iconCls : 'icon-save',
 		pagination : true,
 		pageSize : 10,
 		pageList : [ 10, 20, 30, 40],
-		fit : true,
 		fitColumns : true,
 		nowrap : false,
 		border : false,
@@ -532,46 +439,69 @@ function load_acl_datagrid(module_id){
 			width : 50,
 			checkbox : true
 		}, {
-			field : 'name',
-			title : '用户名称',
+			field : 'permission',
+			title : '操作权限',
 			width : 100,
-			sortable : true
+			sortable : true,
+			formatter : function(value, rowData, rowIndex) {
+				var res = '查询';
+				if(value == '1'){
+					res = '添加';
+				}else if(value == '2'){
+					res = '修改';
+				}else if(value == '3'){
+					res = '删除';
+				}
+				return res;
+			},
+			editor : {
+				type : 'combobox',
+				options : {
+					valueField : 'permiss',
+					textField : 'permissName',
+					panelHeight : '200',
+					data : [
+						{'permiss':'0','permissName':'查询'},
+						{'permiss':'1','permissName':'添加'},
+						{'permiss':'2','permissName':'修改'},
+						{'permiss':'3','permissName':'删除'}
+					]
+				}
+			}
 		} ] ],
 		columns : [ [ {
-			field : 'sex',
-			title : '性别',
+			field : 'url',
+			title : '认证地址',
 			width : 100,
-			formatter : function(value, rowData, rowIndex) {
-				var sex = '女';
-				if(value == '1'){
-					sex = '男'
+			editor : {
+				type : 'validatebox',
+				options : {
+					required: true
 				}
-				return sex;
 			}
 		}, {
 			field : 'duty',
-			title : '职务',
+			title : '备注',
 			width : 150,
-			sortable : true
+			sortable : true,
+			editor : {
+				type : 'text',
+			}
 		}, {
-			field : 'phone',
-			title : '电话',
+			field : 'is_valid',
+			title : '是否启用',
 			width : 150,
-			sortable : true
-		}, {
-			field : 'address',
-			title : '地址',
-			width : 150,
-			sortable : true
-		}, {
-			field : 'org_name',
-			title : '机构',
-			width : 200
-		}, {
-			field : 'org_id',
-			title : '机构',
-			width : 200,
-			hidden : true
+			sortable : true,
+			formatter : function(value, rowData, rowIndex) {
+				var res = '否';
+				if(value == '1'){
+					res = '是';
+				}
+				return res;
+			},
+			editor : {
+				type : 'checkbox',
+			}
 		} ] ],
 		onRowContextMenu : function(e, rowIndex, rowData) {
 			e.preventDefault();
@@ -581,10 +511,18 @@ function load_acl_datagrid(module_id){
 				left : e.pageX,
 				top : e.pageY
 			});
-		}
+		},
+		onDblClickRow : function(index,node) {
+			if (editRow) {
+				$.messager.show({
+					msg : '您没有结束之前编辑的数据，请先保存或取消编辑！',
+					title : '提示'
+				});
+			} else {
+				acl_datagrid.datagrid('beginEdit', index);
+			}
+		},
 	});
-	
-	
 }
 
 function onAclBeforeLoad(){

@@ -17,7 +17,7 @@ public class AuthenUrl {
 	
 	private Long id;
 	
-	private String module_id;
+	private Long module_id;
 
 	private int permission;
 
@@ -36,11 +36,11 @@ public class AuthenUrl {
 		this.id = id;
 	}
 	
-	public String getModule_id() {
+	public Long getModule_id() {
 		return module_id;
 	}
 
-	public void setModule_id(String module_id) {
+	public void setModule_id(Long module_id) {
 		this.module_id = module_id;
 	}
 
@@ -67,6 +67,5 @@ public class AuthenUrl {
 	public void setIs_valid(int is_valid) {
 		this.is_valid = is_valid;
 	}
-	
 	
 }

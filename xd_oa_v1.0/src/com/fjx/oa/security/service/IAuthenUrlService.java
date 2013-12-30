@@ -16,7 +16,7 @@ public interface IAuthenUrlService extends IBaseAbstractService<AuthenUrl> {
 	 * @return
 	 * @throws Exception
 	 */
-	public EasyUIPagination<Map<String, Object>> queryPage(String module_id) throws Exception;
+	public EasyUIPagination<Map<String, Object>> queryPage(Long module_id) throws Exception;
 	
 	
 }

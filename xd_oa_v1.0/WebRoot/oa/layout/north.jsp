@@ -18,7 +18,7 @@
 	//}
 </script>
 <div>
-	<img alt="" src="<%=path %>/res/images/fengjx.png">
+	<img alt="" src="<%=path %>/res/images/fengjx.gif">
 </div>
 
 <div style="position: absolute; right: 0px; bottom: 0px; ">
